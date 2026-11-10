@@ -1,0 +1,2319 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CleanPro Laundry & Dry Cleaners POS</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef6ff',
+              100: '#d9ebff',
+              500: '#0284c7',
+              600: '#0369a1',
+              700: '#075985',
+              800: '#0c4a6e',
+              900: '#082f49',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @media print {
+      body * { visibility: hidden !important; }
+      #printableReceipt, #printableReceipt * { visibility: visible !important; }
+      #printableReceipt {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 80mm;
+        margin: 0;
+        padding: 0;
+      }
+    }
+    .custom-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
+    .custom-scroll::-webkit-scrollbar-track { background: #f1f5f9; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 9999px; }
+  </style>
+</head>
+<body class="h-full flex flex-col font-sans text-slate-800 antialiased selection:bg-brand-500 selection:text-white">
+
+  <!-- ============================================================ -->
+  <!-- TOP APPLICATION BAR                                          -->
+  <!-- ============================================================ -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 gap-2">
+        
+        <!-- Logo & Store Identifier -->
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-700 via-sky-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-brand-700/20">
+            <i data-lucide="sparkles" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h1 class="font-extrabold text-base sm:text-lg tracking-tight text-slate-900 flex items-center gap-1.5">
+                <span>CleanPro</span>
+                <span class="text-brand-600 text-xs sm:text-sm font-semibold tracking-normal hidden xs:inline" data-i18n="tagline">Laundry & Dry Cleaners</span>
+              </h1>
+              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1 animate-pulse"></span>
+                <span data-i18n="branchStatus">Counter #1 • Open</span>
+              </span>
+            </div>
+            <p class="text-xs text-slate-500 flex items-center gap-2">
+              <span id="currentClock" class="font-mono text-slate-600 font-medium">--:--</span>
+              <span class="text-slate-300">•</span>
+              <span class="hidden sm:inline text-slate-500" data-i18n="cashRegister">Cash Drawer Synced</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Quick Counters & Revenue Snapshot (Tablet/Desktop) -->
+        <div class="hidden md:flex items-center space-x-4 text-xs">
+          <div class="bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl flex items-center gap-2.5">
+            <div class="w-7 h-7 rounded-lg bg-sky-100 text-brand-700 flex items-center justify-center">
+              <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <div class="text-[10px] text-slate-400 uppercase font-bold" data-i18n="hdrTodayOrders">Today Orders</div>
+              <div id="statOrdersCount" class="font-bold text-slate-900">18 Bookings</div>
+            </div>
+          </div>
+
+          <div class="bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl flex items-center gap-2.5">
+            <div class="w-7 h-7 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center">
+              <i data-lucide="package-check" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <div class="text-[10px] text-slate-400 uppercase font-bold" data-i18n="hdrReadyPickup">Ready in Shelves</div>
+              <div id="statReadyCount" class="font-bold text-amber-700">7 Orders</div>
+            </div>
+          </div>
+
+          <div class="bg-emerald-50/70 border border-emerald-200 px-3 py-1.5 rounded-xl flex items-center gap-2.5">
+            <div class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center">
+              <i data-lucide="wallet" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <div class="text-[10px] text-emerald-700 uppercase font-bold" data-i18n="hdrCashHand">Net Cash / UPI</div>
+              <div id="statNetRevenue" class="font-extrabold text-emerald-800">₹6,870</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Controls: Language Toggle & Day-Close -->
+        <div class="flex items-center space-x-2">
+          <!-- One Click Language Switcher -->
+          <button onclick="toggleLanguage()" class="px-3 py-1.5 rounded-xl font-bold text-xs bg-brand-50 border border-brand-200 text-brand-800 hover:bg-brand-100 transition flex items-center gap-1.5 shadow-2xs">
+            <i data-lucide="languages" class="w-4 h-4 text-brand-600"></i>
+            <span id="langButtonLabel">हिंदी में देखें</span>
+          </button>
+
+          <!-- Day Close Trigger -->
+          <button onclick="simulateDayEndClose()" class="hidden sm:flex text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-xl font-semibold transition items-center gap-1.5 border border-slate-300">
+            <i data-lucide="lock" class="w-3.5 h-3.5 text-slate-500"></i>
+            <span data-i18n="dayEnd">Close Day</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Module Navigation Bar -->
+      <nav class="flex space-x-1 sm:space-x-3 border-t border-slate-100 overflow-x-auto py-2 custom-scroll text-xs sm:text-sm font-medium">
+        <button onclick="switchTab('posTab')" id="btn-posTab" class="nav-tab px-3.5 py-2 rounded-xl flex items-center gap-2 bg-brand-600 text-white font-bold whitespace-nowrap transition shadow-xs">
+          <i data-lucide="receipt" class="w-4 h-4"></i>
+          <span data-i18n="tabPOS">1. POS & Token Desk (काउंटर)</span>
+        </button>
+
+        <button onclick="switchTab('workflowTab')" id="btn-workflowTab" class="nav-tab px-3.5 py-2 rounded-xl flex items-center gap-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 whitespace-nowrap transition">
+          <i data-lucide="columns-3" class="w-4 h-4"></i>
+          <span data-i18n="tabWorkflow">2. Workflow & Rack Slots (रैक स्थिति)</span>
+          <span id="badgeActiveWorkflow" class="px-1.5 py-0.2 text-[10px] bg-sky-200 text-sky-800 rounded-full font-bold">12</span>
+        </button>
+
+        <button onclick="switchTab('loyaltyTab')" id="btn-loyaltyTab" class="nav-tab px-3.5 py-2 rounded-xl flex items-center gap-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 whitespace-nowrap transition">
+          <i data-lucide="crown" class="w-4 h-4 text-amber-500"></i>
+          <span data-i18n="tabLoyalty">3. 7th-Visit & Prepaid Wallets (लॉयल्टी)</span>
+          <span class="px-1.5 py-0.2 text-[10px] bg-amber-200 text-amber-900 rounded-full font-bold">Offer</span>
+        </button>
+
+        <button onclick="switchTab('ledgerTab')" id="btn-ledgerTab" class="nav-tab px-3.5 py-2 rounded-xl flex items-center gap-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 whitespace-nowrap transition">
+          <i data-lucide="calculator" class="w-4 h-4"></i>
+          <span data-i18n="tabLedger">4. Daily Expenses & Karigar Ledger (हिसाब)</span>
+        </button>
+
+        <button onclick="switchTab('passbookTab')" id="btn-passbookTab" class="nav-tab px-3.5 py-2 rounded-xl flex items-center gap-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 whitespace-nowrap transition">
+          <i data-lucide="smartphone" class="w-4 h-4 text-indigo-500"></i>
+          <span data-i18n="tabPassbook">5. Customer Mobile Passbook (पासबुक)</span>
+        </button>
+      </nav>
+
+    </div>
+  </header>
+
+  <!-- Global Toast Notification Layer -->
+  <div id="toastStack" class="fixed top-20 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- ============================================================ -->
+  <!-- MAIN WORKSPACE VIEWS                                         -->
+  <!-- ============================================================ -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-5 lg:p-6">
+
+    <!-- ========================================================== -->
+    <!-- TAB 1: POS COUNTER & SMART TOKEN BILLING                   -->
+    <!-- ========================================================== -->
+    <div id="posTab" class="tab-view block space-y-5">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+
+        <!-- Left 7 Cols: Customer Recognition, Service Filter & Items Grid -->
+        <div class="lg:col-span-7 space-y-4">
+
+          <!-- Customer Smart Lookup Card -->
+          <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-xs relative">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs uppercase tracking-wider font-extrabold text-slate-400 flex items-center gap-1.5">
+                <i data-lucide="user-check" class="w-4 h-4 text-brand-600"></i>
+                <span data-i18n="custHeader">Customer Recognition & Loyalty Sync</span>
+              </span>
+              <button onclick="loadDemoCustomer()" class="text-xs text-brand-600 font-bold hover:underline" data-i18n="btnDemoCust">
+                Demo: Rahul Sharma (6/7 Visits)
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+              <!-- Phone Input -->
+              <div class="sm:col-span-5 relative">
+                <label class="block text-xs font-semibold text-slate-600 mb-1" data-i18n="lblPhone">Mobile Number (10 Digits)</label>
+                <div class="relative">
+                  <input type="tel" id="inputPhone" maxlength="10" placeholder="9829012345" 
+                    oninput="handlePhoneLookup(this.value)"
+                    class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white pl-9 transition" />
+                  <i data-lucide="phone" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
+                </div>
+              </div>
+
+              <!-- Name Input -->
+              <div class="sm:col-span-4">
+                <label class="block text-xs font-semibold text-slate-600 mb-1" data-i18n="lblName">Customer Name</label>
+                <input type="text" id="inputName" placeholder="Rahul Sharma" 
+                  class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition" />
+              </div>
+
+              <!-- Address/Locality (Optional) -->
+              <div class="sm:col-span-3">
+                <label class="block text-xs font-semibold text-slate-600 mb-1" data-i18n="lblArea">Flat / Locality</label>
+                <input type="text" id="inputArea" placeholder="Civil Lines" 
+                  class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition" />
+              </div>
+            </div>
+
+            <!-- Customer Status Banner (Dynamic) -->
+            <div id="customerSummaryBar" class="mt-3.5 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3 text-xs bg-slate-50/70 -mx-4 sm:-mx-5 -mb-4 sm:-mb-5 px-4 sm:px-5 py-2.5 rounded-b-2xl">
+              <div class="flex items-center gap-2.5">
+                <span id="custTierBadge" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md font-bold text-[11px] bg-amber-100 text-amber-900 border border-amber-300">
+                  <i data-lucide="crown" class="w-3.5 h-3.5 text-amber-600"></i> Gold Member
+                </span>
+                <span class="text-slate-600 font-medium">
+                  <span data-i18n="lblWalletBal">Prepaid Wallet:</span>
+                  <b id="custWalletDisplay" class="text-emerald-700 font-bold ml-1">₹850</b>
+                </span>
+              </div>
+
+              <!-- 7-Visit Stamp Micro Progress -->
+              <div class="flex items-center gap-2">
+                <span class="text-slate-500 font-medium" data-i18n="lblVisitsCompleted">Visits Progress:</span>
+                <div class="flex items-center gap-1" id="stampPills">
+                  <!-- Generated by JS -->
+                </div>
+                <span id="stampRatio" class="font-extrabold text-brand-700 ml-1">6/7</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Garment & Service Catalogue -->
+          <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-xs">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+              <div>
+                <h3 class="font-bold text-slate-900 text-sm sm:text-base" data-i18n="catTitle">Service & Garment Catalogue (टच ग्रिड)</h3>
+                <p class="text-xs text-slate-500" data-i18n="catSubtitle">Choose garment category and click to add to order</p>
+              </div>
+
+              <!-- Category Pills -->
+              <div class="flex flex-wrap items-center gap-1 bg-slate-100 p-1 rounded-xl text-xs">
+                <button type="button" onclick="setServiceCategory('all')" id="pill-all" class="cat-filter-btn px-2.5 py-1 rounded-lg bg-white font-bold text-slate-900 shadow-2xs">All</button>
+                <button type="button" onclick="setServiceCategory('wash_iron')" id="pill-wash_iron" class="cat-filter-btn px-2.5 py-1 rounded-lg text-slate-600 hover:text-slate-900 font-medium">Wash & Iron</button>
+                <button type="button" onclick="setServiceCategory('dryclean')" id="pill-dryclean" class="cat-filter-btn px-2.5 py-1 rounded-lg text-slate-600 hover:text-slate-900 font-medium">Dry Clean</button>
+                <button type="button" onclick="setServiceCategory('iron_only')" id="pill-iron_only" class="cat-filter-btn px-2.5 py-1 rounded-lg text-slate-600 hover:text-slate-900 font-medium">Steam Press</button>
+                <button type="button" onclick="setServiceCategory('heavy')" id="pill-heavy" class="cat-filter-btn px-2.5 py-1 rounded-lg text-slate-600 hover:text-slate-900 font-medium">Heavy / Quilts</button>
+              </div>
+            </div>
+
+            <!-- Items Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5" id="garmentGrid">
+              <!-- Dynamically populated via JS -->
+            </div>
+
+            <!-- Garment Pre-existing Defect Selector (Risk Guard) -->
+            <div class="mt-4 pt-3.5 border-t border-slate-100">
+              <div class="flex items-center justify-between mb-2">
+                <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1">
+                  <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-amber-600"></i>
+                  <span data-i18n="defectTitle">Garment Defect Tagging (दाग / फटा हुआ नोट)</span>
+                </label>
+                <span class="text-[11px] text-slate-400" data-i18n="defectHint">Appears on receipt & WhatsApp</span>
+              </div>
+
+              <div class="flex flex-wrap gap-2 text-xs">
+                <button type="button" onclick="toggleDefect('Stain / गहरा दाग')" class="defect-chip px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-700 font-medium hover:border-amber-300 transition">
+                  🩸 Stain / गहरा दाग
+                </button>
+                <button type="button" onclick="toggleDefect('Torn / फटा हुआ')" class="defect-chip px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-700 font-medium hover:border-amber-300 transition">
+                  ✂️ Torn / फटा हुआ
+                </button>
+                <button type="button" onclick="toggleDefect('Button Missing / टूटा बटन')" class="defect-chip px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-700 font-medium hover:border-amber-300 transition">
+                  🔘 Button Broken / टूटा बटन
+                </button>
+                <button type="button" onclick="toggleDefect('Color Bleed Risk / रंग निकलने का डर')" class="defect-chip px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-700 font-medium hover:border-amber-300 transition">
+                  🎨 Bleed Risk / रंग जोखिम
+                </button>
+                <input type="text" id="defectCustom" placeholder="+ Other Remark / अन्य नोट..." 
+                  class="flex-1 min-w-[140px] px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-brand-500" />
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Right 5 Cols: Live Cart, 7th-Visit Reward Trigger, Delivery & Billing -->
+        <div class="lg:col-span-5 space-y-4">
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-xs flex flex-col h-full">
+
+            <!-- Cart Header -->
+            <div class="p-4 border-b border-slate-200 bg-slate-50/70 rounded-t-2xl flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-brand-100 text-brand-700 flex items-center justify-center font-bold">
+                  <i data-lucide="receipt" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <h3 class="font-bold text-slate-900 text-sm" data-i18n="cartTitle">Order Token & Cart</h3>
+                  <div class="text-[11px] text-slate-500">
+                    <span data-i18n="tokenLabel">Token No:</span>
+                    <span id="activeTokenId" class="font-extrabold font-mono text-brand-700 ml-1">#TK-108</span>
+                  </div>
+                </div>
+              </div>
+              <button onclick="clearCurrentCart()" class="text-xs text-rose-600 hover:text-rose-700 font-semibold" data-i18n="btnClearCart">
+                Clear All
+              </button>
+            </div>
+
+            <!-- Cart Items (Scrollable) -->
+            <div class="p-4 flex-1 overflow-y-auto max-h-[290px] space-y-2.5 custom-scroll" id="cartContainer">
+              <!-- Cart items injected via JS -->
+            </div>
+
+            <!-- Delivery Preference Toggle -->
+            <div class="p-3.5 bg-slate-50 border-t border-slate-200 space-y-2.5">
+              <div class="grid grid-cols-2 gap-2 text-xs">
+                <button type="button" onclick="setSpeedOption('normal')" id="btnSpeedNormal" class="p-2.5 rounded-xl border-2 border-brand-500 bg-brand-50 text-brand-900 font-bold flex flex-col items-center justify-center text-center transition">
+                  <span class="flex items-center gap-1">
+                    <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+                    <span data-i18n="spdNormal">Standard (48 Hrs)</span>
+                  </span>
+                  <span class="text-[10px] text-slate-500 font-normal" data-i18n="spdNormalSub">Standard Rate</span>
+                </button>
+
+                <button type="button" onclick="setSpeedOption('express')" id="btnSpeedExpress" class="p-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 font-semibold flex flex-col items-center justify-center text-center hover:border-amber-400 transition">
+                  <span class="flex items-center gap-1 text-amber-800">
+                    <i data-lucide="zap" class="w-3.5 h-3.5 fill-amber-500 text-amber-500"></i>
+                    <span data-i18n="spdExpress">Express (+30%)</span>
+                  </span>
+                  <span class="text-[10px] text-slate-500 font-normal" data-i18n="spdExpressSub">24 Hrs Pickup</span>
+                </button>
+              </div>
+
+              <!-- Promise Date Selector -->
+              <div class="flex items-center justify-between text-xs bg-white p-2.5 rounded-xl border border-slate-200">
+                <span class="text-slate-600 font-medium flex items-center gap-1.5">
+                  <i data-lucide="clock-3" class="w-4 h-4 text-slate-400"></i>
+                  <span data-i18n="lblPromiseDate">Pickup Ready On:</span>
+                </span>
+                <input type="datetime-local" id="orderPromiseDate" class="text-xs font-semibold text-slate-800 bg-slate-50 px-2 py-1 rounded-md border border-slate-200 focus:outline-none" />
+              </div>
+            </div>
+
+            <!-- 7th-Visit Reward Banner Trigger -->
+            <div id="seventhVisitRewardBanner" class="p-3 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white text-xs font-medium flex items-center justify-between shadow-xs">
+              <div class="flex items-center gap-2">
+                <i data-lucide="gift" class="w-5 h-5 shrink-0"></i>
+                <div>
+                  <div class="font-bold" data-i18n="rewardBannerTitle">🎉 7th Visit Mega Reward Unlocked!</div>
+                  <div class="text-[11px] text-amber-100" data-i18n="rewardBannerSub">Flat 25% Off OR Free Blazer Dry-Clean</div>
+                </div>
+              </div>
+              <button onclick="applyLoyaltyReward()" id="btnApplyReward" class="bg-white text-amber-900 font-extrabold px-2.5 py-1.5 rounded-lg text-[11px] shadow-sm hover:bg-amber-50 transition" data-i18n="btnApply">
+                Apply Offer
+              </button>
+            </div>
+
+            <!-- Financials Summary -->
+            <div class="p-4 border-t border-slate-200 space-y-1.5 text-xs">
+              <div class="flex justify-between text-slate-600">
+                <span data-i18n="lblTotalPieces">Total Garments:</span>
+                <span id="txtQtyPieces" class="font-bold text-slate-900">0 Pcs</span>
+              </div>
+              <div class="flex justify-between text-slate-600">
+                <span data-i18n="lblSubtotal">Subtotal:</span>
+                <span id="txtSubtotal" class="font-semibold text-slate-800">₹0</span>
+              </div>
+              <div class="flex justify-between text-amber-800" id="rowExpressFee" style="display:none;">
+                <span data-i18n="lblExpressCharge">Express Speed Charge:</span>
+                <span id="txtExpressCharge" class="font-semibold">+₹0</span>
+              </div>
+              <div class="flex justify-between text-emerald-700" id="rowRewardDiscount" style="display:none;">
+                <span data-i18n="lblLoyaltyDiscount">7th-Visit Discount:</span>
+                <span id="txtDiscount" class="font-bold">-₹0</span>
+              </div>
+              <div class="pt-2 border-t border-dashed border-slate-300 flex justify-between items-baseline">
+                <span class="text-sm font-extrabold text-slate-900" data-i18n="lblNetPayable">Net Payable (कुल देय):</span>
+                <span id="txtGrandTotal" class="text-2xl font-black text-brand-700">₹0</span>
+              </div>
+            </div>
+
+            <!-- Payment Options -->
+            <div class="px-4 pb-2">
+              <label class="block text-[11px] font-bold text-slate-500 mb-1.5 uppercase tracking-wider" data-i18n="lblPayMode">Payment Mode (भुगतान माध्यम)</label>
+              <div class="grid grid-cols-4 gap-1.5 text-xs text-center font-semibold">
+                <button type="button" onclick="selectPaymentMethod('cash')" id="btnPayCash" class="pay-chip p-2 rounded-xl border-2 border-brand-500 bg-brand-50 text-brand-900 font-bold">
+                  Cash (कैश)
+                </button>
+                <button type="button" onclick="selectPaymentMethod('upi')" id="btnPayUPI" class="pay-chip p-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700">
+                  UPI QR
+                </button>
+                <button type="button" onclick="selectPaymentMethod('wallet')" id="btnPayWallet" class="pay-chip p-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700">
+                  Wallet (वॉलेट)
+                </button>
+                <button type="button" onclick="selectPaymentMethod('due')" id="btnPayDue" class="pay-chip p-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700">
+                  On Pickup (उधार)
+                </button>
+              </div>
+            </div>
+
+            <!-- Primary Action Button -->
+            <div class="p-4 pt-2">
+              <button onclick="commitOrderAndPrint()" class="w-full bg-gradient-to-r from-brand-700 via-sky-600 to-indigo-700 hover:from-brand-800 hover:to-indigo-800 text-white font-extrabold py-3.5 px-4 rounded-xl shadow-lg shadow-brand-700/25 flex items-center justify-center gap-2 text-sm transition active:scale-[0.99]">
+                <i data-lucide="printer" class="w-4 h-4"></i>
+                <span data-i18n="btnBookOrder">Generate Token & Print Waterproof Tags</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ========================================================== -->
+    <!-- TAB 2: 5-STAGE WORKFLOW & RACK SLOTS KANBAN                -->
+    <!-- ========================================================== -->
+    <div id="workflowTab" class="tab-view hidden space-y-4">
+      
+      <!-- Controls, Search & Rack Filter -->
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="flex items-center gap-2 flex-1">
+          <div class="relative w-full sm:w-80">
+            <input type="text" id="searchWorkflowInput" oninput="renderWorkflowBoard()" placeholder="Search by Token #, Customer, Phone..." 
+              class="w-full pl-9 pr-3 py-2 text-xs border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500 bg-slate-50" />
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
+          </div>
+
+          <!-- Rack Filter -->
+          <select id="filterRackLocation" onchange="renderWorkflowBoard()" class="text-xs border border-slate-300 rounded-xl px-3 py-2 text-slate-700 bg-slate-50 focus:outline-none font-medium">
+            <option value="all">All Rack Slots (सभी रैक)</option>
+            <option value="Rack A-1 (Suits)">Rack A-1 (Suits & Blazers)</option>
+            <option value="Rack A-2 (Suits)">Rack A-2 (Suits)</option>
+            <option value="Rack B-1 (Sarees)">Rack B-1 (Sarees)</option>
+            <option value="Rack B-2 (Sarees)">Rack B-2 (Silk Sarees)</option>
+            <option value="Rack C-1 (Press)">Rack C-1 (Steam Press)</option>
+            <option value="Rack D-1 (Blankets)">Rack D-1 (Heavy Quilts)</option>
+          </select>
+        </div>
+
+        <div class="flex items-center gap-2 text-xs">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-rose-50 text-rose-700 border border-rose-200 font-bold">
+            <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
+            <span data-i18n="badgeOverdue">Overdue Alerts Active</span>
+          </span>
+          <button onclick="renderWorkflowBoard()" class="p-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 transition">
+            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 5-Column Kanban Board -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3.5 overflow-x-auto pb-4">
+
+        <!-- Stage 1: Received -->
+        <div class="bg-slate-200/50 rounded-2xl p-3 border border-slate-200 flex flex-col">
+          <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-200">
+            <span class="font-bold text-xs text-slate-700 flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-slate-500"></span>
+              <span data-i18n="colReceived">1. Received (प्राप्त)</span>
+            </span>
+            <span id="count-received" class="px-2 py-0.5 rounded-md bg-white text-slate-800 text-[11px] font-bold shadow-2xs">0</span>
+          </div>
+          <div id="col-received" class="space-y-2.5 flex-1 min-h-[380px]"></div>
+        </div>
+
+        <!-- Stage 2: Washing -->
+        <div class="bg-sky-50/70 rounded-2xl p-3 border border-sky-200 flex flex-col">
+          <div class="flex items-center justify-between pb-2 mb-2 border-b border-sky-200">
+            <span class="font-bold text-xs text-sky-900 flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-sky-500 animate-pulse"></span>
+              <span data-i18n="colWashing">2. Washing (धुलाई)</span>
+            </span>
+            <span id="count-washing" class="px-2 py-0.5 rounded-md bg-white text-sky-800 text-[11px] font-bold shadow-2xs">0</span>
+          </div>
+          <div id="col-washing" class="space-y-2.5 flex-1 min-h-[380px]"></div>
+        </div>
+
+        <!-- Stage 3: Steam Ironing -->
+        <div class="bg-indigo-50/70 rounded-2xl p-3 border border-indigo-200 flex flex-col">
+          <div class="flex items-center justify-between pb-2 mb-2 border-b border-indigo-200">
+            <span class="font-bold text-xs text-indigo-900 flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
+              <span data-i18n="colIroning">3. Steam Iron (प्रेस)</span>
+            </span>
+            <span id="count-ironing" class="px-2 py-0.5 rounded-md bg-white text-indigo-800 text-[11px] font-bold shadow-2xs">0</span>
+          </div>
+          <div id="col-ironing" class="space-y-2.5 flex-1 min-h-[380px]"></div>
+        </div>
+
+        <!-- Stage 4: Ready & Shelved -->
+        <div class="bg-amber-50/80 rounded-2xl p-3 border-2 border-amber-300 flex flex-col">
+          <div class="flex items-center justify-between pb-2 mb-2 border-b border-amber-200">
+            <span class="font-bold text-xs text-amber-950 flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+              <span data-i18n="colReady">4. Ready in Rack (रैक)</span>
+            </span>
+            <span id="count-ready" class="px-2 py-0.5 rounded-md bg-amber-200 text-amber-900 text-[11px] font-extrabold shadow-2xs">0</span>
+          </div>
+          <div id="col-ready" class="space-y-2.5 flex-1 min-h-[380px]"></div>
+        </div>
+
+        <!-- Stage 5: Delivered -->
+        <div class="bg-emerald-50/70 rounded-2xl p-3 border border-emerald-200 flex flex-col">
+          <div class="flex items-center justify-between pb-2 mb-2 border-b border-emerald-200">
+            <span class="font-bold text-xs text-emerald-950 flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+              <span data-i18n="colDelivered">5. Delivered (सुपुर्द)</span>
+            </span>
+            <span id="count-delivered" class="px-2 py-0.5 rounded-md bg-white text-emerald-800 text-[11px] font-bold shadow-2xs">0</span>
+          </div>
+          <div id="col-delivered" class="space-y-2.5 flex-1 min-h-[380px]"></div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ========================================================== -->
+    <!-- TAB 3: 7TH-VISIT LOYALTY & PREPAID WALLET ENGINE           -->
+    <!-- ========================================================== -->
+    <div id="loyaltyTab" class="tab-view hidden space-y-6">
+      
+      <!-- Top Showcase: 7-Visit Stamp Punch Simulator -->
+      <div class="bg-gradient-to-br from-slate-950 via-slate-900 to-brand-950 text-white rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-800 relative overflow-hidden">
+        <div class="absolute -right-16 -top-16 w-64 h-64 bg-brand-500/15 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+          <div>
+            <span class="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-amber-400 text-slate-950 inline-flex items-center gap-1">
+              <i data-lucide="award" class="w-3.5 h-3.5"></i> Customer Retention Engine
+            </span>
+            <h2 class="text-xl sm:text-2xl font-black mt-2 text-white" data-i18n="loyaltyTitle">7th-Visit "Surprise Gift" Loyalty Punch Card</h2>
+            <p class="text-xs sm:text-sm text-slate-300 max-w-2xl mt-1" data-i18n="loyaltySub">
+              Every completed order awards 1 punch stamp. On the 7th visit, customers automatically receive 1 Free Coat/Suit Dry Clean or Flat 25% Off.
+            </p>
+          </div>
+
+          <!-- Quick Top-up Trigger -->
+          <button onclick="simulateAddVisitStamp()" class="bg-brand-600 hover:bg-brand-500 text-white font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-2 shadow-md transition self-start sm:self-auto">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            <span data-i18n="btnAddStamp">+ Simulate Next Visit Punch</span>
+          </button>
+        </div>
+
+        <!-- 7-Stamp Card Visual -->
+        <div class="bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/20">
+          <div class="flex items-center justify-between text-xs mb-3">
+            <span class="text-slate-300">Customer: <b class="text-white">Rahul Sharma</b> (9829012345)</span>
+            <span id="stampCardStatusText" class="text-amber-300 font-bold">1 Visit Remaining until Reward</span>
+          </div>
+
+          <!-- Stamps 1 to 7 -->
+          <div class="grid grid-cols-7 gap-2 sm:gap-3 my-3">
+            <div class="stamp-box bg-emerald-500/20 border-2 border-emerald-400 text-emerald-300 rounded-xl p-3 flex flex-col items-center justify-center text-center">
+              <i data-lucide="check" class="w-5 h-5"></i>
+              <span class="text-[10px] mt-1 font-bold">Visit #1</span>
+            </div>
+            <div class="stamp-box bg-emerald-500/20 border-2 border-emerald-400 text-emerald-300 rounded-xl p-3 flex flex-col items-center justify-center text-center">
+              <i data-lucide="check" class="w-5 h-5"></i>
+              <span class="text-[10px] mt-1 font-bold">Visit #2</span>
+            </div>
+            <div class="stamp-box bg-emerald-500/20 border-2 border-emerald-400 text-emerald-300 rounded-xl p-3 flex flex-col items-center justify-center text-center">
+              <i data-lucide="check" class="w-5 h-5"></i>
+              <span class="text-[10px] mt-1 font-bold">Visit #3</span>
+            </div>
+            <div class="stamp-box bg-emerald-500/20 border-2 border-emerald-400 text-emerald-300 rounded-xl p-3 flex flex-col items-center justify-center text-center">
+              <i data-lucide="check" class="w-5 h-5"></i>
+              <span class="text-[10px] mt-1 font-bold">Visit #4</span>
+            </div>
+            <div class="stamp-box bg-emerald-500/20 border-2 border-emerald-400 text-emerald-300 rounded-xl p-3 flex flex-col items-center justify-center text-center">
+              <i data-lucide="check" class="w-5 h-5"></i>
+              <span class="text-[10px] mt-1 font-bold">Visit #5</span>
+            </div>
+            <div class="stamp-box bg-emerald-500/20 border-2 border-emerald-400 text-emerald-300 rounded-xl p-3 flex flex-col items-center justify-center text-center">
+              <i data-lucide="check" class="w-5 h-5"></i>
+              <span class="text-[10px] mt-1 font-bold">Visit #6</span>
+            </div>
+            <!-- 7th Mega Stamp -->
+            <div id="megaStampSlot" class="bg-gradient-to-tr from-amber-400 to-amber-600 text-slate-950 rounded-xl p-3 flex flex-col items-center justify-center text-center shadow-lg shadow-amber-500/30 ring-2 ring-white">
+              <i data-lucide="gift" class="w-6 h-6 animate-bounce"></i>
+              <span class="text-[10px] mt-1 font-black uppercase tracking-tight">FREE GIFT</span>
+            </div>
+          </div>
+
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between text-xs pt-3 border-t border-white/10 gap-2 text-slate-300">
+            <span>Cycle Reset: Automatic after 7th reward is redeemed</span>
+            <div class="flex items-center gap-2">
+              <button onclick="sendSimulatedWhatsAppMsg('7th_reward_reminder')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition">
+                <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
+                <span data-i18n="btnSendRewardWhatsApp">Send "7th Visit Soon" WhatsApp</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tiered Prepaid Membership Plans -->
+      <div class="space-y-3">
+        <div>
+          <h3 class="font-bold text-slate-900 text-base" data-i18n="plansTitle">Prepaid Wallet Packages (Upfront Cash Flow for Shop)</h3>
+          <p class="text-xs text-slate-500" data-i18n="plansSub">Customers top up upfront; balance auto-deducts at POS checkout</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+          <!-- Silver Plan -->
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 hover:border-slate-400 transition shadow-xs flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between items-start mb-2">
+                <span class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-slate-100 text-slate-800" data-i18n="planSilver">Silver Pass</span>
+                <span class="text-2xl font-black text-slate-900">₹1,000</span>
+              </div>
+              <p class="text-xs text-slate-500 mb-4" data-i18n="planSilverDesc">Great for regular household wash & iron</p>
+              <ul class="text-xs space-y-2 text-slate-700 mb-5">
+                <li class="flex items-center gap-2 font-semibold text-emerald-700">
+                  <i data-lucide="check-circle" class="w-4 h-4"></i> ₹1,150 Wallet Value (₹150 Bonus)
+                </li>
+                <li class="flex items-center gap-2">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-slate-400"></i> 6 Months Validity
+                </li>
+                <li class="flex items-center gap-2">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-slate-400"></i> Free Home Pickup/Drop
+                </li>
+              </ul>
+            </div>
+            <button onclick="rechargeCustomerWallet(1000, 1150, 'Silver')" class="w-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold py-2.5 rounded-xl transition">
+              Top-up ₹1,000 Plan
+            </button>
+          </div>
+
+          <!-- Gold VIP Plan (Popular) -->
+          <div class="bg-gradient-to-b from-amber-50 to-white p-5 rounded-2xl border-2 border-amber-400 shadow-md flex flex-col justify-between relative">
+            <div class="absolute -top-3 right-4 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase bg-amber-500 text-white tracking-wider">
+              Most Popular
+            </div>
+            <div>
+              <div class="flex justify-between items-start mb-2">
+                <span class="px-2.5 py-0.5 rounded-md text-xs font-extrabold bg-amber-200 text-amber-900" data-i18n="planGold">Gold VIP</span>
+                <span class="text-2xl font-black text-amber-950">₹2,500</span>
+              </div>
+              <p class="text-xs text-slate-500 mb-4" data-i18n="planGoldDesc">Ideal for coat-suits, sherwanis & designer wear</p>
+              <ul class="text-xs space-y-2 text-slate-800 mb-5">
+                <li class="flex items-center gap-2 font-bold text-emerald-800">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i> ₹3,000 Wallet Value (₹500 Bonus)
+                </li>
+                <li class="flex items-center gap-2 font-semibold text-amber-900">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-amber-600"></i> 1 Coat-Suit Dry Clean FREE
+                </li>
+                <li class="flex items-center gap-2 font-semibold text-amber-900">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-amber-600"></i> Priority 24-Hr Express Included
+                </li>
+              </ul>
+            </div>
+            <button onclick="rechargeCustomerWallet(2500, 3000, 'Gold')" class="w-full bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold py-2.5 rounded-xl shadow-md transition">
+              Top-up ₹2,500 VIP Plan
+            </button>
+          </div>
+
+          <!-- Platinum Executive Plan -->
+          <div class="bg-white p-5 rounded-2xl border border-slate-200 hover:border-indigo-400 transition shadow-xs flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between items-start mb-2">
+                <span class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-indigo-100 text-indigo-900" data-i18n="planPlat">Platinum Elite</span>
+                <span class="text-2xl font-black text-indigo-950">₹5,000</span>
+              </div>
+              <p class="text-xs text-slate-500 mb-4" data-i18n="planPlatDesc">Large families, bulk quilts, hotel/guesthouse</p>
+              <ul class="text-xs space-y-2 text-slate-700 mb-5">
+                <li class="flex items-center gap-2 font-bold text-emerald-800">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i> ₹6,200 Wallet Value (₹1,200 Extra)
+                </li>
+                <li class="flex items-center gap-2 font-semibold text-indigo-900">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-indigo-600"></i> 2 Free Dry Cleans + Carpet Steam
+                </li>
+                <li class="flex items-center gap-2">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-slate-400"></i> Dedicated Garment Care Manager
+                </li>
+              </ul>
+            </div>
+            <button onclick="rechargeCustomerWallet(5000, 6200, 'Platinum')" class="w-full bg-indigo-700 hover:bg-indigo-800 text-white text-xs font-bold py-2.5 rounded-xl transition">
+              Top-up ₹5,000 Elite Plan
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+
+    <!-- ========================================================== -->
+    <!-- TAB 4: DAILY EXPENSES & KARIGAR PIECE-RATE LEDGER          -->
+    <!-- ========================================================== -->
+    <div id="ledgerTab" class="tab-view hidden space-y-5">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+
+        <!-- Left 5 Cols: Add Expense Form & Pressman Tracker -->
+        <div class="lg:col-span-5 space-y-4">
+          
+          <!-- Expense Entry Box -->
+          <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs">
+            <h3 class="font-bold text-slate-900 text-base mb-1 flex items-center gap-2">
+              <i data-lucide="minus-circle" class="w-4 h-4 text-rose-600"></i>
+              <span data-i18n="expEntryTitle">Record Shop Expense (दैनिक खर्च)</span>
+            </h3>
+            <p class="text-xs text-slate-500 mb-3" data-i18n="expEntrySub">Detergent, packaging, tea, electricity, press fuel</p>
+
+            <form onsubmit="handleLogExpense(event)" class="space-y-3 text-xs">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1" data-i18n="lblExpCategory">Expense Category</label>
+                <select id="selExpCategory" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-slate-800 font-medium focus:outline-none focus:ring-1 focus:ring-brand-500">
+                  <option value="Detergents & Chemical Solvents">Detergent & Chemical Solvents (सर्फ, लिक्विड नील)</option>
+                  <option value="Packaging Rolls & Plastic Tags">Packaging Rolls & Garment Bags (पैकिंग पॉलीथीन)</option>
+                  <option value="Press Coal / Gas / Electricity">Press Fuel (कोयला / कमर्शियल गैस / बिजली)</option>
+                  <option value="Karigar / Pressman Advance">Karigar / Labor Wages (कारीगर दिहाड़ी)</option>
+                  <option value="Shop Tea & Miscellaneous">Shop Refreshments / Misc (चाय, पानी, झाड़ू)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1" data-i18n="lblExpAmount">Amount (₹ राशि)</label>
+                <input type="number" id="numExpAmount" required placeholder="उदा. 450" 
+                  class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 font-bold text-slate-900 focus:outline-none focus:ring-1 focus:ring-brand-500 text-sm" />
+              </div>
+
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1" data-i18n="lblExpRemarks">Remarks / Invoice #</label>
+                <input type="text" id="txtExpRemarks" placeholder="Surf Excel Matic 5kg" 
+                  class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-slate-800 focus:outline-none focus:ring-1 focus:ring-brand-500" />
+              </div>
+
+              <button type="submit" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-2.5 rounded-xl shadow-xs transition" data-i18n="btnAddExpense">
+                + Add Expense Entry
+              </button>
+            </form>
+          </div>
+
+          <!-- Karigar / Pressman Piece-rate Calculator -->
+          <div class="bg-indigo-50/70 border border-indigo-200 rounded-2xl p-4 text-xs space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-indigo-950 flex items-center gap-1.5">
+                <i data-lucide="calculator" class="w-4 h-4 text-indigo-600"></i>
+                <span data-i18n="karigarTitle">Pressman Piece-Rate Calculator</span>
+              </span>
+              <span class="text-[10px] text-indigo-700 font-semibold" data-i18n="karigarHelper">₹5 / Garment</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-[11px] text-slate-600 mb-1" data-i18n="lblClothesPressed">Garments Pressed:</label>
+                <input type="number" id="inputPiecesPressed" value="45" oninput="recalcKarigarWage()" 
+                  class="w-full p-2 rounded-lg border border-indigo-300 bg-white font-bold text-slate-800 text-xs" />
+              </div>
+              <div>
+                <label class="block text-[11px] text-slate-600 mb-1" data-i18n="lblWagePayable">Wages Payable:</label>
+                <div id="txtKarigarWage" class="p-2 rounded-lg bg-indigo-100 font-extrabold text-indigo-950 text-xs">₹225</div>
+              </div>
+            </div>
+
+            <button onclick="logKarigarWageAsExpense()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-1.5 rounded-lg text-center transition" data-i18n="btnBookKarigarExpense">
+              Add Wages to Today's Expenses
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Right 7 Cols: Financial Dashboard & Log Table -->
+        <div class="lg:col-span-7 space-y-4">
+          
+          <!-- 3 Reconciled Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+              <span class="text-xs text-slate-500 font-medium" data-i18n="kpiSales">Gross Sales (कुल बिलिंग)</span>
+              <div id="kpiGrossSales" class="text-xl font-black text-slate-900 mt-1">₹7,820</div>
+              <span class="text-[10px] text-emerald-600 font-semibold" data-i18n="kpiSalesSub">Cash + UPI + Wallets</span>
+            </div>
+
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+              <span class="text-xs text-slate-500 font-medium" data-i18n="kpiExpenses">Total Expenses (खर्च)</span>
+              <div id="kpiTotalExpenses" class="text-xl font-black text-rose-600 mt-1">₹950</div>
+              <span id="kpiExpCount" class="text-[10px] text-slate-500">2 Entries</span>
+            </div>
+
+            <div class="bg-gradient-to-tr from-emerald-600 to-teal-700 text-white p-4 rounded-2xl shadow-sm">
+              <span class="text-xs text-emerald-100 font-medium" data-i18n="kpiNetProfit">Net Profit (शुद्ध बचत)</span>
+              <div id="kpiNetProfit" class="text-2xl font-black mt-1">₹6,870</div>
+              <span class="text-[10px] text-emerald-200 font-medium" data-i18n="kpiNetProfitSub">In Cash Drawer & Bank</span>
+            </div>
+          </div>
+
+          <!-- Expenses Table -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+            <div class="p-4 border-b border-slate-200 flex items-center justify-between">
+              <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider" data-i18n="expTableTitle">Today's Expense Register (खर्च का ब्यौरा)</h4>
+              <span class="text-xs text-slate-500" data-i18n="expAutoSynced">Auto-Reconciled</span>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-slate-50 text-slate-600 border-b border-slate-200">
+                  <tr>
+                    <th class="p-3 font-semibold" data-i18n="tblColTime">Time</th>
+                    <th class="p-3 font-semibold" data-i18n="tblColCategory">Category</th>
+                    <th class="p-3 font-semibold" data-i18n="tblColRemarks">Remarks</th>
+                    <th class="p-3 font-semibold text-right" data-i18n="tblColAmount">Amount</th>
+                  </tr>
+                </thead>
+                <tbody id="expenseTableBody" class="divide-y divide-slate-100 text-slate-700">
+                  <!-- Injected via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ========================================================== -->
+    <!-- TAB 5: CUSTOMER MOBILE DIGITAL PASSBOOK SIMULATOR          -->
+    <!-- ========================================================== -->
+    <div id="passbookTab" class="tab-view hidden space-y-4">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+
+        <!-- Explanation Column (6 cols) -->
+        <div class="lg:col-span-6 space-y-4">
+          <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-indigo-100 text-indigo-800 inline-flex items-center gap-1.5">
+            <i data-lucide="smartphone" class="w-4 h-4"></i> No-App Web Passbook
+          </span>
+          <h2 class="text-2xl font-black text-slate-900 leading-tight" data-i18n="pbHeading">
+            Zero-Friction Mobile Tracking for WhatsApp & SMS Links
+          </h2>
+          <p class="text-sm text-slate-600 leading-relaxed" data-i18n="pbDesc">
+            Customers do not want to download an app for laundry. When you generate an order, an instantaneous web link (<code class="bg-slate-200 px-1 py-0.5 rounded text-xs">cleanpro.link/track/TK-108</code>) is sent. Customers see real-time washing status, their prepaid wallet passbook, and remaining 7-visit rewards on their phone.
+          </p>
+
+          <div class="space-y-3 pt-2 text-xs text-slate-700">
+            <div class="flex items-start gap-3 p-3 bg-white rounded-xl border border-slate-200">
+              <i data-lucide="check-circle" class="w-5 h-5 text-emerald-600 shrink-0 mt-0.5"></i>
+              <div>
+                <b data-i18n="pbFeature1Title">Live Garment Stage Tracker:</b>
+                <span data-i18n="pbFeature1Sub">Customers see exactly when their suit or sarees move into steam ironing or rack ready.</span>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3 p-3 bg-white rounded-xl border border-slate-200">
+              <i data-lucide="check-circle" class="w-5 h-5 text-emerald-600 shrink-0 mt-0.5"></i>
+              <div>
+                <b data-i18n="pbFeature2Title">Digital 7-Visit Stamp Punch:</b>
+                <span data-i18n="pbFeature2Sub">Visual progress bar gamifies orders, encouraging customers to complete their 7th visit for a free dry-clean.</span>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3 p-3 bg-white rounded-xl border border-slate-200">
+              <i data-lucide="check-circle" class="w-5 h-5 text-emerald-600 shrink-0 mt-0.5"></i>
+              <div>
+                <b data-i18n="pbFeature3Title">One-Tap Direct Dial & Store Chat:</b>
+                <span data-i18n="pbFeature3Sub">Direct WhatsApp/Call link to your shop counter without saving new contact cards.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-2 flex items-center gap-3">
+            <button onclick="sendSimulatedWhatsAppMsg('passbook_link')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2.5 rounded-xl text-xs flex items-center gap-2 shadow-md transition">
+              <i data-lucide="share-2" class="w-4 h-4"></i>
+              <span data-i18n="btnSharePassbook">Share WhatsApp Demo Link</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Phone Mockup Bezel (6 cols) -->
+        <div class="lg:col-span-6 flex justify-center py-4">
+          <div class="w-[300px] sm:w-[320px] bg-slate-900 rounded-[44px] p-3.5 shadow-2xl border-4 border-slate-800 ring-1 ring-slate-700">
+            <!-- Screen -->
+            <div class="bg-slate-50 rounded-[34px] overflow-hidden p-4 space-y-3.5 text-slate-800 text-xs select-none">
+              
+              <!-- Phone Status Header -->
+              <div class="flex items-center justify-between border-b border-slate-200/80 pb-2">
+                <span class="font-extrabold text-[11px] text-brand-700 tracking-tight">CleanPro Pokhran</span>
+                <span class="text-[9px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold">Passbook Live</span>
+              </div>
+
+              <!-- Customer Info & Card -->
+              <div class="text-center pt-1">
+                <div class="w-12 h-12 mx-auto rounded-full bg-brand-100 text-brand-800 flex items-center justify-center font-black text-sm mb-1.5 shadow-inner">
+                  RS
+                </div>
+                <div class="font-bold text-slate-900 text-sm">Rahul Sharma</div>
+                <div class="text-[10px] text-slate-500 font-mono">+91 9829012345</div>
+              </div>
+
+              <!-- Digital Wallet Card -->
+              <div class="bg-gradient-to-tr from-brand-800 via-sky-700 to-indigo-800 rounded-2xl p-3.5 text-white shadow-md space-y-1">
+                <div class="text-[10px] text-sky-200 font-medium">Prepaid Wallet Balance</div>
+                <div id="pbWalletAmount" class="text-xl font-black">₹850.00</div>
+                <div class="flex justify-between items-center text-[9px] text-sky-100 pt-1 border-t border-white/20">
+                  <span class="font-bold uppercase tracking-wider">Gold VIP Pass</span>
+                  <span>10% Extra Discount Active</span>
+                </div>
+              </div>
+
+              <!-- Active Order Tracker Tile -->
+              <div class="bg-white rounded-2xl p-3 border border-slate-200 shadow-2xs space-y-2">
+                <div class="flex justify-between items-center text-[10px] font-bold">
+                  <span class="text-brand-800 font-mono">Token #TK-108</span>
+                  <span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 font-extrabold">Ready in Rack A-2</span>
+                </div>
+                <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                  <div class="bg-amber-500 h-2 rounded-full" style="width: 80%"></div>
+                </div>
+                <div class="flex justify-between text-[10px] text-slate-500">
+                  <span>3 Clothes (2 Shirts + 1 Suit)</span>
+                  <span class="font-semibold text-slate-700">Ready for Pickup</span>
+                </div>
+              </div>
+
+              <!-- 7-Visit Stamp progress -->
+              <div class="bg-amber-50 rounded-2xl p-3 border border-amber-200 text-center space-y-1">
+                <div class="font-extrabold text-[11px] text-amber-950">7-Visit Surprise Gift Card</div>
+                <div class="text-[10px] text-amber-800 font-medium">6 Visits Done • 1 More for Free Dry-Clean</div>
+                <div class="flex justify-center gap-1.5 pt-1">
+                  <span class="w-3 h-3 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[7px] font-bold">✓</span>
+                  <span class="w-3 h-3 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[7px] font-bold">✓</span>
+                  <span class="w-3 h-3 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[7px] font-bold">✓</span>
+                  <span class="w-3 h-3 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[7px] font-bold">✓</span>
+                  <span class="w-3 h-3 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[7px] font-bold">✓</span>
+                  <span class="w-3 h-3 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[7px] font-bold">✓</span>
+                  <span class="w-3 h-3 rounded-full bg-amber-400 border border-amber-600 animate-pulse"></span>
+                </div>
+              </div>
+
+              <!-- Call & WhatsApp action -->
+              <div class="pt-1 flex gap-2">
+                <button onclick="sendSimulatedWhatsAppMsg('call_store')" class="flex-1 bg-slate-900 text-white py-2 rounded-xl text-[10px] font-bold text-center">
+                  📞 Call Counter
+                </button>
+                <button onclick="sendSimulatedWhatsAppMsg('chat_store')" class="flex-1 bg-emerald-600 text-white py-2 rounded-xl text-[10px] font-bold text-center">
+                  💬 WhatsApp
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+
+  <!-- ============================================================ -->
+  <!-- MODAL: THERMAL RECEIPT (80mm) & WATERPROOF BARCODE TAGS      -->
+  <!-- ============================================================ -->
+  <div id="receiptModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-xs z-50 hidden flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
+      
+      <!-- Modal Header -->
+      <div class="p-4 bg-slate-900 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i data-lucide="printer" class="w-4 h-4 text-brand-400"></i>
+          <span class="font-bold text-sm" data-i18n="modalPrintTitle">80mm Thermal Receipt & Waterproof Cloth Tags</span>
+        </div>
+        <button onclick="closeReceiptModal()" class="text-slate-400 hover:text-white p-1 rounded-lg">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Printable Area -->
+      <div class="p-5 overflow-y-auto space-y-6 custom-scroll" id="printableReceipt">
+
+        <!-- 80mm Thermal Slip Replica -->
+        <div class="border border-slate-300 p-4 rounded-xl bg-slate-50 font-mono text-xs text-slate-800 space-y-2.5 shadow-inner">
+          <div class="text-center border-b border-dashed border-slate-400 pb-2">
+            <h2 class="font-black text-sm uppercase">CLEANPRO LAUNDRY</h2>
+            <p class="text-[11px] font-sans">High-Tech Laundry & Dry Cleaners</p>
+            <p class="text-[10px] text-slate-500 font-sans">Shop #4, Main Market, Pokhran • Ph: 9829012345</p>
+          </div>
+
+          <div class="flex justify-between text-[11px]">
+            <span>Token: <b id="rcptToken" class="text-slate-950">#TK-108</b></span>
+            <span id="rcptTimestamp">10-Nov 04:30 PM</span>
+          </div>
+
+          <div class="text-[11px] border-b border-dashed border-slate-300 pb-2 font-sans space-y-0.5">
+            <div>Customer: <b id="rcptCustName">Rahul Sharma</b> (<span id="rcptCustPhone">9829012345</span>)</div>
+            <div>Ready Date: <b id="rcptReadyDate" class="text-brand-800">12-Nov 06:00 PM</b></div>
+            <div id="rcptDefectNotice" class="text-amber-800 text-[10px] font-bold"></div>
+          </div>
+
+          <!-- Items Table -->
+          <table class="w-full text-left text-[11px]">
+            <thead>
+              <tr class="border-b border-slate-300">
+                <th class="py-1">Item / Service</th>
+                <th class="py-1 text-center">Qty</th>
+                <th class="py-1 text-right">Price</th>
+              </tr>
+            </thead>
+            <tbody id="rcptItemsTableBody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+
+          <div class="border-t border-dashed border-slate-400 pt-2 space-y-1 text-right text-[11px]">
+            <div>Subtotal: <span id="rcptSubtotal">₹0</span></div>
+            <div id="rcptRowExpress" style="display:none;">Express Charge: <span>+₹0</span></div>
+            <div id="rcptRowDiscount" class="text-emerald-700" style="display:none;">7th-Visit Discount: <span id="rcptDiscount">-₹0</span></div>
+            <div class="text-sm font-black border-t border-slate-300 pt-1">Grand Total: <span id="rcptGrandTotal">₹0</span></div>
+            <div class="text-[10px] text-slate-600">Payment: <b id="rcptPaymentMode" class="uppercase">CASH</b></div>
+          </div>
+
+          <!-- Barcode simulation -->
+          <div class="text-center pt-2 border-t border-dashed border-slate-300">
+            <div class="tracking-[6px] font-black text-slate-900 text-sm">||| | |||| || | || |||||</div>
+            <div class="text-[9px] text-slate-500 font-mono" id="rcptBarcodeCode">*TK108-2026*</div>
+            <p class="text-[9px] text-slate-500 mt-1 font-sans">Please present this slip or WhatsApp token during collection.</p>
+          </div>
+        </div>
+
+        <!-- Waterproof Cloth Barcode Tags Section -->
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="tag" class="w-3.5 h-3.5 text-brand-600"></i>
+              <span data-i18n="tagTitle">Waterproof Cloth Staple Tags (वाटरप्रूफ टैग्स)</span>
+            </span>
+            <span class="text-[10px] text-slate-500 font-mono">Heat-Proof Sticker Strip</span>
+          </div>
+
+          <div id="clothTagsGrid" class="grid grid-cols-2 gap-2">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer Buttons -->
+      <div class="p-4 bg-slate-50 border-t border-slate-200 flex items-center gap-2">
+        <button onclick="window.print()" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow transition">
+          <i data-lucide="printer" class="w-4 h-4"></i>
+          <span data-i18n="btnPrintReceipt">Print Thermal Receipt</span>
+        </button>
+        <button onclick="sendSimulatedWhatsAppMsg('order_booked')" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow transition">
+          <i data-lucide="message-circle" class="w-4 h-4"></i>
+          <span data-i18n="btnSendWhatsApp">Send WhatsApp Token</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ============================================================ -->
+  <!-- MODAL: UPI QR SCANNER                                        -->
+  <!-- ============================================================ -->
+  <div id="upiModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-6 max-w-xs w-full text-center shadow-2xl border border-slate-200">
+      <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center mx-auto mb-3">
+        <i data-lucide="qr-code" class="w-6 h-6"></i>
+      </div>
+      <h3 class="font-black text-slate-900 text-base" data-i18n="upiTitle">Scan & Pay via UPI</h3>
+      <p class="text-xs text-slate-500 mb-3" data-i18n="upiSub">GPay, PhonePe, Paytm, BHIM</p>
+
+      <div class="bg-slate-100 p-4 rounded-2xl inline-block border-2 border-slate-300 mb-3">
+        <svg class="w-36 h-36 mx-auto" viewBox="0 0 100 100" fill="currentColor">
+          <path d="M0,0 h30 v30 h-30 z M10,10 h10 v10 h-10 z M70,0 h30 v30 h-30 z M80,10 h10 v10 h-10 z M0,70 h30 v30 h-30 z M10,80 h10 v10 h-10 z M40,10 h10 v20 h-10 z M60,10 h10 v10 h-10 z M40,40 h20 v20 h-20 z M10,40 h10 v10 h-10 z M70,40 h20 v10 h-20 z M40,70 h10 v20 h-10 z M60,70 h20 v10 h-20 z M70,90 h20 v10 h-20 z M25,45 h10 v10 h-10 z" />
+        </svg>
+      </div>
+
+      <div class="text-sm font-extrabold text-slate-900 mb-4">
+        Amount: <span id="upiAmountLabel" class="text-brand-700 text-base font-black">₹0</span>
+      </div>
+
+      <div class="space-y-2 text-xs">
+        <button onclick="confirmUpiReceived()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl shadow transition">
+          ✓ Payment Received (कन्फर्म)
+        </button>
+        <button onclick="closeUpiModal()" class="w-full text-slate-500 hover:text-slate-800 py-1 font-semibold">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ============================================================ -->
+  <!-- JAVASCRIPT: APPLICATION LOGIC & BILINGUAL ENGINE             -->
+  <!-- ============================================================ -->
+  <script>
+    // --- 1. Audio Effects (Web Audio API Synthesizer - No External Assets) ---
+    const AudioEngine = {
+      ctx: null,
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+      },
+      playClick() {
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(600, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(300, this.ctx.currentTime + 0.05);
+          gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
+          gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.05);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.05);
+        } catch(e) {}
+      },
+      playSuccess() {
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(440, now);
+          osc.frequency.setValueAtTime(554.37, now + 0.08); // C#
+          osc.frequency.setValueAtTime(659.25, now + 0.16); // E
+          gain.gain.setValueAtTime(0.15, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(now + 0.35);
+        } catch(e) {}
+      }
+    };
+
+    // --- 2. Bilingual Dictionary (English & Hindi) ---
+    let currentLanguage = 'en'; // default English as requested
+
+    const TRANSLATIONS = {
+      en: {
+        tagline: "Laundry & Dry Cleaners",
+        branchStatus: "Counter #1 • Open",
+        cashRegister: "Cash Drawer Synced",
+        hdrTodayOrders: "Today Orders",
+        hdrReadyPickup: "Ready in Shelves",
+        hdrCashHand: "Net Cash / UPI",
+        dayEnd: "Close Day",
+        tabPOS: "1. POS & Token Desk (काउंटर)",
+        tabWorkflow: "2. Workflow & Rack Slots (रैक स्थिति)",
+        tabLoyalty: "3. 7th-Visit & Wallets (लॉयल्टी)",
+        tabLedger: "4. Daily Expenses & Ledger (हिसाब)",
+        tabPassbook: "5. Mobile Passbook (पासबुक)",
+        custHeader: "Customer Recognition & Loyalty Sync",
+        btnDemoCust: "Demo: Rahul Sharma (6/7 Visits)",
+        lblPhone: "Mobile Number (10 Digits)",
+        lblName: "Customer Name",
+        lblArea: "Flat / Locality",
+        lblWalletBal: "Prepaid Wallet:",
+        lblVisitsCompleted: "Visits Progress:",
+        catTitle: "Service & Garment Catalogue (टच ग्रिड)",
+        catSubtitle: "Choose garment category and click to add to order",
+        defectTitle: "Garment Defect Tagging (दाग / फटा हुआ नोट)",
+        defectHint: "Appears on receipt & WhatsApp",
+        cartTitle: "Order Token & Cart",
+        tokenLabel: "Token No:",
+        btnClearCart: "Clear All",
+        spdNormal: "Standard (48 Hrs)",
+        spdNormalSub: "Standard Rate",
+        spdExpress: "Express (+30%)",
+        spdExpressSub: "24 Hrs Pickup",
+        lblPromiseDate: "Pickup Ready On:",
+        rewardBannerTitle: "🎉 7th Visit Mega Reward Unlocked!",
+        rewardBannerSub: "Flat 25% Off OR Free Blazer Dry-Clean",
+        btnApply: "Apply Offer",
+        lblTotalPieces: "Total Garments:",
+        lblSubtotal: "Subtotal:",
+        lblExpressCharge: "Express Speed Charge:",
+        lblLoyaltyDiscount: "7th-Visit Discount:",
+        lblNetPayable: "Net Payable (कुल देय):",
+        lblPayMode: "Payment Mode (भुगतान माध्यम)",
+        btnBookOrder: "Generate Token & Print Waterproof Tags",
+        badgeOverdue: "Overdue Alerts Active",
+        colReceived: "1. Received (प्राप्त)",
+        colWashing: "2. Washing (धुलाई)",
+        colIroning: "3. Steam Iron (प्रेस)",
+        colReady: "4. Ready in Rack (रैक)",
+        colDelivered: "5. Delivered (सुपुर्द)",
+        loyaltyTitle: "7th-Visit \"Surprise Gift\" Loyalty Punch Card",
+        loyaltySub: "Every completed order awards 1 punch stamp. On the 7th visit, customers automatically receive 1 Free Coat/Suit Dry Clean or Flat 25% Off.",
+        btnAddStamp: "+ Simulate Next Visit Punch",
+        btnSendRewardWhatsApp: "Send \"7th Visit Soon\" WhatsApp",
+        plansTitle: "Prepaid Wallet Packages (Upfront Cash Flow for Shop)",
+        plansSub: "Customers top up upfront; balance auto-deducts at POS checkout",
+        planSilver: "Silver Pass",
+        planSilverDesc: "Great for regular household wash & iron",
+        planGold: "Gold VIP",
+        planGoldDesc: "Ideal for coat-suits, sherwanis & designer wear",
+        planPlat: "Platinum Elite",
+        planPlatDesc: "Large families, bulk quilts, hotel/guesthouse",
+        expEntryTitle: "Record Shop Expense (दैनिक खर्च)",
+        expEntrySub: "Detergent, packaging, tea, electricity, press fuel",
+        lblExpCategory: "Expense Category",
+        lblExpAmount: "Amount (₹ राशि)",
+        lblExpRemarks: "Remarks / Invoice #",
+        btnAddExpense: "+ Add Expense Entry",
+        karigarTitle: "Pressman Piece-Rate Calculator",
+        karigarHelper: "₹5 / Garment",
+        lblClothesPressed: "Garments Pressed:",
+        lblWagePayable: "Wages Payable:",
+        btnBookKarigarExpense: "Add Wages to Today's Expenses",
+        kpiSales: "Gross Sales (कुल बिलिंग)",
+        kpiSalesSub: "Cash + UPI + Wallets",
+        kpiExpenses: "Total Expenses (खर्च)",
+        kpiNetProfit: "Net Profit (शुद्ध बचत)",
+        kpiNetProfitSub: "In Cash Drawer & Bank",
+        expTableTitle: "Today's Expense Register (खर्च का ब्यौरा)",
+        expAutoSynced: "Auto-Reconciled",
+        tblColTime: "Time",
+        tblColCategory: "Category",
+        tblColRemarks: "Remarks",
+        tblColAmount: "Amount",
+        pbHeading: "Zero-Friction Mobile Tracking for WhatsApp & SMS Links",
+        pbDesc: "Customers do not want to download an app for laundry. When you generate an order, an instantaneous web link (cleanpro.link/track/TK-108) is sent. Customers see real-time washing status, their prepaid wallet passbook, and remaining 7-visit rewards on their phone.",
+        pbFeature1Title: "Live Garment Stage Tracker:",
+        pbFeature1Sub: "Customers see exactly when their suit or sarees move into steam ironing or rack ready.",
+        pbFeature2Title: "Digital 7-Visit Stamp Punch:",
+        pbFeature2Sub: "Visual progress bar gamifies orders, encouraging customers to complete their 7th visit for a free dry-clean.",
+        pbFeature3Title: "One-Tap Direct Dial & Store Chat:",
+        pbFeature3Sub: "Direct WhatsApp/Call link to your shop counter without saving new contact cards.",
+        btnSharePassbook: "Share WhatsApp Demo Link",
+        modalPrintTitle: "80mm Thermal Receipt & Waterproof Cloth Tags",
+        tagTitle: "Waterproof Cloth Staple Tags (वाटरप्रूफ टैग्स)",
+        btnPrintReceipt: "Print Thermal Receipt",
+        btnSendWhatsApp: "Send WhatsApp Token",
+        upiTitle: "Scan & Pay via UPI",
+        upiSub: "GPay, PhonePe, Paytm, BHIM"
+      },
+      hi: {
+        tagline: "लॉन्ड्री & ड्राई क्लीनर्स",
+        branchStatus: "काउंटर #1 • खुला है",
+        cashRegister: "कैश ड्रावर सिंक",
+        hdrTodayOrders: "आज के ऑर्डर्स",
+        hdrReadyPickup: "रैक में तैयार",
+        hdrCashHand: "शुद्ध कैश / UPI",
+        dayEnd: "दिन बंद करें",
+        tabPOS: "1. टोकन & बिलिंग (POS)",
+        tabWorkflow: "2. वर्कफ़्लो & रैक स्थिति",
+        tabLoyalty: "3. 7th-विज़िट & मेंबरशिप",
+        tabLedger: "4. दैनिक खर्च & कारीगर हिसाब",
+        tabPassbook: "5. ग्राहक डिजिटल पासबुक",
+        custHeader: "ग्राहक पहचान & लॉयल्टी जांच",
+        btnDemoCust: "डेमो: राहुल शर्मा (6/7 विज़िट)",
+        lblPhone: "मोबाइल नंबर (10 अंक)",
+        lblName: "ग्राहक का नाम",
+        lblArea: "मकान / कॉलोनी",
+        lblWalletBal: "वॉलेट बैलेंस:",
+        lblVisitsCompleted: "विज़िट प्रगति:",
+        catTitle: "कपड़े व सर्विस कैटलॉग (टच ग्रिड)",
+        catSubtitle: "कपड़ा चुनें और क्लिक करके बिल में जोड़ें",
+        defectTitle: "कपड़े की पूर्व स्थिति नोट (दाग/फटा रिमार्क)",
+        defectHint: "पर्ची व व्हाट्सएप दोनों पर छपेगा",
+        cartTitle: "करंट टोकन & कार्ट",
+        tokenLabel: "टोकन संख्या:",
+        btnClearCart: "खाली करें",
+        spdNormal: "सामान्य (48 घंटे)",
+        spdNormalSub: "सामान्य दर",
+        spdExpress: "अर्जेंट (+30%)",
+        spdExpressSub: "24 घंटे में तैयार",
+        lblPromiseDate: "डिलीवरी का वादा:",
+        rewardBannerTitle: "🎉 7वीं विज़िट मेगा रिवॉर्ड अनलॉक!",
+        rewardBannerSub: "फ्लैट 25% छूट अथवा 1 कोट-सूट मुफ़्त",
+        btnApply: "अप्लाई करें",
+        lblTotalPieces: "कुल कपड़े:",
+        lblSubtotal: "उप-कुल:",
+        lblExpressCharge: "अर्जेंट डिलीवरी शुल्क:",
+        lblLoyaltyDiscount: "7th-विज़िट डिस्काउंट:",
+        lblNetPayable: "कुल देय राशि (Net Total):",
+        lblPayMode: "भुगतान माध्यम (Payment Mode)",
+        btnBookOrder: "टोकन काटें व वाटरप्रूफ टैग्स प्रिंट करें",
+        badgeOverdue: "ओवरड्यू अलर्ट सक्रिय",
+        colReceived: "1. प्राप्त हुए (Received)",
+        colWashing: "2. धुलाई जारी (Washing)",
+        colIroning: "3. स्टीम प्रेस (Ironing)",
+        colReady: "4. रैक में तैयार (Ready)",
+        colDelivered: "5. सुपुर्द किया (Delivered)",
+        loyaltyTitle: "7th-विज़िट \"सरप्राइज गिफ्ट\" पंच कार्ड",
+        loyaltySub: "हर पूरे हुए ऑर्डर पर 1 स्टैम्प मिलता है। 7वीं विज़िट पर ग्राहक को 1 कोट-सूट ड्राई क्लीन मुफ़्त या 25% फ्लैट छूट अपने आप मिलती है।",
+        btnAddStamp: "+ डेमो विज़िट स्टैम्प जोड़ें",
+        btnSendRewardWhatsApp: "\"7th Visit Reminder\" व्हाट्सएप भेजें",
+        plansTitle: "प्री-पेड मेंबरशिप पैकेज (दुकानदार को अग्रिम कैश)",
+        plansSub: "ग्राहक पहले पैसा जमा करता है; बिलिंग के समय सीधे वॉलेट से कटता है",
+        planSilver: "सिल्वर पास",
+        planSilverDesc: "दैनिक धुलाई व प्रेस के लिए उत्तम",
+        planGold: "गोल्ड वीआईपी",
+        planGoldDesc: "सूट, शेरवानी व साड़ियों के लिए सबसे लोकप्रिय",
+        planPlat: "प्लैटिनम एलीट",
+        planPlatDesc: "बड़े परिवार, कम्बल व भारी कपड़ों हेतु",
+        expEntryTitle: "दैनिक दुकान खर्च दर्ज करें",
+        expEntrySub: "सर्फ, पैकिंग पॉलीथीन, कोयला, बिजली, चाय-पानी",
+        lblExpCategory: "खर्च की श्रेणी",
+        lblExpAmount: "राशि (₹ Amount)",
+        lblExpRemarks: "विवरण / बिल नं.",
+        btnAddExpense: "+ खर्च दर्ज करें",
+        karigarTitle: "प्रेस कारीगर पीस-रेट कैलकुलेटर",
+        karigarHelper: "₹5 प्रति कपड़ा",
+        lblClothesPressed: "प्रेस किए गए कपड़े:",
+        lblWagePayable: "देय मजदूरी:",
+        btnBookKarigarExpense: "यह मजदूरी आज के खर्च में जोड़ें",
+        kpiSales: "आज की कुल बिलिंग (Sales)",
+        kpiSalesSub: "कैश + UPI + वॉलेट",
+        kpiExpenses: "आज का कुल खर्च (Expenses)",
+        kpiNetProfit: "शुद्ध मुनाफा (Net Profit)",
+        kpiNetProfitSub: "दुकान में शुद्ध बचा कैश",
+        expTableTitle: "आज के खर्चों की दैनिक बही",
+        expAutoSynced: "ऑटो रीकन्साइल्ड",
+        tblColTime: "समय",
+        tblColCategory: "श्रेणी",
+        tblColRemarks: "विवरण",
+        tblColAmount: "रुपये",
+        pbHeading: "व्हाट्सएप व एसएमएस लिंक के लिए नो-एप मोबाइल पासबुक",
+        pbDesc: "ग्राहकों को ऐप डाउनलोड करने का झंझट नहीं चाहिए। बिल बनते ही व्हाट्सएप पर लिंक जाता है (cleanpro.link/track/TK-108)। ग्राहक कपड़े की धुलाई स्थिति, अपना वॉलेट बैलेंस व 7-विज़िट स्टैम्प देख सकते हैं।",
+        pbFeature1Title: "लाइव गारमेंट स्टेज ट्रैकर:",
+        pbFeature1Sub: "ग्राहक को साफ़ दिखता है कि कपड़ा धुल रहा है, प्रेस हो रहा है या रैक में तैयार है।",
+        pbFeature2Title: "डिजिटल 7-विज़िट स्टैम्प कार्ड:",
+        pbFeature2Sub: "प्रगति बार ग्राहक को 7वीं बार वापस आने के लिए प्रेरित करता है।",
+        pbFeature3Title: "वन-टैप दुकान कॉल व चैट:",
+        pbFeature3Sub: "बिना नंबर सेव किए ग्राहक दुकान से व्हाट्सएप पर बात कर सकता है।",
+        btnSharePassbook: "व्हाट्सएप पासबुक डेमो लिंक शेयर करें",
+        modalPrintTitle: "80mm थर्मल रसीद & वाटरप्रूफ गारमेंट टैग्स",
+        tagTitle: "कपड़ों पर लगने वाले वाटरप्रूफ टैग्स (Cloth Tags)",
+        btnPrintReceipt: "थर्मल रसीद प्रिंट करें",
+        btnSendWhatsApp: "व्हाट्सएप टोकन भेजें",
+        upiTitle: "UPI क्यूआर स्कैन करें",
+        upiSub: "GooglePay, PhonePe, Paytm, BHIM"
+      }
+    };
+
+    function toggleLanguage() {
+      AudioEngine.playClick();
+      currentLanguage = (currentLanguage === 'en') ? 'hi' : 'en';
+      applyTranslations();
+      renderGarmentGrid();
+      renderCart();
+      renderWorkflowBoard();
+      const btn = document.getElementById('langButtonLabel');
+      if (btn) {
+        btn.innerText = (currentLanguage === 'en') ? "हिंदी में देखें" : "English View";
+      }
+      showToast(currentLanguage === 'hi' ? "भाषा बदलकर 'हिंदी' कर दी गई है।" : "Language switched to English.");
+    }
+
+    function applyTranslations() {
+      const dict = TRANSLATIONS[currentLanguage];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) {
+          el.innerText = dict[key];
+        }
+      });
+    }
+
+    // --- 3. Master Catalogue Data ---
+    const GARMENT_ITEMS = [
+      { id: 'shirt_wi', name_en: 'Shirt / T-Shirt (Wash & Iron)', name_hi: 'शर्ट / टी-शर्ट (धुलाई व प्रेस)', price: 20, cat: 'wash_iron', icon: 'shirt' },
+      { id: 'pant_wi', name_en: 'Trouser / Jeans (Wash & Iron)', name_hi: 'पैंट / जींस (धुलाई व प्रेस)', price: 20, cat: 'wash_iron', icon: 'scissors' },
+      { id: 'kurta_wi', name_en: 'Kurta Pajama (Wash & Iron)', name_hi: 'कुर्ता पजामा (धुलाई व प्रेस)', price: 40, cat: 'wash_iron', icon: 'user' },
+      
+      { id: 'suit_2pc', name_en: '2-Piece Coat Suit (Dry Clean)', name_hi: '2-पीस कोट सूट (ड्राई क्लीन)', price: 180, cat: 'dryclean', icon: 'briefcase' },
+      { id: 'suit_3pc', name_en: '3-Piece Coat Suit (Dry Clean)', name_hi: '3-पीस कोट सूट (ड्राई क्लीन)', price: 240, cat: 'dryclean', icon: 'gem' },
+      { id: 'saree_silk', name_en: 'Silk / Designer Saree (Dry Clean)', name_hi: 'सिल्क / वर्क साड़ी (ड्राई क्लीन)', price: 140, cat: 'dryclean', icon: 'sparkles' },
+      { id: 'sherwani', name_en: 'Sherwani / Indo-Western', name_hi: 'शेरवानी / इंडो-वेस्टर्न', price: 250, cat: 'dryclean', icon: 'award' },
+
+      { id: 'shirt_iron', name_en: 'Shirt (Steam Press Only)', name_hi: 'शर्ट (सिर्फ स्टीम प्रेस)', price: 8, cat: 'iron_only', icon: 'flame' },
+      { id: 'pant_iron', name_en: 'Pant / Jeans (Steam Press Only)', name_hi: 'पैंट (सिर्फ स्टीम प्रेस)', price: 8, cat: 'iron_only', icon: 'flame' },
+      { id: 'saree_roll', name_en: 'Saree Roll Press (प्रेस)', name_hi: 'साड़ी रोल प्रेस & चरक', price: 45, cat: 'iron_only', icon: 'layers' },
+
+      { id: 'blanket_single', name_en: 'Single Blanket / Quilt', name_hi: 'सिंगल कम्बल / रजाई', price: 160, cat: 'heavy', icon: 'cloud' },
+      { id: 'blanket_double', name_en: 'Double Blanket (Heavy Dry Clean)', name_hi: 'डबल कम्बल / भारी रजाई', price: 240, cat: 'heavy', icon: 'cloud-snow' },
+      { id: 'curtain_panel', name_en: 'Curtain Panel (Per Piece)', name_hi: 'पर्दा (प्रति पीस स्टीम वाश)', price: 60, cat: 'heavy', icon: 'maximize-2' }
+    ];
+
+    // Customer State
+    let activeCustomer = {
+      name: "Rahul Sharma",
+      phone: "9829012345",
+      tier: "Gold",
+      walletBalance: 850,
+      visitCount: 6 // 6 visits completed out of 7!
+    };
+
+    // Cart & Order State
+    let orderCart = [];
+    let activeServiceCategory = 'all';
+    let activeSpeed = 'normal'; // 'normal' | 'express' (+30%)
+    let activePaymentMode = 'cash'; // 'cash' | 'upi' | 'wallet' | 'due'
+    let isRewardDiscountApplied = false;
+    let selectedDefects = [];
+    let currentTokenNumber = 108;
+
+    // Workflow Kanban Data
+    let workflowOrders = [
+      {
+        id: 'TK-104',
+        name: 'Rahul Sharma',
+        phone: '9829012345',
+        stage: 'ready',
+        rack: 'Rack A-2 (Suits)',
+        total: 220,
+        due: 0,
+        summary: '2 Shirts + 1 Coat Suit',
+        promiseDate: '10-Nov 06:00 PM',
+        isOverdue: false,
+        defects: ['Stain / गहरा दाग']
+      },
+      {
+        id: 'TK-105',
+        name: 'Sunil Verma',
+        phone: '9414012345',
+        stage: 'washing',
+        rack: 'Unassigned',
+        total: 360,
+        due: 160,
+        summary: '2 Silk Sarees + 1 Quilt',
+        promiseDate: '09-Nov 04:00 PM',
+        isOverdue: true, // Past date alert
+        defects: []
+      },
+      {
+        id: 'TK-106',
+        name: 'Vikram Rathore',
+        phone: '9928098765',
+        stage: 'ironing',
+        rack: 'Unassigned',
+        total: 250,
+        due: 0,
+        summary: '1 Sherwani (Dry Clean)',
+        promiseDate: '11-Nov 02:00 PM',
+        isOverdue: false,
+        defects: ['Button Broken / टूटा बटन']
+      },
+      {
+        id: 'TK-107',
+        name: 'Amit Jain',
+        phone: '9783011223',
+        stage: 'received',
+        rack: 'Unassigned',
+        total: 120,
+        due: 120,
+        summary: '6 Shirts & Pants (Press)',
+        promiseDate: '12-Nov 07:00 PM',
+        isOverdue: false,
+        defects: []
+      }
+    ];
+
+    // Expense & Karigar Ledger Data
+    let shopExpenses = [
+      { id: 1, time: '10:15 AM', category: 'Detergents & Chemical Solvents', amount: 450, remarks: '5kg Liquid Solvent' },
+      { id: 2, time: '01:00 PM', category: 'Press Coal / Gas / Electricity', amount: 500, remarks: 'LPG Refill cylinder' },
+    ];
+    let dailyGrossSales = 7820;
+
+    // --- 4. Initialization ---
+    window.onload = function() {
+      lucide.createIcons();
+      initClock();
+      setInterval(initClock, 1000);
+      initPromiseDatePicker();
+      renderGarmentGrid();
+      updateCustomerProfileView();
+      renderCart();
+      renderWorkflowBoard();
+      renderExpenseRegister();
+      recalcKarigarWage();
+      applyTranslations();
+    };
+
+    function initClock() {
+      const el = document.getElementById('currentClock');
+      if (el) {
+        const d = new Date();
+        el.innerText = d.toLocaleDateString(currentLanguage === 'hi' ? 'hi-IN' : 'en-US', { day: 'numeric', month: 'short' }) + ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      }
+    }
+
+    function initPromiseDatePicker() {
+      const picker = document.getElementById('orderPromiseDate');
+      if (picker) {
+        const d = new Date();
+        d.setDate(d.getDate() + 2); // 48 hours standard
+        d.setHours(18, 0, 0, 0);
+        picker.value = d.toISOString().slice(0, 16);
+      }
+    }
+
+    // --- 5. Tab Switching Logic ---
+    function switchTab(targetId) {
+      AudioEngine.playClick();
+      document.querySelectorAll('.tab-view').forEach(tab => tab.classList.add('hidden'));
+      document.querySelectorAll('.nav-tab').forEach(btn => {
+        btn.classList.remove('bg-brand-600', 'text-white', 'font-bold', 'shadow-xs');
+        btn.classList.add('text-slate-600', 'hover:text-slate-900', 'hover:bg-slate-100');
+      });
+
+      const activeView = document.getElementById(targetId);
+      if (activeView) activeView.classList.remove('hidden');
+
+      const activeBtn = document.getElementById('btn-' + targetId);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-brand-600', 'text-white', 'font-bold', 'shadow-xs');
+        activeBtn.classList.remove('text-slate-600', 'hover:text-slate-900', 'hover:bg-slate-100');
+      }
+
+      lucide.createIcons();
+    }
+
+    // --- 6. Customer Recognition & Stamp Display ---
+    function handlePhoneLookup(val) {
+      if (val === '9829012345') {
+        loadDemoCustomer();
+      } else if (val.length === 10) {
+        activeCustomer.name = "Walk-in Customer";
+        activeCustomer.phone = val;
+        activeCustomer.tier = "Standard";
+        activeCustomer.walletBalance = 0;
+        activeCustomer.visitCount = 1;
+        updateCustomerProfileView();
+      }
+    }
+
+    function loadDemoCustomer() {
+      AudioEngine.playClick();
+      document.getElementById('inputPhone').value = "9829012345";
+      document.getElementById('inputName').value = "Rahul Sharma";
+      document.getElementById('inputArea').value = "Civil Lines, Pokhran";
+      activeCustomer = {
+        name: "Rahul Sharma",
+        phone: "9829012345",
+        tier: "Gold",
+        walletBalance: 850,
+        visitCount: 6
+      };
+      updateCustomerProfileView();
+      showToast(currentLanguage === 'hi' ? "राहुल शर्मा (गोल्ड मेंबर, 6/7 विज़िट) लोड किया गया" : "Loaded: Rahul Sharma (Gold VIP, 6/7 Visits)");
+    }
+
+    function updateCustomerProfileView() {
+      document.getElementById('inputName').value = activeCustomer.name;
+      const tierBadge = document.getElementById('custTierBadge');
+      if (activeCustomer.tier === 'Gold') {
+        tierBadge.className = "inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md font-bold text-[11px] bg-amber-100 text-amber-900 border border-amber-300";
+        tierBadge.innerHTML = `<i data-lucide="crown" class="w-3.5 h-3.5 text-amber-600"></i> Gold VIP (10% Bonus)`;
+      } else if (activeCustomer.tier === 'Platinum') {
+        tierBadge.className = "inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md font-bold text-[11px] bg-indigo-100 text-indigo-900 border border-indigo-300";
+        tierBadge.innerHTML = `<i data-lucide="gem" class="w-3.5 h-3.5 text-indigo-600"></i> Platinum Elite`;
+      } else if (activeCustomer.tier === 'Silver') {
+        tierBadge.className = "inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md font-bold text-[11px] bg-slate-200 text-slate-800 border border-slate-300";
+        tierBadge.innerHTML = `<i data-lucide="shield" class="w-3.5 h-3.5 text-slate-600"></i> Silver Pass`;
+      } else {
+        tierBadge.className = "inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md font-medium text-[11px] bg-slate-100 text-slate-700";
+        tierBadge.innerHTML = `Standard Customer`;
+      }
+
+      document.getElementById('custWalletDisplay').innerText = `₹${activeCustomer.walletBalance}`;
+      document.getElementById('pbWalletAmount').innerText = `₹${activeCustomer.walletBalance}.00`;
+
+      // Render 7-Stamp Pills
+      const pillsContainer = document.getElementById('stampPills');
+      pillsContainer.innerHTML = '';
+      for (let i = 1; i <= 7; i++) {
+        const dot = document.createElement('span');
+        if (i <= activeCustomer.visitCount) {
+          dot.className = "w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block";
+        } else if (i === 7) {
+          dot.className = "w-2.5 h-2.5 rounded-full bg-amber-400 inline-block ring-2 ring-amber-300 animate-pulse";
+        } else {
+          dot.className = "w-2.5 h-2.5 rounded-full bg-slate-300 inline-block";
+        }
+        pillsContainer.appendChild(dot);
+      }
+      document.getElementById('stampRatio').innerText = `${activeCustomer.visitCount}/7`;
+
+      // Show/Hide Cart 7th Visit Reward Banner
+      const rewardBanner = document.getElementById('seventhVisitRewardBanner');
+      if (activeCustomer.visitCount >= 6) {
+        rewardBanner.classList.remove('hidden');
+      } else {
+        rewardBanner.classList.add('hidden');
+      }
+
+      lucide.createIcons();
+    }
+
+    // --- 7. Garment Catalogue & Defect Tags ---
+    function setServiceCategory(cat) {
+      AudioEngine.playClick();
+      activeServiceCategory = cat;
+      document.querySelectorAll('.cat-filter-btn').forEach(btn => {
+        btn.classList.remove('bg-white', 'text-slate-900', 'font-bold', 'shadow-2xs');
+        btn.classList.add('text-slate-600', 'font-medium');
+      });
+      const activeBtn = document.getElementById('pill-' + cat);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-white', 'text-slate-900', 'font-bold', 'shadow-2xs');
+        activeBtn.classList.remove('text-slate-600', 'font-medium');
+      }
+      renderGarmentGrid();
+    }
+
+    function renderGarmentGrid() {
+      const container = document.getElementById('garmentGrid');
+      container.innerHTML = '';
+
+      const filtered = (activeServiceCategory === 'all') 
+        ? GARMENT_ITEMS 
+        : GARMENT_ITEMS.filter(item => item.cat === activeServiceCategory);
+
+      filtered.forEach(item => {
+        const card = document.createElement('div');
+        card.className = "p-3 rounded-2xl border border-slate-200 hover:border-brand-500 bg-slate-50/50 hover:bg-brand-50/20 transition cursor-pointer flex flex-col justify-between group shadow-2xs";
+        card.onclick = () => addItemToCart(item);
+
+        const categoryBadgeText = {
+          'wash_iron': currentLanguage === 'hi' ? 'धुलाई+प्रेस' : 'Wash & Iron',
+          'dryclean': currentLanguage === 'hi' ? 'ड्राई क्लीन' : 'Dry Clean',
+          'iron_only': currentLanguage === 'hi' ? 'सिर्फ प्रेस' : 'Steam Press',
+          'heavy': currentLanguage === 'hi' ? 'भारी कम्बल' : 'Heavy Quilt'
+        }[item.cat] || 'Service';
+
+        const itemName = (currentLanguage === 'hi') ? item.name_hi : item.name_en;
+
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between text-slate-400 group-hover:text-brand-600 mb-1.5">
+              <i data-lucide="${item.icon}" class="w-4 h-4"></i>
+              <span class="text-[10px] font-bold px-1.5 py-0.5 rounded ${item.cat === 'dryclean' ? 'bg-amber-100 text-amber-900' : 'bg-sky-100 text-sky-900'}">
+                ${categoryBadgeText}
+              </span>
+            </div>
+            <div class="font-bold text-slate-800 text-xs leading-snug group-hover:text-brand-900">${itemName}</div>
+          </div>
+          <div class="mt-2.5 pt-2 border-t border-slate-200/70 flex items-center justify-between">
+            <span class="font-black text-sm text-slate-900">₹${item.price}</span>
+            <span class="w-6 h-6 rounded-lg bg-white border border-slate-300 text-slate-700 flex items-center justify-center font-bold text-xs group-hover:bg-brand-600 group-hover:text-white group-hover:border-transparent transition shadow-2xs">
+              +
+            </span>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+      lucide.createIcons();
+    }
+
+    function toggleDefect(defectName) {
+      AudioEngine.playClick();
+      const idx = selectedDefects.indexOf(defectName);
+      if (idx > -1) {
+        selectedDefects.splice(idx, 1);
+        event.currentTarget.classList.remove('bg-amber-100', 'border-amber-400', 'text-amber-900', 'font-bold');
+        event.currentTarget.classList.add('bg-slate-50', 'text-slate-700');
+      } else {
+        selectedDefects.push(defectName);
+        event.currentTarget.classList.add('bg-amber-100', 'border-amber-400', 'text-amber-900', 'font-bold');
+        event.currentTarget.classList.remove('bg-slate-50', 'text-slate-700');
+      }
+    }
+
+    // --- 8. Order Cart Operations ---
+    function addItemToCart(item) {
+      AudioEngine.playClick();
+      const existing = orderCart.find(c => c.id === item.id);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        orderCart.push({
+          id: item.id,
+          name_en: item.name_en,
+          name_hi: item.name_hi,
+          price: item.price,
+          qty: 1
+        });
+      }
+      renderCart();
+    }
+
+    function updateItemQuantity(index, delta) {
+      AudioEngine.playClick();
+      if (!orderCart[index]) return;
+      orderCart[index].qty += delta;
+      if (orderCart[index].qty <= 0) {
+        orderCart.splice(index, 1);
+      }
+      renderCart();
+    }
+
+    function clearCurrentCart() {
+      AudioEngine.playClick();
+      orderCart = [];
+      isRewardDiscountApplied = false;
+      selectedDefects = [];
+      document.querySelectorAll('.defect-chip').forEach(c => {
+        c.classList.remove('bg-amber-100', 'border-amber-400', 'text-amber-900', 'font-bold');
+        c.classList.add('bg-slate-50', 'text-slate-700');
+      });
+      document.getElementById('defectCustom').value = '';
+      renderCart();
+      showToast(currentLanguage === 'hi' ? "कार्ट खाली किया गया" : "Cart cleared");
+    }
+
+    function setSpeedOption(speed) {
+      AudioEngine.playClick();
+      activeSpeed = speed;
+      const btnNorm = document.getElementById('btnSpeedNormal');
+      const btnExp = document.getElementById('btnSpeedExpress');
+
+      if (speed === 'express') {
+        btnExp.className = "p-2.5 rounded-xl border-2 border-amber-500 bg-amber-50 text-amber-900 font-bold flex flex-col items-center justify-center text-center transition";
+        btnNorm.className = "p-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 font-semibold flex flex-col items-center justify-center text-center hover:border-brand-300 transition";
+        
+        // Next Day Delivery
+        const d = new Date();
+        d.setDate(d.getDate() + 1);
+        d.setHours(17, 0, 0, 0);
+        document.getElementById('orderPromiseDate').value = d.toISOString().slice(0, 16);
+      } else {
+        btnNorm.className = "p-2.5 rounded-xl border-2 border-brand-500 bg-brand-50 text-brand-900 font-bold flex flex-col items-center justify-center text-center transition";
+        btnExp.className = "p-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 font-semibold flex flex-col items-center justify-center text-center hover:border-amber-400 transition";
+        initPromiseDatePicker();
+      }
+      renderCart();
+    }
+
+    function selectPaymentMethod(mode) {
+      AudioEngine.playClick();
+      activePaymentMode = mode;
+      document.querySelectorAll('.pay-chip').forEach(b => {
+        b.className = "pay-chip p-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700";
+      });
+      const targetBtn = document.getElementById({
+        'cash': 'btnPayCash',
+        'upi': 'btnPayUPI',
+        'wallet': 'btnPayWallet',
+        'due': 'btnPayDue'
+      }[mode]);
+
+      if (targetBtn) {
+        targetBtn.className = "pay-chip p-2 rounded-xl border-2 border-brand-500 bg-brand-50 text-brand-900 font-bold";
+      }
+
+      if (mode === 'upi') {
+        openUpiScanner();
+      }
+    }
+
+    function applyLoyaltyReward() {
+      AudioEngine.playSuccess();
+      isRewardDiscountApplied = true;
+      renderCart();
+      showToast(currentLanguage === 'hi' ? "🎉 7वीं विज़िट 25% छूट लागू हो गई!" : "🎉 7th Visit 25% Discount applied successfully!");
+    }
+
+    function renderCart() {
+      const container = document.getElementById('cartContainer');
+      container.innerHTML = '';
+
+      if (orderCart.length === 0) {
+        container.innerHTML = `
+          <div class="h-44 flex flex-col items-center justify-center text-slate-400 text-xs">
+            <i data-lucide="shopping-bag" class="w-8 h-8 text-slate-300 mb-2"></i>
+            <span>${currentLanguage === 'hi' ? 'कार्ट खाली है' : 'Cart is empty'}</span>
+            <span class="text-[10px] text-slate-400">${currentLanguage === 'hi' ? 'बाईं ओर से कपड़ा चुनें' : 'Select items from left catalogue'}</span>
+          </div>
+        `;
+        document.getElementById('txtQtyPieces').innerText = '0 Pcs';
+        document.getElementById('txtSubtotal').innerText = '₹0';
+        document.getElementById('txtGrandTotal').innerText = '₹0';
+        document.getElementById('rowExpressFee').style.display = 'none';
+        document.getElementById('rowRewardDiscount').style.display = 'none';
+        lucide.createIcons();
+        return;
+      }
+
+      let subtotal = 0;
+      let totalPieces = 0;
+
+      orderCart.forEach((item, index) => {
+        const itemLineTotal = item.price * item.qty;
+        subtotal += itemLineTotal;
+        totalPieces += item.qty;
+
+        const displayName = (currentLanguage === 'hi') ? item.name_hi : item.name_en;
+
+        const row = document.createElement('div');
+        row.className = "flex items-center justify-between p-2.5 bg-slate-50 rounded-xl border border-slate-200 text-xs";
+        row.innerHTML = `
+          <div class="flex-1 pr-2">
+            <div class="font-bold text-slate-800 leading-tight">${displayName}</div>
+            <div class="text-[10px] text-slate-500 font-mono">₹${item.price} each</div>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="flex items-center border border-slate-300 rounded-lg bg-white overflow-hidden shadow-2xs">
+              <button onclick="updateItemQuantity(${index}, -1)" class="px-2 py-1 hover:bg-slate-100 font-bold text-slate-600">-</button>
+              <span class="px-2 font-bold text-slate-900">${item.qty}</span>
+              <button onclick="updateItemQuantity(${index}, 1)" class="px-2 py-1 hover:bg-slate-100 font-bold text-slate-600">+</button>
+            </div>
+            <span class="font-black text-slate-900 w-12 text-right">₹${itemLineTotal}</span>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+
+      // Financial Calculation
+      let expressFee = (activeSpeed === 'express') ? Math.round(subtotal * 0.30) : 0;
+      let discountAmount = isRewardDiscountApplied ? Math.round((subtotal + expressFee) * 0.25) : 0;
+      let netPayable = subtotal + expressFee - discountAmount;
+
+      document.getElementById('txtQtyPieces').innerText = `${totalPieces} Pcs`;
+      document.getElementById('txtSubtotal').innerText = `₹${subtotal}`;
+      
+      const expressRow = document.getElementById('rowExpressFee');
+      if (expressFee > 0) {
+        expressRow.style.display = 'flex';
+        document.getElementById('txtExpressCharge').innerText = `+₹${expressFee}`;
+      } else {
+        expressRow.style.display = 'none';
+      }
+
+      const discRow = document.getElementById('rowRewardDiscount');
+      if (discountAmount > 0) {
+        discRow.style.display = 'flex';
+        document.getElementById('txtDiscount').innerText = `-₹${discountAmount}`;
+      } else {
+        discRow.style.display = 'none';
+      }
+
+      document.getElementById('txtGrandTotal').innerText = `₹${netPayable}`;
+      document.getElementById('activeTokenId').innerText = `#TK-${currentTokenNumber}`;
+
+      lucide.createIcons();
+    }
+
+    // --- 9. Order Booking & Thermal Print Preview ---
+    function commitOrderAndPrint() {
+      if (orderCart.length === 0) {
+        showToast(currentLanguage === 'hi' ? "कृपया पहले कम से कम 1 कपड़ा जोड़ें!" : "Please add at least 1 garment to cart!", "error");
+        return;
+      }
+
+      AudioEngine.playSuccess();
+
+      const custName = document.getElementById('inputName').value.trim() || "Rahul Sharma";
+      const custPhone = document.getElementById('inputPhone').value.trim() || "9829012345";
+      const customDefect = document.getElementById('defectCustom').value.trim();
+      let allDefects = [...selectedDefects];
+      if (customDefect) allDefects.push(customDefect);
+
+      const promiseVal = document.getElementById('orderPromiseDate').value;
+      const formattedDate = promiseVal 
+        ? new Date(promiseVal).toLocaleString(currentLanguage === 'hi' ? 'hi-IN' : 'en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+        : "Standard 48-Hrs";
+
+      // Populate 80mm Thermal Receipt View
+      document.getElementById('rcptToken').innerText = `#TK-${currentTokenNumber}`;
+      document.getElementById('rcptCustName').innerText = custName;
+      document.getElementById('rcptCustPhone').innerText = custPhone;
+      document.getElementById('rcptReadyDate').innerText = formattedDate;
+      document.getElementById('rcptBarcodeCode').innerText = `*TK${currentTokenNumber}-2026*`;
+      document.getElementById('rcptPaymentMode').innerText = activePaymentMode;
+
+      const defectEl = document.getElementById('rcptDefectNotice');
+      if (allDefects.length > 0) {
+        defectEl.innerHTML = `⚠️ Defect Note: ${allDefects.join(', ')}`;
+        defectEl.style.display = 'block';
+      } else {
+        defectEl.style.display = 'none';
+      }
+
+      // Receipt Items Table & Tags Construction
+      const tbody = document.getElementById('rcptItemsTableBody');
+      tbody.innerHTML = '';
+      let subtotal = 0;
+      let totalQty = 0;
+      let individualTags = [];
+
+      orderCart.forEach(item => {
+        const itemLineTotal = item.price * item.qty;
+        subtotal += itemLineTotal;
+        totalQty += item.qty;
+
+        const displayName = (currentLanguage === 'hi') ? item.name_hi : item.name_en;
+
+        for (let q = 1; q <= item.qty; q++) {
+          individualTags.push({
+            name: displayName,
+            pieceIdx: `${individualTags.length + 1}/${totalQty}`
+          });
+        }
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="py-1">${displayName}</td>
+          <td class="py-1 text-center font-bold font-mono">${item.qty}</td>
+          <td class="py-1 text-right font-mono">₹${itemLineTotal}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      let expressFee = (activeSpeed === 'express') ? Math.round(subtotal * 0.30) : 0;
+      let discountAmount = isRewardDiscountApplied ? Math.round((subtotal + expressFee) * 0.25) : 0;
+      let grandTotal = subtotal + expressFee - discountAmount;
+
+      document.getElementById('rcptSubtotal').innerText = `₹${subtotal}`;
+      const rcptRowExpress = document.getElementById('rcptRowExpress');
+      if (expressFee > 0) {
+        rcptRowExpress.style.display = 'block';
+        rcptRowExpress.querySelector('span').innerText = `+₹${expressFee}`;
+      } else {
+        rcptRowExpress.style.display = 'none';
+      }
+
+      const rcptRowDisc = document.getElementById('rcptRowDiscount');
+      if (discountAmount > 0) {
+        rcptRowDisc.style.display = 'block';
+        document.getElementById('rcptDiscount').innerText = `-₹${discountAmount}`;
+      } else {
+        rcptRowDisc.style.display = 'none';
+      }
+      document.getElementById('rcptGrandTotal').innerText = `₹${grandTotal}`;
+
+      // Render Individual Heat-Proof Garment Tags
+      const tagsGrid = document.getElementById('clothTagsGrid');
+      tagsGrid.innerHTML = '';
+      individualTags.forEach(tag => {
+        const tagBox = document.createElement('div');
+        tagBox.className = "p-2 bg-amber-50 border border-amber-300 rounded-lg font-mono text-[10px] text-slate-800 space-y-0.5 shadow-2xs";
+        tagBox.innerHTML = `
+          <div class="flex justify-between font-black border-b border-amber-300 pb-0.5">
+            <span class="text-brand-900 font-mono">#TK-${currentTokenNumber}</span>
+            <span>Garment ${tag.pieceIdx}</span>
+          </div>
+          <div class="font-sans font-bold truncate text-[10px] text-slate-900">${tag.name}</div>
+          <div class="text-[9px] text-slate-500 font-sans flex justify-between">
+            <span>${custName.slice(0, 11)}</span>
+            <span>${formattedDate.slice(0, 6)}</span>
+          </div>
+          <div class="tracking-widest text-[8px] text-slate-800 text-center font-bold">||||| | ||||| | ||</div>
+        `;
+        tagsGrid.appendChild(tagBox);
+      });
+
+      // Deduct from wallet if wallet selected
+      if (activePaymentMode === 'wallet') {
+        activeCustomer.walletBalance = Math.max(0, activeCustomer.walletBalance - grandTotal);
+        updateCustomerProfileView();
+      }
+
+      // Add to Kanban workflow
+      workflowOrders.unshift({
+        id: `TK-${currentTokenNumber}`,
+        name: custName,
+        phone: custPhone,
+        stage: 'received',
+        rack: 'Unassigned',
+        total: grandTotal,
+        due: activePaymentMode === 'due' ? grandTotal : 0,
+        summary: `${totalQty} Pcs (${orderCart.map(c => (currentLanguage === 'hi' ? c.name_hi : c.name_en).split(' ')[0]).slice(0, 2).join(', ')})`,
+        promiseDate: formattedDate,
+        isOverdue: false,
+        defects: allDefects
+      });
+
+      // Update counters & revenue
+      currentTokenNumber++;
+      dailyGrossSales += grandTotal;
+      renderWorkflowBoard();
+      renderExpenseRegister();
+
+      // Show Receipt Modal
+      document.getElementById('receiptModal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeReceiptModal() {
+      AudioEngine.playClick();
+      document.getElementById('receiptModal').classList.add('hidden');
+      
+      // Advance 7-Visit counter
+      if (isRewardDiscountApplied) {
+        activeCustomer.visitCount = 1; // reset cycle
+      } else {
+        activeCustomer.visitCount = Math.min(7, activeCustomer.visitCount + 1);
+      }
+      updateCustomerProfileView();
+      clearCurrentCart();
+    }
+
+    // --- 10. Kanban Board & Rack Location Manager ---
+    function renderWorkflowBoard() {
+      const stages = ['received', 'washing', 'ironing', 'ready', 'delivered'];
+      const query = (document.getElementById('searchWorkflowInput')?.value || '').toLowerCase();
+      const selectedRack = document.getElementById('filterRackLocation')?.value || 'all';
+
+      // Clear columns
+      stages.forEach(st => {
+        const col = document.getElementById(`col-${st}`);
+        if (col) col.innerHTML = '';
+        const count = document.getElementById(`count-${st}`);
+        if (count) count.innerText = '0';
+      });
+
+      let stageCounts = { received: 0, washing: 0, ironing: 0, ready: 0, delivered: 0 };
+
+      workflowOrders.forEach(order => {
+        const matchesQuery = order.name.toLowerCase().includes(query) || 
+                             order.phone.includes(query) || 
+                             order.id.toLowerCase().includes(query);
+        const matchesRack = (selectedRack === 'all') || (order.rack === selectedRack);
+
+        if (!matchesQuery || !matchesRack) return;
+
+        stageCounts[order.stage] = (stageCounts[order.stage] || 0) + 1;
+        const col = document.getElementById(`col-${order.stage}`);
+        if (!col) return;
+
+        const nextStageMap = {
+          'received': 'washing',
+          'washing': 'ironing',
+          'ironing': 'ready',
+          'ready': 'delivered',
+          'delivered': null
+        };
+        const nextStage = nextStageMap[order.stage];
+
+        const card = document.createElement('div');
+        card.className = `p-3 rounded-2xl border bg-white shadow-2xs hover:shadow-md transition text-xs space-y-2 relative ${order.isOverdue ? 'border-rose-400 bg-rose-50/20' : 'border-slate-200'}`;
+
+        card.innerHTML = `
+          <div class="flex items-center justify-between">
+            <span class="font-extrabold font-mono text-xs text-brand-700">${order.id}</span>
+            ${order.isOverdue ? '<span class="px-1.5 py-0.5 rounded text-[10px] bg-rose-100 text-rose-800 font-extrabold">OVERDUE</span>' : ''}
+            <span class="text-[10px] text-slate-400">${order.promiseDate}</span>
+          </div>
+
+          <div>
+            <div class="font-bold text-slate-900">${order.name}</div>
+            <div class="text-[11px] text-slate-500">${order.summary}</div>
+          </div>
+
+          ${order.defects && order.defects.length > 0 ? `
+            <div class="text-[10px] text-amber-900 bg-amber-50 px-2 py-1 rounded-md border border-amber-200">
+              ⚠️ ${order.defects.join(', ')}
+            </div>
+          ` : ''}
+
+          <div class="pt-2 border-t border-slate-100 flex items-center justify-between">
+            <div class="text-[10px]">
+              <span class="text-slate-400">Rack:</span>
+              <span class="font-bold text-slate-800 ${order.stage === 'ready' ? 'text-amber-900 bg-amber-100 px-1.5 py-0.5 rounded' : ''}">
+                ${order.rack !== 'Unassigned' ? order.rack : 'None'}
+              </span>
+            </div>
+            <div class="font-black text-slate-900">₹${order.total}</div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="pt-1 flex items-center gap-1.5">
+            ${order.stage === 'ready' ? `
+              <button onclick="sendSimulatedWhatsAppMsg('pickup_ready', '${order.name}', '${order.phone}', '${order.id}')" class="flex-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold py-1.5 rounded-lg text-[10px] border border-emerald-300 flex items-center justify-center gap-1 transition">
+                <i data-lucide="message-circle" class="w-3 h-3 text-emerald-600"></i> Send Ready Alert
+              </button>
+            ` : ''}
+
+            ${nextStage ? `
+              <button onclick="advanceWorkflowStage('${order.id}')" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-bold py-1.5 rounded-lg text-[10px] flex items-center justify-center gap-1 transition">
+                <span>Next Step &rarr;</span>
+              </button>
+            ` : `
+              <span class="w-full text-center text-[10px] text-emerald-700 font-bold py-1 bg-emerald-50 rounded-lg">✓ Delivered</span>
+            `}
+          </div>
+        `;
+        col.appendChild(card);
+      });
+
+      // Update counts
+      stages.forEach(st => {
+        const count = document.getElementById(`count-${st}`);
+        if (count) count.innerText = stageCounts[st] || '0';
+      });
+
+      // Top Bar Stats
+      document.getElementById('statOrdersCount').innerText = `${workflowOrders.length} Bookings`;
+      document.getElementById('statReadyCount').innerText = `${stageCounts.ready} Orders`;
+      document.getElementById('badgeActiveWorkflow').innerText = (stageCounts.received + stageCounts.washing + stageCounts.ironing + stageCounts.ready);
+
+      lucide.createIcons();
+    }
+
+    function advanceWorkflowStage(orderId) {
+      AudioEngine.playClick();
+      const order = workflowOrders.find(o => o.id === orderId);
+      if (!order) return;
+
+      const nextStageMap = {
+        'received': 'washing',
+        'washing': 'ironing',
+        'ironing': 'ready',
+        'ready': 'delivered'
+      };
+
+      const nxt = nextStageMap[order.stage];
+      if (nxt) {
+        order.stage = nxt;
+        if (nxt === 'ready') {
+          // Auto assign a realistic shelf
+          const slots = ['Rack A-1 (Suits)', 'Rack A-2 (Suits)', 'Rack B-1 (Sarees)', 'Rack C-1 (Steam Press)'];
+          order.rack = slots[Math.floor(Math.random() * slots.length)];
+          showToast(`Token ${order.id} is Ready & Shelved in ${order.rack}!`);
+        } else if (nxt === 'delivered') {
+          showToast(`Token ${order.id} successfully delivered to customer!`);
+        }
+        renderWorkflowBoard();
+      }
+    }
+
+    // --- 11. 7th-Visit Punch Simulator & Wallet Top-up ---
+    function simulateAddVisitStamp() {
+      AudioEngine.playSuccess();
+      activeCustomer.visitCount = Math.min(7, activeCustomer.visitCount + 1);
+      updateCustomerProfileView();
+      if (activeCustomer.visitCount === 7) {
+        showToast("🎉 Celebration! 7th Visit completed! Free Coat-Suit Dry Clean Unlocked!");
+      } else {
+        showToast(`Visit Punch Added! Current: ${activeCustomer.visitCount}/7`);
+      }
+    }
+
+    function rechargeCustomerWallet(paid, credited, tierName) {
+      AudioEngine.playSuccess();
+      activeCustomer.walletBalance += credited;
+      activeCustomer.tier = tierName;
+      updateCustomerProfileView();
+      showToast(`🎉 ₹${paid} Received! Wallet credited with ₹${credited} (${tierName} VIP Plan Activated).`);
+    }
+
+    // --- 12. Expenses & Karigar Ledger Logic ---
+    function handleLogExpense(e) {
+      e.preventDefault();
+      AudioEngine.playClick();
+      const cat = document.getElementById('selExpCategory').value;
+      const amt = parseFloat(document.getElementById('numExpAmount').value) || 0;
+      const rem = document.getElementById('txtExpRemarks').value.trim() || "-";
+
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      shopExpenses.unshift({
+        id: Date.now(),
+        time: timeStr,
+        category: cat,
+        amount: amt,
+        remarks: rem
+      });
+
+      document.getElementById('numExpAmount').value = '';
+      document.getElementById('txtExpRemarks').value = '';
+
+      renderExpenseRegister();
+      showToast(`Expense of ₹${amt} (${cat}) logged.`);
+    }
+
+    function recalcKarigarWage() {
+      const pcs = parseInt(document.getElementById('inputPiecesPressed').value) || 0;
+      const wage = pcs * 5; // ₹5 per garment
+      document.getElementById('txtKarigarWage').innerText = `₹${wage}`;
+    }
+
+    function logKarigarWageAsExpense() {
+      AudioEngine.playClick();
+      const pcs = parseInt(document.getElementById('inputPiecesPressed').value) || 0;
+      const wage = pcs * 5;
+
+      const now = new Date();
+      shopExpenses.unshift({
+        id: Date.now(),
+        time: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        category: 'Karigar / Pressman Advance',
+        amount: wage,
+        remarks: `Pressman wages for ${pcs} garments @ ₹5/pc`
+      });
+
+      renderExpenseRegister();
+      showToast(`Karigar wages of ₹${wage} recorded as shop expense.`);
+    }
+
+    function renderExpenseRegister() {
+      const tbody = document.getElementById('expenseTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      let totalExp = 0;
+      shopExpenses.forEach(exp => {
+        totalExp += exp.amount;
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50 transition";
+        tr.innerHTML = `
+          <td class="p-3 text-slate-500 font-mono text-[11px]">${exp.time}</td>
+          <td class="p-3 font-bold text-slate-800">${exp.category}</td>
+          <td class="p-3 text-slate-500">${exp.remarks}</td>
+          <td class="p-3 text-right font-black text-rose-600 font-mono">₹${exp.amount}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      const netProfit = dailyGrossSales - totalExp;
+
+      document.getElementById('kpiGrossSales').innerText = `₹${dailyGrossSales.toLocaleString('en-IN')}`;
+      document.getElementById('kpiTotalExpenses').innerText = `₹${totalExp.toLocaleString('en-IN')}`;
+      document.getElementById('kpiNetProfit').innerText = `₹${netProfit.toLocaleString('en-IN')}`;
+      document.getElementById('statNetRevenue').innerText = `₹${netProfit.toLocaleString('en-IN')}`;
+      document.getElementById('kpiExpCount').innerText = `${shopExpenses.length} Entries`;
+    }
+
+    // --- 13. UPI Modal Scanner ---
+    function openUpiScanner() {
+      const totalStr = document.getElementById('txtGrandTotal').innerText;
+      document.getElementById('upiAmountLabel').innerText = totalStr;
+      document.getElementById('upiModal').classList.remove('hidden');
+    }
+
+    function closeUpiModal() {
+      document.getElementById('upiModal').classList.add('hidden');
+    }
+
+    function confirmUpiReceived() {
+      AudioEngine.playSuccess();
+      closeUpiModal();
+      showToast(currentLanguage === 'hi' ? "UPI भुगतान प्राप्त हो गया!" : "UPI payment successfully received & verified!");
+    }
+
+    // --- 14. Simulated WhatsApp Dispatcher ---
+    function sendSimulatedWhatsAppMsg(type, name, phone, token) {
+      AudioEngine.playClick();
+      const cName = name || activeCustomer.name;
+      const cPhone = phone || activeCustomer.phone;
+      const tNum = token || `#TK-${currentTokenNumber}`;
+
+      let msg = "";
+      if (type === 'pickup_ready') {
+        msg = `Hello ${cName}, your clothes for Token ${tNum} are READY in Rack A-2! Please pick them up from CleanPro Pokhran.`;
+      } else if (type === '7th_reward_reminder') {
+        msg = `Hi ${cName}! You have completed 6 visits! Your 7th visit unlocks 1 Free Blazer Dry-Clean or Flat 25% Off. Visit CleanPro today!`;
+      } else if (type === 'passbook_link') {
+        msg = `Hi ${cName}, your CleanPro Digital Passbook & live tracking link: https://cleanpro.link/track/TK-108`;
+      } else if (type === 'call_store') {
+        msg = `Calling CleanPro Store Counter: +91 9829012345...`;
+      } else if (type === 'chat_store') {
+        msg = `Opening direct chat with CleanPro Pokhran Desk...`;
+      } else {
+        msg = `Dear ${cName}, your order ${tNum} is confirmed. Track live: https://cleanpro.link/track/${tNum.replace('#','')}`;
+      }
+
+      showToast(`📱 WhatsApp to +91 ${cPhone}: "${msg}"`, "info");
+    }
+
+    function simulateDayEndClose() {
+      AudioEngine.playSuccess();
+      showToast(currentLanguage === 'hi' ? "दुकान का आज का खाता क्लोज कर दिया गया। सभी रिपोर्ट्स सुरक्षित हैं।" : "Day End Closed. Register reconciled & PDF summary archived.");
+    }
+
+    // --- 15. Toast Notification Component ---
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toastStack');
+      const toast = document.createElement('div');
+      
+      const themeClasses = (type === 'error') 
+        ? 'bg-rose-950 border-rose-700 text-rose-100' 
+        : (type === 'info') 
+        ? 'bg-slate-900 border-slate-700 text-sky-200' 
+        : 'bg-slate-950 border-slate-800 text-emerald-300';
+
+      toast.className = `pointer-events-auto flex items-center gap-2.5 px-4 py-3 rounded-2xl border shadow-2xl text-xs font-semibold transition transform duration-300 ease-out translate-y-3 opacity-0 ${themeClasses}`;
+      toast.innerHTML = `
+        <i data-lucide="${type === 'error' ? 'alert-triangle' : 'check-circle'}" class="w-4 h-4 shrink-0"></i>
+        <span>${message}</span>
+      `;
+
+      container.appendChild(toast);
+      lucide.createIcons();
+
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-3', 'opacity-0');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-3');
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+  </script>
+</body>
+</html>

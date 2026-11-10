@@ -1,0 +1,1633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ATELIER ROYALE | Haute Multi-Brand Menswear & Horology</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Cormorant Garamond (Editorial Luxury) + Plus Jakarta Sans (Modern Clean UI) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome 6 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            alabaster: '#FAF8F5',
+            pearl: '#F5EFE6',
+            ivory: '#FFFFFF',
+            espresso: '#1C1917',
+            charcoal: '#292524',
+            warmSand: '#E8DFD3',
+            softBorder: '#E6DDD2',
+            gold: {
+              100: '#FDFBF7',
+              200: '#F4E9D8',
+              300: '#E5CCA0',
+              400: '#D4AF37',
+              500: '#C5A059',
+              600: '#A98235',
+              700: '#876523'
+            }
+          },
+          fontFamily: {
+            serif: ['"Cormorant Garamond"', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          boxShadow: {
+            'luxury': '0 25px 60px -15px rgba(197, 160, 89, 0.12), 0 10px 30px rgba(28, 25, 23, 0.04)',
+            'card-lift': '0 30px 60px -12px rgba(169, 130, 53, 0.15), 0 12px 28px -6px rgba(0,0,0,0.06)',
+            'drawer': '-15px 0 50px rgba(28, 25, 23, 0.12)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      background-color: #FAF8F5;
+      color: #1C1917;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Gold Shimmer Typography */
+    .gold-gradient-text {
+      background: linear-gradient(135deg, #A98235 0%, #D4AF37 50%, #C5A059 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Infinite Marquee Ticker */
+    @keyframes marquee {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+    .animate-marquee {
+      display: flex;
+      width: 200%;
+      animation: marquee 35s linear infinite;
+    }
+    .animate-marquee:hover {
+      animation-play-state: paused;
+    }
+
+    /* 3D Card Hover Perspective */
+    .tilt-card {
+      transform-style: preserve-3d;
+      transition: transform 0.25s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.3s ease;
+      will-change: transform;
+    }
+
+    /* Glassmorphic Warm Frost */
+    .glass-nav {
+      background: rgba(250, 248, 245, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    /* Custom Luxury Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F5EFE6;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #C5A059;
+      border-radius: 9999px;
+    }
+
+    /* Slide Toast */
+    @keyframes toastIn {
+      from { transform: translateY(120%) scale(0.9); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    .toast-anim {
+      animation: toastIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+  </style>
+</head>
+<body class="selection:bg-gold-300 selection:text-espresso relative">
+
+  <!-- ==================== 1. TOP LUXURY INFINITE MARQUEE ==================== -->
+  <div class="bg-[#F2ECE3] border-b border-softBorder text-espresso py-2 overflow-hidden select-none">
+    <div class="animate-marquee whitespace-nowrap text-[11px] font-semibold tracking-[0.25em] uppercase flex items-center">
+      <span class="mx-6 inline-flex items-center gap-2"><i class="fa-solid fa-crown text-gold-500 text-xs"></i> 100% Certified Authentic Brands: Tommy Hilfiger, Levi's, USPA, CK, Armani Exchange</span>
+      <span class="mx-6 text-gold-500">•</span>
+      <span class="mx-6 inline-flex items-center gap-2"><i class="fa-solid fa-gift text-gold-500 text-xs"></i> Complimentary Signature Gold-Embossed Gift Box with Every Order</span>
+      <span class="mx-6 text-gold-500">•</span>
+      <span class="mx-6 inline-flex items-center gap-2"><i class="fa-solid fa-truck-fast text-gold-500 text-xs"></i> Express Doorstep Delivery & 7-Day Fitting Exchange</span>
+      <span class="mx-6 text-gold-500">•</span>
+      <span class="mx-6 inline-flex items-center gap-2"><i class="fa-brands fa-whatsapp text-emerald-700 text-xs"></i> Boutique Concierge Helpline: +91 861 908 9899</span>
+      <span class="mx-6 text-gold-500">•</span>
+      <!-- Duplicate for seamless infinite loop -->
+      <span class="mx-6 inline-flex items-center gap-2"><i class="fa-solid fa-crown text-gold-500 text-xs"></i> 100% Certified Authentic Brands: Tommy Hilfiger, Levi's, USPA, CK, Armani Exchange</span>
+      <span class="mx-6 text-gold-500">•</span>
+      <span class="mx-6 inline-flex items-center gap-2"><i class="fa-solid fa-gift text-gold-500 text-xs"></i> Complimentary Signature Gold-Embossed Gift Box with Every Order</span>
+      <span class="mx-6 text-gold-500">•</span>
+      <span class="mx-6 inline-flex items-center gap-2"><i class="fa-solid fa-truck-fast text-gold-500 text-xs"></i> Express Doorstep Delivery & 7-Day Fitting Exchange</span>
+    </div>
+  </div>
+
+  <!-- ==================== 2. EDITORIAL HEADER & NAVIGATION ==================== -->
+  <header class="sticky top-0 z-40 glass-nav border-b border-softBorder transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20 sm:h-24">
+        
+        <!-- Mobile Drawer Toggle -->
+        <button id="mobileMenuBtn" class="lg:hidden text-espresso text-2xl p-2 focus:outline-none hover:text-gold-600 transition" aria-label="Toggle navigation">
+          <i class="fa-solid fa-bars-staggered"></i>
+        </button>
+
+        <!-- Brand Crest & Logo -->
+        <div class="flex items-center space-x-3 cursor-pointer group" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+          <div class="w-11 h-11 rounded-full border-2 border-gold-500 flex items-center justify-center bg-white shadow-sm transition-transform duration-500 group-hover:rotate-12">
+            <span class="font-serif font-bold text-2xl gold-gradient-text">AR</span>
+          </div>
+          <div>
+            <h1 class="font-serif text-2xl sm:text-3xl font-bold tracking-[0.18em] text-espresso uppercase leading-none">ATELIER ROYALE</h1>
+            <p class="text-[9px] tracking-[0.35em] text-gold-600 uppercase font-semibold mt-1">Haute Couture Menswear & Accessories</p>
+          </div>
+        </div>
+
+        <!-- Desktop Navigation Bar -->
+        <nav class="hidden lg:flex items-center space-x-7 text-xs font-semibold tracking-[0.18em] uppercase">
+          <a href="#collections" onclick="filterCategory('all')" class="text-espresso hover:text-gold-600 transition relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-[2px] after:bg-gold-500 after:transition-all">All Curations</a>
+          <a href="#collections" onclick="filterCategory('shirts')" class="text-espresso hover:text-gold-600 transition relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-[2px] after:bg-gold-500 after:transition-all">Shirts</a>
+          <a href="#collections" onclick="filterCategory('polos')" class="text-espresso hover:text-gold-600 transition relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-[2px] after:bg-gold-500 after:transition-all">Polo & Tees</a>
+          <a href="#collections" onclick="filterCategory('denim')" class="text-espresso hover:text-gold-600 transition relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-[2px] after:bg-gold-500 after:transition-all">Denim & Lowers</a>
+          <a href="#collections" onclick="filterCategory('innerwear')" class="text-espresso hover:text-gold-600 transition relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-[2px] after:bg-gold-500 after:transition-all">Innerwear</a>
+          <a href="#collections" onclick="filterCategory('accessories')" class="text-espresso hover:text-gold-600 transition relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-[2px] after:bg-gold-500 after:transition-all">Belts & Horology</a>
+          <a href="#brands" class="text-espresso hover:text-gold-600 transition relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 hover:after:w-full after:h-[2px] after:bg-gold-500 after:transition-all">Houses</a>
+        </nav>
+
+        <!-- Right Action Utility Bar -->
+        <div class="flex items-center space-x-3 sm:space-x-4">
+          <!-- Real-Time Search Trigger -->
+          <div class="relative hidden sm:block">
+            <input type="text" id="searchInput" placeholder="Search Tommy, Levi's, Belts..." 
+                   class="bg-white/90 border border-softBorder text-xs rounded-full pl-9 pr-4 py-2.5 w-44 lg:w-56 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-400 transition placeholder:text-espresso/40 shadow-inner">
+            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-xs text-gold-600"></i>
+          </div>
+
+          <!-- Currency Indicator -->
+          <div class="hidden xl:flex items-center gap-1 text-[11px] font-bold text-espresso bg-white px-3 py-1.5 rounded-full border border-softBorder">
+            <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+            <span>INR (₹)</span>
+          </div>
+
+          <!-- Wishlist Badge Button -->
+          <button onclick="showWishlistToast()" class="w-10 h-10 rounded-full bg-white border border-softBorder flex items-center justify-center text-espresso hover:text-red-600 transition relative shadow-sm" title="Saved to Wishlist">
+            <i class="fa-regular fa-heart text-base"></i>
+            <span id="wishlistCount" class="absolute -top-1 -right-1 bg-gold-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold shadow">2</span>
+          </button>
+
+          <!-- Shopping Bag Button -->
+          <button id="cartToggleBtn" class="flex items-center space-x-2 bg-espresso hover:bg-[#342f2c] text-white px-4 sm:px-5 py-2.5 rounded-full text-xs font-bold tracking-widest uppercase transition shadow-md active:scale-95">
+            <i class="fa-solid fa-bag-shopping text-gold-400"></i>
+            <span class="hidden md:inline">BAG</span>
+            <span id="cartCountBadge" class="bg-gold-500 text-espresso font-bold px-2 py-0.5 rounded-full text-[11px]">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Drawer Menu Dropdown -->
+    <div id="mobileMenu" class="hidden lg:hidden bg-alabaster border-b border-softBorder px-6 py-6 transition-all duration-300">
+      <div class="mb-4">
+        <input type="text" id="mobileSearchInput" placeholder="Search brands, shirts, watches..." 
+               class="w-full bg-white border border-softBorder text-xs rounded-full px-4 py-3 focus:outline-none focus:border-gold-500 shadow-sm">
+      </div>
+      <div class="flex flex-col space-y-3 text-xs font-bold tracking-widest uppercase">
+        <a href="#collections" onclick="filterCategory('all'); toggleMobileMenu()" class="text-espresso hover:text-gold-600 py-2 border-b border-softBorder">All Curations</a>
+        <a href="#collections" onclick="filterCategory('shirts'); toggleMobileMenu()" class="text-espresso hover:text-gold-600 py-2 border-b border-softBorder">Pure Cotton Shirts</a>
+        <a href="#collections" onclick="filterCategory('polos'); toggleMobileMenu()" class="text-espresso hover:text-gold-600 py-2 border-b border-softBorder">Polo T-Shirts & Crews</a>
+        <a href="#collections" onclick="filterCategory('denim'); toggleMobileMenu()" class="text-espresso hover:text-gold-600 py-2 border-b border-softBorder">Levi's Denim & Track Lowers</a>
+        <a href="#collections" onclick="filterCategory('innerwear'); toggleMobileMenu()" class="text-espresso hover:text-gold-600 py-2 border-b border-softBorder">Calvin Klein Loungewear & Trunks</a>
+        <a href="#collections" onclick="filterCategory('accessories'); toggleMobileMenu()" class="text-espresso hover:text-gold-600 py-2 border-b border-softBorder">Leather Belts & Watches</a>
+        <a href="#brands" onclick="toggleMobileMenu()" class="text-gold-600 py-2">Featured Luxury Houses</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== 3. EDITORIAL HERO SHOWCASE (2026 EDITION) ==================== -->
+  <section class="relative overflow-hidden pt-8 pb-16 lg:pt-16 lg:pb-24 bg-gradient-to-b from-pearl via-alabaster to-alabaster border-b border-softBorder">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        <!-- Left Editorial Copy -->
+        <div class="lg:col-span-7 space-y-6 text-left">
+          <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white border border-gold-400/50 shadow-sm">
+            <span class="w-2.5 h-2.5 rounded-full bg-gold-500 animate-ping"></span>
+            <span class="text-[11px] font-bold tracking-[0.25em] uppercase text-espresso">Autumn-Winter 2026 Boutique Showcase</span>
+          </div>
+
+          <h2 class="font-serif text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-espresso leading-[1.08]">
+            Masterpieces of <br>
+            <span class="italic font-normal gold-gradient-text">Contemporary Elegance.</span>
+          </h2>
+
+          <p class="text-base sm:text-lg text-charcoal/80 max-w-xl font-light leading-relaxed">
+            Welcome to the flagship sanctuary of world-class menswear. We curate authenticated collections from Tommy Hilfiger, Levi's, U.S. Polo Assn., Calvin Klein, and Armani Exchange—from bespoke cotton weaves to handcrafted horology and fine Italian leather.
+          </p>
+
+          <!-- Dual Call to Actions -->
+          <div class="flex flex-wrap items-center gap-4 pt-3">
+            <a href="#collections" class="px-8 py-4 bg-espresso hover:bg-[#342f2c] text-white text-xs font-bold tracking-[0.22em] uppercase rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-0.5 flex items-center gap-3">
+              <span>Explore Wardrobe</span>
+              <i class="fa-solid fa-arrow-right-long text-gold-400"></i>
+            </a>
+            <button onclick="openStylingModal()" class="px-7 py-4 bg-white hover:bg-pearl border border-softBorder text-espresso text-xs font-bold tracking-[0.22em] uppercase rounded-full shadow-sm hover:shadow-md transition transform hover:-translate-y-0.5 flex items-center gap-2.5">
+              <i class="fa-brands fa-whatsapp text-emerald-600 text-sm"></i>
+              <span>Schedule VIP Try-On</span>
+            </button>
+          </div>
+
+          <!-- Editorial Trust Metrics -->
+          <div class="grid grid-cols-3 gap-6 pt-8 border-t border-softBorder/90 max-w-lg">
+            <div>
+              <p class="font-serif text-2xl sm:text-3xl font-bold text-espresso">15+</p>
+              <p class="text-[10px] text-charcoal/70 uppercase tracking-widest font-semibold mt-0.5">Global Luxury Houses</p>
+            </div>
+            <div>
+              <p class="font-serif text-2xl sm:text-3xl font-bold text-espresso">100%</p>
+              <p class="text-[10px] text-charcoal/70 uppercase tracking-widest font-semibold mt-0.5">Certified Authentic</p>
+            </div>
+            <div>
+              <p class="font-serif text-2xl sm:text-3xl font-bold text-espresso">4.9★</p>
+              <p class="text-[10px] text-charcoal/70 uppercase tracking-widest font-semibold mt-0.5">VIP Patron Rating</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right 3D Editorial Lookbook Card -->
+        <div class="lg:col-span-5 relative flex justify-center">
+          <div class="relative w-full max-w-md">
+            <!-- Warm Ambient Aura -->
+            <div class="absolute -top-12 -right-12 w-72 h-72 bg-gold-300/25 rounded-full blur-3xl -z-10"></div>
+            
+            <!-- Main Hero Card with 3D Tilt -->
+            <div id="heroTiltCard" class="tilt-card bg-white p-4 rounded-3xl border border-softBorder shadow-luxury">
+              <div class="relative overflow-hidden rounded-2xl aspect-[4/5] bg-pearl">
+                <img id="heroImage" src="https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?q=80&w=900&auto=format&fit=crop" 
+                     alt="Prestige Menswear Lookbook" 
+                     class="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-espresso/70 via-transparent to-transparent"></div>
+                
+                <div class="absolute top-4 right-4">
+                  <span class="bg-white/90 backdrop-blur-md text-espresso text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full shadow-sm">
+                    In Stock
+                  </span>
+                </div>
+
+                <div class="absolute bottom-6 left-6 right-6 text-white space-y-1">
+                  <span class="text-[10px] uppercase font-bold tracking-widest bg-gold-500 text-espresso px-2.5 py-0.5 rounded-sm">Featured Ensemble</span>
+                  <p class="font-serif text-2xl font-bold">Tommy Hilfiger & Levi's Heritage</p>
+                  <p class="text-xs text-white/80 font-light">Custom Tailored Oxford Shirt with 511™ Selvedge Denim</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Floating VIP Floating Badge -->
+            <div class="absolute -bottom-6 -left-6 bg-white/95 backdrop-blur-md p-4 rounded-2xl border border-softBorder shadow-xl flex items-center space-x-3 max-w-[260px]">
+              <div class="w-12 h-12 rounded-full bg-pearl border border-gold-300 flex items-center justify-center text-gold-600 text-lg">
+                <i class="fa-solid fa-award"></i>
+              </div>
+              <div>
+                <p class="text-xs font-bold text-espresso">Guaranteed Authentic</p>
+                <p class="text-[10px] text-charcoal/70">Barcoded tags with brand certificates</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 4. LUXURY BRAND HOUSES MARQUEE STRIP ==================== -->
+  <section id="brands" class="py-12 bg-white border-b border-softBorder">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-8">
+        <span class="text-[10px] font-bold uppercase tracking-[0.35em] text-gold-600 block">Official Store Retailer</span>
+        <h3 class="font-serif text-2xl font-bold text-espresso">Global Fashion Houses Under One Roof</h3>
+      </div>
+      
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 items-center justify-items-center">
+        <!-- Brand 1: Tommy Hilfiger -->
+        <div onclick="filterByBrand('Tommy Hilfiger')" class="group cursor-pointer p-4 rounded-2xl hover:bg-pearl/50 transition duration-300 text-center w-full">
+          <span class="font-serif text-xl sm:text-2xl font-black tracking-widest text-espresso border-b-2 border-red-600 pb-1 group-hover:text-gold-600 transition">TOMMY</span>
+          <span class="block text-[9px] tracking-[0.25em] text-charcoal/70 uppercase font-bold mt-1">HILFIGER</span>
+        </div>
+
+        <!-- Brand 2: Levi's -->
+        <div onclick="filterByBrand('Levi\'s')" class="group cursor-pointer p-4 rounded-2xl hover:bg-pearl/50 transition duration-300 text-center w-full">
+          <span class="inline-block bg-red-700 text-white font-serif font-black px-4 py-1 text-base tracking-wider rounded-sm shadow-sm group-hover:scale-105 transition">Levi's</span>
+          <span class="block text-[8px] tracking-[0.2em] text-charcoal/70 uppercase font-semibold mt-1">SAN FRANCISCO</span>
+        </div>
+
+        <!-- Brand 3: US Polo Assn. -->
+        <div onclick="filterByBrand('U.S. Polo Assn.')" class="group cursor-pointer p-4 rounded-2xl hover:bg-pearl/50 transition duration-300 text-center w-full">
+          <span class="font-serif text-lg font-bold tracking-wider text-espresso group-hover:text-gold-600 transition">U.S. POLO</span>
+          <span class="block text-[9px] tracking-[0.25em] text-charcoal/70 uppercase font-bold">ASSN. 1890</span>
+        </div>
+
+        <!-- Brand 4: Calvin Klein -->
+        <div onclick="filterByBrand('Calvin Klein')" class="group cursor-pointer p-4 rounded-2xl hover:bg-pearl/50 transition duration-300 text-center w-full">
+          <span class="font-sans text-lg font-light tracking-widest text-espresso uppercase group-hover:text-gold-600 transition">Calvin Klein</span>
+          <span class="block text-[8px] tracking-[0.2em] text-charcoal/70 uppercase font-medium">New York</span>
+        </div>
+
+        <!-- Brand 5: Armani Exchange -->
+        <div onclick="filterByBrand('Armani Exchange')" class="group cursor-pointer p-4 rounded-2xl hover:bg-pearl/50 transition duration-300 text-center w-full">
+          <span class="font-sans text-xl font-extrabold tracking-widest text-espresso group-hover:text-gold-600 transition">A | X</span>
+          <span class="block text-[8px] tracking-[0.2em] text-charcoal/70 uppercase font-medium">ARMANI EXCHANGE</span>
+        </div>
+
+        <!-- Brand 6: Chronos Horology -->
+        <div onclick="filterCategory('accessories')" class="group cursor-pointer p-4 rounded-2xl hover:bg-pearl/50 transition duration-300 text-center w-full">
+          <span class="font-serif text-lg font-bold tracking-widest text-espresso group-hover:text-gold-600 transition">CHRONOS</span>
+          <span class="block text-[8px] tracking-[0.25em] text-gold-600 uppercase font-semibold">SWISS & FOSSIL</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 5. EXTENDED LUXURY CATALOG & LIVE FILTERS ==================== -->
+  <section id="collections" class="py-16 sm:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Filter Section Header -->
+    <div class="flex flex-col lg:flex-row lg:items-end justify-between mb-8 pb-6 border-b border-softBorder gap-4">
+      <div>
+        <span class="text-xs font-bold uppercase tracking-[0.3em] text-gold-600 block mb-1">Complete Store Inventory</span>
+        <h3 class="font-serif text-3xl sm:text-4xl font-bold text-espresso">The Prestige Wardrobe Curations</h3>
+        <p class="text-xs sm:text-sm text-charcoal/70 mt-1">Handpicked shirts, t-shirts, selvedge denim, joggers, designer underwear, leather belts, and luxury watches.</p>
+      </div>
+
+      <!-- Category Filter Pills -->
+      <div class="flex items-center gap-2 overflow-x-auto pb-2 lg:pb-0 scrollbar-none" id="categoryFilterContainer">
+        <button onclick="filterCategory('all')" data-cat="all" class="cat-pill active px-4 py-2 rounded-full text-xs font-bold tracking-wider transition bg-espresso text-white shadow-sm whitespace-nowrap">All Items (<span id="totalItemsCount">14</span>)</button>
+        <button onclick="filterCategory('shirts')" data-cat="shirts" class="cat-pill px-4 py-2 rounded-full text-xs font-bold tracking-wider transition bg-white text-espresso border border-softBorder hover:border-gold-400 whitespace-nowrap">Shirts</button>
+        <button onclick="filterCategory('polos')" data-cat="polos" class="cat-pill px-4 py-2 rounded-full text-xs font-bold tracking-wider transition bg-white text-espresso border border-softBorder hover:border-gold-400 whitespace-nowrap">Polos & Tees</button>
+        <button onclick="filterCategory('denim')" data-cat="denim" class="cat-pill px-4 py-2 rounded-full text-xs font-bold tracking-wider transition bg-white text-espresso border border-softBorder hover:border-gold-400 whitespace-nowrap">Jeans & Lowers</button>
+        <button onclick="filterCategory('innerwear')" data-cat="innerwear" class="cat-pill px-4 py-2 rounded-full text-xs font-bold tracking-wider transition bg-white text-espresso border border-softBorder hover:border-gold-400 whitespace-nowrap">Innerwear & Shorts</button>
+        <button onclick="filterCategory('accessories')" data-cat="accessories" class="cat-pill px-4 py-2 rounded-full text-xs font-bold tracking-wider transition bg-white text-espresso border border-softBorder hover:border-gold-400 whitespace-nowrap">Belts & Horology</button>
+      </div>
+    </div>
+
+    <!-- Sub-Filter Bar (Sort & Brand Filter) -->
+    <div class="flex flex-wrap items-center justify-between text-xs text-charcoal/70 mb-8 gap-4 bg-white p-4 rounded-2xl border border-softBorder">
+      <div id="filterStatus" class="font-medium">
+        Displaying <span class="font-bold text-espresso" id="productCountDisplay">14</span> authentic masterworks
+      </div>
+
+      <div class="flex flex-wrap items-center gap-3">
+        <!-- Brand quick dropdown filter -->
+        <div class="flex items-center gap-1.5">
+          <span class="text-espresso font-semibold">House:</span>
+          <select id="brandSelect" onchange="filterByDropdownBrand(this.value)" class="bg-alabaster border border-softBorder text-espresso py-1.5 px-3 rounded-xl text-xs focus:outline-none focus:border-gold-500 font-medium">
+            <option value="all">All Brands</option>
+            <option value="Tommy Hilfiger">Tommy Hilfiger</option>
+            <option value="Levi's">Levi's</option>
+            <option value="U.S. Polo Assn.">U.S. Polo Assn.</option>
+            <option value="Calvin Klein">Calvin Klein</option>
+            <option value="Armani Exchange">Armani Exchange</option>
+          </select>
+        </div>
+
+        <!-- Sort dropdown -->
+        <div class="flex items-center gap-1.5">
+          <span class="text-espresso font-semibold">Sort:</span>
+          <select id="priceSortSelect" onchange="sortProducts(this.value)" class="bg-alabaster border border-softBorder text-espresso py-1.5 px-3 rounded-xl text-xs focus:outline-none focus:border-gold-500 font-medium">
+            <option value="featured">Featured Curations</option>
+            <option value="low-high">Price: Low to High</option>
+            <option value="high-low">Price: High to Low</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Grid (Dynamic 3D Cards) -->
+    <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
+      <!-- Injected via JavaScript -->
+    </div>
+
+  </section>
+
+  <!-- ==================== 6. VIP BOUTIQUE INVITATION & STORE EXPERIENCE ==================== -->
+  <section class="py-16 bg-pearl/40 border-y border-softBorder">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Boutique Features -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-16">
+        <div class="bg-white p-7 rounded-3xl border border-softBorder text-center shadow-sm">
+          <div class="w-12 h-12 rounded-full bg-pearl mx-auto flex items-center justify-center text-gold-600 mb-4 text-xl">
+            <i class="fa-solid fa-stamp"></i>
+          </div>
+          <h4 class="font-serif text-lg font-bold text-espresso mb-1">100% Genuine Barcodes</h4>
+          <p class="text-xs text-charcoal/70 leading-relaxed">Direct flagship brand authorization. We stock verified articles with manufacturer holograms.</p>
+        </div>
+
+        <div class="bg-white p-7 rounded-3xl border border-softBorder text-center shadow-sm">
+          <div class="w-12 h-12 rounded-full bg-pearl mx-auto flex items-center justify-center text-gold-600 mb-4 text-xl">
+            <i class="fa-solid fa-scissors"></i>
+          </div>
+          <h4 class="font-serif text-lg font-bold text-espresso mb-1">Master Fitting Lounge</h4>
+          <p class="text-xs text-charcoal/70 leading-relaxed">Complimentary bespoke denim hems and sleeve adjustments tailored while you wait.</p>
+        </div>
+
+        <div class="bg-white p-7 rounded-3xl border border-softBorder text-center shadow-sm">
+          <div class="w-12 h-12 rounded-full bg-pearl mx-auto flex items-center justify-center text-gold-600 mb-4 text-xl">
+            <i class="fa-brands fa-whatsapp"></i>
+          </div>
+          <h4 class="font-serif text-lg font-bold text-espresso mb-1">WhatsApp Live Video Trial</h4>
+          <p class="text-xs text-charcoal/70 leading-relaxed">Connect directly with our boutique manager to inspect fabric texture and fit live on call.</p>
+        </div>
+
+        <div class="bg-white p-7 rounded-3xl border border-softBorder text-center shadow-sm">
+          <div class="w-12 h-12 rounded-full bg-pearl mx-auto flex items-center justify-center text-gold-600 mb-4 text-xl">
+            <i class="fa-solid fa-box-open"></i>
+          </div>
+          <h4 class="font-serif text-lg font-bold text-espresso mb-1">Prestige Gift Packaging</h4>
+          <p class="text-xs text-charcoal/70 leading-relaxed">Every purchase comes swathed in archival tissue paper, gold wax seal, and velvet ribbons.</p>
+        </div>
+      </div>
+
+      <!-- Private Styling Suite Invite Box -->
+      <div class="bg-white rounded-3xl border border-softBorder p-8 sm:p-12 shadow-luxury grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div class="lg:col-span-8 space-y-4">
+          <span class="text-xs font-bold uppercase tracking-[0.25em] text-gold-600">The Grand Showroom</span>
+          <h3 class="font-serif text-3xl sm:text-4xl font-bold text-espresso">Step into our Physical Atelier</h3>
+          <p class="text-sm text-charcoal/80 max-w-2xl leading-relaxed">
+            Visit our 3-story physical store offering over 1,500+ branded shirts, Levi's selvedge denim racks, dedicated watch salons, and Italian leather accessories. Enjoy private trial lounges and complimentary espresso.
+          </p>
+          <div class="flex flex-wrap items-center gap-6 pt-2 text-xs text-espresso font-semibold">
+            <div class="flex items-center gap-2"><i class="fa-solid fa-location-dot text-gold-500"></i> High-Street Fashion Promenade, Luxury Galleria</div>
+            <div class="flex items-center gap-2"><i class="fa-solid fa-clock text-gold-500"></i> Mon - Sun: 10:30 AM - 9:30 PM</div>
+            <div class="flex items-center gap-2"><i class="fa-solid fa-phone text-gold-500"></i> Direct Desk: +91 861 908 9899</div>
+          </div>
+        </div>
+        <div class="lg:col-span-4 flex justify-center lg:justify-end">
+          <button onclick="openStylingModal()" class="w-full sm:w-auto px-8 py-4 bg-espresso hover:bg-gold-600 text-white text-xs font-bold tracking-widest uppercase rounded-full shadow-md transition-all">
+            Book Private Trial Slot
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== 7. FOOTER ==================== -->
+  <footer class="bg-white border-t border-softBorder pt-16 pb-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-softBorder">
+        
+        <div class="space-y-4">
+          <div class="flex items-center space-x-2.5">
+            <span class="w-9 h-9 rounded-full border border-gold-500 flex items-center justify-center font-serif font-bold text-lg text-gold-600 bg-white">AR</span>
+            <span class="font-serif font-bold text-xl tracking-wider text-espresso">ATELIER ROYALE</span>
+          </div>
+          <p class="text-xs text-charcoal/70 leading-relaxed">
+            The prime retail address for premier men's apparel, authentic American denim, Swiss and Japanese horology, and hand-finished leather accoutrements.
+          </p>
+          <div class="flex items-center space-x-3 text-sm text-espresso pt-2">
+            <a href="https://wa.me/918619089899" target="_blank" class="w-9 h-9 rounded-full bg-alabaster border border-softBorder flex items-center justify-center hover:bg-gold-500 hover:text-white transition"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="#" class="w-9 h-9 rounded-full bg-alabaster border border-softBorder flex items-center justify-center hover:bg-gold-500 hover:text-white transition"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" class="w-9 h-9 rounded-full bg-alabaster border border-softBorder flex items-center justify-center hover:bg-gold-500 hover:text-white transition"><i class="fa-brands fa-facebook-f"></i></a>
+          </div>
+        </div>
+
+        <div>
+          <h5 class="text-xs font-bold uppercase tracking-widest text-espresso mb-4">Wardrobe Collections</h5>
+          <ul class="space-y-2.5 text-xs text-charcoal/70 font-medium">
+            <li><a href="#collections" onclick="filterCategory('shirts')" class="hover:text-gold-600 transition">Formal Oxford & Linen Shirts</a></li>
+            <li><a href="#collections" onclick="filterCategory('polos')" class="hover:text-gold-600 transition">USPA & Tommy Pique Polos</a></li>
+            <li><a href="#collections" onclick="filterCategory('denim')" class="hover:text-gold-600 transition">Levi's 511 Slim & 501 Straight Jeans</a></li>
+            <li><a href="#collections" onclick="filterCategory('denim')" class="hover:text-gold-600 transition">French Terry Joggers & Lowers</a></li>
+            <li><a href="#collections" onclick="filterCategory('innerwear')" class="hover:text-gold-600 transition">Calvin Klein Stretch Trunks & Shorts</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5 class="text-xs font-bold uppercase tracking-widest text-espresso mb-4">Fine Horology & Leather</h5>
+          <ul class="space-y-2.5 text-xs text-charcoal/70 font-medium">
+            <li><a href="#collections" onclick="filterCategory('accessories')" class="hover:text-gold-600 transition">Automatic Chronographs (44mm)</a></li>
+            <li><a href="#collections" onclick="filterCategory('accessories')" class="hover:text-gold-600 transition">Armani Exchange Dress Timepieces</a></li>
+            <li><a href="#collections" onclick="filterCategory('accessories')" class="hover:text-gold-600 transition">Italian Full-Grain Reversible Belts</a></li>
+            <li><a href="#collections" onclick="filterCategory('accessories')" class="hover:text-gold-600 transition">Brushed Brass Signature Buckles</a></li>
+            <li><a href="#collections" class="hover:text-gold-600 transition">Gold Seal Gift Packaging</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5 class="text-xs font-bold uppercase tracking-widest text-espresso mb-4">VIP Atelier Membership</h5>
+          <p class="text-xs text-charcoal/70 mb-3 leading-relaxed">Receive private invitations to seasonal private sales and new international shipments.</p>
+          <div class="flex items-center">
+            <input type="email" id="newsletterInput" placeholder="Enter your email" class="bg-alabaster border border-softBorder text-xs px-3.5 py-2.5 rounded-l-full focus:outline-none focus:border-gold-500 w-full">
+            <button onclick="handleSubscribe()" class="bg-espresso text-white text-xs font-bold px-4 py-2.5 rounded-r-full hover:bg-gold-600 transition uppercase tracking-wider">Join</button>
+          </div>
+          <p class="text-[10px] text-charcoal/50 mt-2 font-medium">100% Discretion assured. No promotional spam.</p>
+        </div>
+
+      </div>
+
+      <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-[11px] text-charcoal/70 gap-4">
+        <p>© 2026 ATELIER ROYALE Menswear Boutique. Client Showcase Edition. Crafted with WebNexa.</p>
+        <div class="flex items-center space-x-6 font-medium">
+          <span class="hover:underline cursor-pointer">Authenticity Policy</span>
+          <span class="hover:underline cursor-pointer">VIP Alteration Terms</span>
+          <span class="hover:underline cursor-pointer">Concierge Care</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== 8. SLIDE-OUT CART / SHOPPING BAG DRAWER ==================== -->
+  <div id="cartDrawerBackdrop" class="fixed inset-0 bg-espresso/40 backdrop-blur-sm z-50 hidden transition-opacity duration-300"></div>
+  <aside id="cartDrawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-white z-50 transform translate-x-full transition-transform duration-300 shadow-drawer flex flex-col">
+    
+    <!-- Drawer Top Header -->
+    <div class="p-6 border-b border-softBorder flex items-center justify-between bg-pearl/30">
+      <div class="flex items-center space-x-3">
+        <i class="fa-solid fa-bag-shopping text-gold-600 text-xl"></i>
+        <h3 class="font-serif text-2xl font-bold text-espresso">Your Shopping Bag</h3>
+        <span id="drawerItemCountBadge" class="bg-espresso text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full">0</span>
+      </div>
+      <button id="closeCartBtn" class="text-charcoal/70 hover:text-espresso text-xl p-2 transition">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <!-- Free Delivery Milestone Bar -->
+    <div class="px-6 py-3 bg-amber-50/70 border-b border-amber-100 text-xs">
+      <div class="flex justify-between items-center text-espresso font-semibold mb-1.5">
+        <span id="shippingGoalText"><i class="fa-solid fa-gift text-gold-500 mr-1.5"></i> Add ₹1,500 more for Free Signature Gift Box</span>
+        <span class="font-bold text-gold-600 text-[10px] tracking-widest uppercase">VIP BENEFIT</span>
+      </div>
+      <div class="w-full bg-warmSand/60 h-1.5 rounded-full overflow-hidden">
+        <div id="shippingProgressBar" class="bg-gold-500 h-full w-2/3 transition-all duration-500"></div>
+      </div>
+    </div>
+
+    <!-- Cart Items Scrollable Container -->
+    <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-6 space-y-4">
+      <!-- Items dynamically injected -->
+    </div>
+
+    <!-- Drawer Summary & Promo Code -->
+    <div class="p-6 border-t border-softBorder bg-alabaster space-y-4">
+      
+      <!-- Promo Code Input -->
+      <div class="flex items-center gap-2">
+        <input type="text" id="couponInput" placeholder="Promo code (e.g. ROYAL2026)" class="flex-1 bg-white border border-softBorder rounded-xl px-3 py-2 text-xs uppercase font-semibold focus:outline-none focus:border-gold-500">
+        <button onclick="applyCoupon()" class="px-4 py-2 bg-pearl hover:bg-espresso hover:text-white border border-softBorder text-espresso text-xs font-bold uppercase rounded-xl transition">Apply</button>
+      </div>
+      <div id="couponFeedback" class="text-[11px] font-semibold hidden"></div>
+
+      <!-- Pricing Breakdown -->
+      <div class="space-y-1.5 text-xs text-charcoal/80">
+        <div class="flex justify-between">
+          <span>Bag Subtotal</span>
+          <span id="cartSubtotal" class="font-semibold text-espresso">₹0</span>
+        </div>
+        <div id="discountRow" class="flex justify-between text-emerald-700 hidden">
+          <span>VIP Privilege Discount</span>
+          <span id="cartDiscountAmount">-₹0</span>
+        </div>
+        <div class="flex justify-between">
+          <span>White-Glove Doorstep Delivery</span>
+          <span class="text-emerald-700 font-bold">COMPLIMENTARY</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Gold Seal Gift Packaging</span>
+          <span class="text-emerald-700 font-bold">INCLUDED</span>
+        </div>
+        <div class="flex justify-between text-base font-bold text-espresso pt-2.5 border-t border-softBorder">
+          <span class="font-serif text-lg">Estimated Total</span>
+          <span id="cartGrandTotal" class="text-gold-600 font-bold font-sans">₹0</span>
+        </div>
+      </div>
+
+      <!-- Checkout Action Triggers -->
+      <div class="space-y-2 pt-1">
+        <button onclick="openWhatsAppCheckout()" class="w-full py-3.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold tracking-widest uppercase flex items-center justify-center gap-2 transition shadow-md active:scale-98">
+          <i class="fa-brands fa-whatsapp text-lg"></i>
+          <span>Order via WhatsApp Concierge</span>
+        </button>
+        <button onclick="openCheckoutModal()" class="w-full py-3.5 bg-espresso hover:bg-gold-600 text-white rounded-xl text-xs font-bold tracking-widest uppercase transition shadow-md active:scale-98">
+          Proceed to Secure Order & Invoice
+        </button>
+      </div>
+
+      <p class="text-[10px] text-center text-charcoal/60">
+        <i class="fa-solid fa-shield-halved text-gold-500 mr-1"></i> 100% Discretion & Safe Doorstep Handover
+      </p>
+    </div>
+
+  </aside>
+
+  <!-- ==================== 9. PRODUCT QUICK VIEW MODAL ==================== -->
+  <div id="quickViewModalBackdrop" class="fixed inset-0 bg-espresso/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div id="quickViewCard" class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-softBorder relative">
+      <button onclick="closeQuickView()" class="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/90 border border-softBorder text-espresso hover:bg-espresso hover:text-white flex items-center justify-center transition shadow-sm">
+        <i class="fa-solid fa-xmark text-sm"></i>
+      </button>
+
+      <div class="grid grid-cols-1 md:grid-cols-2">
+        <!-- High-Res Zoomable Image Preview -->
+        <div class="bg-pearl/40 p-6 flex items-center justify-center relative overflow-hidden">
+          <img id="modalProductImg" src="" alt="Product" class="max-h-80 w-auto object-cover rounded-2xl shadow-sm transition-transform duration-500 hover:scale-105">
+          <span id="modalBadge" class="absolute top-4 left-4 bg-white/90 text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full shadow-sm text-espresso border border-softBorder"></span>
+        </div>
+
+        <!-- Specifications & Size Details -->
+        <div class="p-6 sm:p-8 flex flex-col justify-between space-y-4">
+          <div>
+            <span id="modalBrandTag" class="text-[10px] uppercase font-bold tracking-widest text-gold-600 bg-amber-50 px-3 py-1 rounded-full border border-amber-200"></span>
+            <h4 id="modalProductTitle" class="font-serif text-2xl font-bold text-espresso mt-2 mb-1"></h4>
+            
+            <div class="flex items-center space-x-3 my-2">
+              <span id="modalCurrentPrice" class="text-2xl font-bold text-espresso font-sans"></span>
+              <span id="modalOriginalPrice" class="text-xs line-through text-charcoal/50 font-sans"></span>
+              <span id="modalDiscountTag" class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded"></span>
+            </div>
+            
+            <p id="modalDescription" class="text-xs text-charcoal/70 leading-relaxed mt-3"></p>
+
+            <!-- Fabric & Care Quick Specs -->
+            <div class="mt-4 p-3 bg-alabaster rounded-xl border border-softBorder text-[11px] text-charcoal/80 space-y-1">
+              <div><i class="fa-solid fa-gem text-gold-500 mr-1.5"></i> <span class="font-semibold">Authentication:</span> 100% Brand Certified</div>
+              <div><i class="fa-solid fa-box text-gold-500 mr-1.5"></i> <span class="font-semibold">Bespoke Fit:</span> Free trial & waist adjustments</div>
+            </div>
+          </div>
+
+          <!-- Modal Size Selector Chips -->
+          <div>
+            <label class="block text-[11px] font-bold uppercase tracking-wider text-espresso mb-2">Available Fittings & Sizes:</label>
+            <div id="modalSizeChips" class="flex flex-wrap gap-2"></div>
+          </div>
+
+          <!-- Bottom Actions -->
+          <div class="pt-3 border-t border-softBorder flex gap-3">
+            <button id="modalAddToCartBtn" class="flex-1 py-3.5 bg-espresso hover:bg-gold-600 text-white text-xs font-bold uppercase tracking-widest rounded-xl transition shadow-md">
+              Add To Shopping Bag
+            </button>
+            <button onclick="toggleModalWishlist()" id="modalWishlistBtn" class="p-3.5 border border-softBorder rounded-xl hover:text-red-500 transition">
+              <i class="fa-regular fa-heart"></i>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 10. CHECKOUT / DIGITAL INVOICE GENERATOR MODAL ==================== -->
+  <div id="checkoutModalBackdrop" class="fixed inset-0 bg-espresso/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-softBorder relative max-h-[90vh] overflow-y-auto">
+      <button onclick="closeCheckoutModal()" class="absolute top-4 right-4 text-charcoal/60 hover:text-espresso text-xl">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="text-center mb-6">
+        <div class="w-12 h-12 rounded-full bg-emerald-50 text-emerald-700 mx-auto flex items-center justify-center text-xl mb-3 border border-emerald-200">
+          <i class="fa-solid fa-file-invoice"></i>
+        </div>
+        <h4 class="font-serif text-2xl font-bold text-espresso">Digital Luxury Order Booking</h4>
+        <p class="text-xs text-charcoal/70 mt-1">Generate your official boutique invoice and confirm doorstep delivery.</p>
+      </div>
+
+      <form id="orderForm" onsubmit="handleDemoOrder(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-espresso mb-1 uppercase tracking-wider">Patron Full Name</label>
+          <input type="text" id="orderPatronName" required placeholder="e.g. Vikramaditya Rathore" class="w-full bg-alabaster border border-softBorder rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-gold-500 font-medium">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-espresso mb-1 uppercase tracking-wider">WhatsApp Contact Number</label>
+          <input type="tel" id="orderPatronPhone" required placeholder="+91 98290 XXXXX" class="w-full bg-alabaster border border-softBorder rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-gold-500 font-medium">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-espresso mb-1 uppercase tracking-wider">Doorstep Delivery Address</label>
+          <textarea id="orderPatronAddress" rows="2" required placeholder="House/Villa No, Avenue, Landmark, City & Pincode" class="w-full bg-alabaster border border-softBorder rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-gold-500 font-medium"></textarea>
+        </div>
+        
+        <!-- Summary Box -->
+        <div class="bg-pearl/50 p-4 rounded-xl border border-softBorder text-xs text-espresso space-y-1.5">
+          <div class="flex justify-between font-bold">
+            <span>Payable Amount:</span>
+            <span id="checkoutAmountDisplay" class="text-gold-600 font-bold font-sans">₹0</span>
+          </div>
+          <p class="text-[10px] text-charcoal/70">Payment Method: Cash On Delivery / Instant UPI on White-Glove Handover</p>
+        </div>
+
+        <button type="submit" class="w-full py-4 bg-espresso hover:bg-gold-600 text-white rounded-xl text-xs font-bold tracking-widest uppercase transition shadow-md">
+          Generate Official Invoice & Order
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== 11. OFFICIAL DIGITAL INVOICE CONFIRMATION MODAL ==================== -->
+  <div id="invoiceModalBackdrop" class="fixed inset-0 bg-espresso/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-8 shadow-2xl border border-gold-400/40 relative">
+      <button onclick="closeInvoiceModal()" class="absolute top-4 right-4 text-charcoal/60 hover:text-espresso text-xl">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <!-- Invoice Paper Header -->
+      <div class="border-b border-softBorder pb-4 mb-4 text-center">
+        <div class="w-10 h-10 rounded-full border border-gold-500 flex items-center justify-center mx-auto mb-2 bg-pearl">
+          <span class="font-serif font-bold text-gold-600">AR</span>
+        </div>
+        <h4 class="font-serif text-xl font-bold tracking-widest uppercase text-espresso">ATELIER ROYALE</h4>
+        <p class="text-[10px] text-gold-600 tracking-widest uppercase font-semibold">Official Order Confirmation & Invoice</p>
+        <p id="invoiceNumber" class="text-xs text-charcoal/70 font-mono mt-1 font-bold">INV-AR-2026-XXXX</p>
+      </div>
+
+      <!-- Patron details -->
+      <div class="text-xs space-y-1 mb-4 text-charcoal/80 bg-alabaster p-3.5 rounded-xl border border-softBorder">
+        <div><span class="font-semibold text-espresso">Patron:</span> <span id="invoicePatron"></span></div>
+        <div><span class="font-semibold text-espresso">Contact:</span> <span id="invoicePhone"></span></div>
+        <div><span class="font-semibold text-espresso">Destination:</span> <span id="invoiceAddress"></span></div>
+      </div>
+
+      <!-- Itemized bill summary -->
+      <div id="invoiceItems" class="max-h-40 overflow-y-auto divide-y divide-softBorder text-xs mb-4">
+        <!-- Rendered items -->
+      </div>
+
+      <div class="border-t border-softBorder pt-3 space-y-1 text-xs">
+        <div class="flex justify-between font-bold text-sm text-espresso">
+          <span>Net Total:</span>
+          <span id="invoiceTotal" class="text-gold-600 font-sans"></span>
+        </div>
+      </div>
+
+      <div class="pt-6 flex gap-3">
+        <button onclick="shareInvoiceWhatsApp()" class="flex-1 py-3 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition">
+          <i class="fa-brands fa-whatsapp text-base"></i> Send to WhatsApp
+        </button>
+        <button onclick="closeInvoiceModal()" class="px-5 py-3 border border-softBorder text-espresso text-xs font-bold uppercase rounded-xl hover:bg-pearl transition">
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 12. VIP STYLING TRIAL APPOINTMENT MODAL ==================== -->
+  <div id="stylingModalBackdrop" class="fixed inset-0 bg-espresso/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-softBorder relative text-center">
+      <button onclick="closeStylingModal()" class="absolute top-4 right-4 text-charcoal/60 hover:text-espresso text-xl">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="w-12 h-12 rounded-full bg-pearl text-gold-600 mx-auto flex items-center justify-center text-xl mb-3 border border-gold-300">
+        <i class="fa-solid fa-calendar-check"></i>
+      </div>
+      <h4 class="font-serif text-2xl font-bold text-espresso">Reserve In-Store Fitting Suite</h4>
+      <p class="text-xs text-charcoal/70 mt-1 mb-6">Enjoy a dedicated bespoke stylist, complimentary alterations, and private fitting lounge.</p>
+
+      <div class="space-y-3.5 text-left">
+        <div>
+          <label class="block text-[11px] font-bold text-espresso uppercase mb-1">Your Name</label>
+          <input type="text" id="stylingName" placeholder="e.g. Rahul Sharma" class="w-full bg-alabaster border border-softBorder rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-gold-500 font-medium">
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-espresso uppercase mb-1">Phone Number</label>
+          <input type="tel" id="stylingPhone" placeholder="+91 98290 XXXXX" class="w-full bg-alabaster border border-softBorder rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-gold-500 font-medium">
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-espresso uppercase mb-1">Preferred Time Window</label>
+          <select id="stylingTime" class="w-full bg-alabaster border border-softBorder rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-gold-500 text-espresso font-medium">
+            <option>Morning VIP Slot (11:00 AM - 1:30 PM)</option>
+            <option>Afternoon Trial (2:30 PM - 5:00 PM)</option>
+            <option>Evening Executive Slot (6:00 PM - 9:00 PM)</option>
+          </select>
+        </div>
+        <button onclick="confirmStylingBooking()" class="w-full py-3.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold tracking-widest uppercase transition shadow-md flex items-center justify-center gap-2 mt-2">
+          <i class="fa-brands fa-whatsapp text-base"></i> Confirm Reservation on WhatsApp
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOATING TOAST NOTIFICATION CONTAINER -->
+  <div id="toastContainer" class="fixed bottom-6 right-6 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+  <!-- ==================== JAVASCRIPT DATA & LOGIC ENGINE ==================== -->
+  <script>
+    // ================= 14 COMPREHENSIVE LUXURY PRODUCTS =================
+    const storeProducts = [
+      // SHIRTS
+      {
+        id: 1,
+        title: "Iconic Slim Oxford Button-Down Shirt",
+        brand: "Tommy Hilfiger",
+        category: "shirts",
+        price: 4499,
+        originalPrice: 6999,
+        image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?q=80&w=700&auto=format&fit=crop",
+        badge: "Bestseller",
+        sizes: ["39 (M)", "40 (L)", "42 (XL)", "44 (XXL)"],
+        desc: "Tailored in crisp Egyptian long-staple cotton with Tommy Hilfiger's iconic signature flag chest embroidery and button-down collar."
+      },
+      {
+        id: 2,
+        title: "Tailored Custom Fit Pure Linen Shirt",
+        brand: "U.S. Polo Assn.",
+        category: "shirts",
+        price: 2899,
+        originalPrice: 4299,
+        image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?q=80&w=700&auto=format&fit=crop",
+        badge: "Pure Linen",
+        sizes: ["38 (S)", "40 (M)", "42 (L)", "44 (XL)"],
+        desc: "Airy, natural French flax linen woven for utmost breathability and refined luxury. Mother-of-pearl buttons."
+      },
+
+      // POLOS & T-SHIRTS
+      {
+        id: 3,
+        title: "Signature Pique Honeycomb Polo T-Shirt",
+        brand: "U.S. Polo Assn.",
+        category: "polos",
+        price: 2199,
+        originalPrice: 3299,
+        image: "https://images.unsplash.com/photo-1581655353564-df123a1eb820?q=80&w=700&auto=format&fit=crop",
+        badge: "Signature",
+        sizes: ["S", "M", "L", "XL", "XXL"],
+        desc: "Classic double-horseman chest embroidery on double-ply pique cotton. Ribbed collar that resists curling."
+      },
+      {
+        id: 4,
+        title: "Peruvian Pima Cotton Minimal Crew Tee",
+        brand: "Tommy Hilfiger",
+        category: "polos",
+        price: 2499,
+        originalPrice: 3799,
+        image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=700&auto=format&fit=crop",
+        badge: "Pima Cotton",
+        sizes: ["S", "M", "L", "XL"],
+        desc: "Silky soft touch crafted from extra-long Pima fibers. Understated cuff flag accent with reinforced crew neck."
+      },
+
+      // JEANS & LOWERS
+      {
+        id: 5,
+        title: "511™ Slim Fit Selvedge Stretch Denim",
+        brand: "Levi's",
+        category: "denim",
+        price: 4999,
+        originalPrice: 6999,
+        image: "https://images.unsplash.com/photo-1542272604-780c96856592?q=80&w=700&auto=format&fit=crop",
+        badge: "Selvedge",
+        sizes: ["30", "32", "34", "36", "38"],
+        desc: "Authentic shuttle-loom selvedge denim woven with a touch of elastane for movement. Iconic Levi's arcuate stitching."
+      },
+      {
+        id: 6,
+        title: "501® Original Historic Straight Fit Jeans",
+        brand: "Levi's",
+        category: "denim",
+        price: 4299,
+        originalPrice: 5999,
+        image: "https://images.unsplash.com/photo-1604176354204-9268737828e4?q=80&w=700&auto=format&fit=crop",
+        badge: "1873 Heritage",
+        sizes: ["30", "32", "34", "36"],
+        desc: "The world's most definitive blue jean since 1873. Timeless straight leg cut with authentic metal button fly."
+      },
+      {
+        id: 7,
+        title: "Premium French Terry Tapered Track Lowers",
+        brand: "U.S. Polo Assn.",
+        category: "denim",
+        price: 1999,
+        originalPrice: 2999,
+        image: "https://images.unsplash.com/photo-1506629082955-511b1aa562c8?q=80&w=700&auto=format&fit=crop",
+        badge: "Athleisure",
+        sizes: ["M", "L", "XL", "XXL"],
+        desc: "Heavyweight 360 GSM combed cotton fleece with concealed zippered deep pockets and custom brass tipped drawstrings."
+      },
+      {
+        id: 8,
+        title: "Designer Minimalist Stretch Lounge Shorts",
+        brand: "Calvin Klein",
+        category: "innerwear",
+        price: 1799,
+        originalPrice: 2799,
+        image: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?q=80&w=700&auto=format&fit=crop",
+        badge: "Resort Fit",
+        sizes: ["M", "L", "XL"],
+        desc: "Ultra-breathable cotton-modal blend tailored for comfortable morning lounging or holiday resort leisure."
+      },
+
+      // INNERWEAR
+      {
+        id: 9,
+        title: "Modern Cotton Classic Trunks (Pack of 3)",
+        brand: "Calvin Klein",
+        category: "innerwear",
+        price: 2499,
+        originalPrice: 3999,
+        image: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=700&auto=format&fit=crop",
+        badge: "Pack of 3",
+        sizes: ["S", "M", "L", "XL"],
+        desc: "World-renowned repeating logo elastic waistband with four-way anti-chafing stretch and contour pouch."
+      },
+      {
+        id: 10,
+        title: "Stretch Organic Cotton Boxer Briefs (2-Pack)",
+        brand: "Tommy Hilfiger",
+        category: "innerwear",
+        price: 1899,
+        originalPrice: 2899,
+        image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=700&auto=format&fit=crop",
+        badge: "Essentials",
+        sizes: ["M", "L", "XL"],
+        desc: "Breathable organic weave finished with signature red-white-blue waistband for all-day comfort and support."
+      },
+
+      // BELTS
+      {
+        id: 11,
+        title: "Reversible Italian Full-Grain Leather Belt",
+        brand: "Armani Exchange",
+        category: "accessories",
+        price: 3899,
+        originalPrice: 5499,
+        image: "https://images.unsplash.com/photo-1624222247344-550fb60583dc?q=80&w=700&auto=format&fit=crop",
+        badge: "Reversible",
+        sizes: ["32", "34", "36", "38", "40"],
+        desc: "Two essential styles: Espresso Black reverses to Saddle Tan with a twist-turn polished ruthenium metal buckle."
+      },
+      {
+        id: 12,
+        title: "Hand-Burnished Leather Belt with Brass Buckle",
+        brand: "Tommy Hilfiger",
+        category: "accessories",
+        price: 3299,
+        originalPrice: 4699,
+        image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=700&auto=format&fit=crop",
+        badge: "Hand-Burnished",
+        sizes: ["32", "34", "36", "38"],
+        desc: "Handcrafted English bridle leather with beveled hand-painted edges and antique brushed brass prong closure."
+      },
+
+      // WATCHES / HOROLOGY
+      {
+        id: 13,
+        title: "Grand Horizon Chronograph 44mm Watch",
+        brand: "Tommy Hilfiger",
+        category: "accessories",
+        price: 11999,
+        originalPrice: 16999,
+        image: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?q=80&w=700&auto=format&fit=crop",
+        badge: "Chronograph",
+        sizes: ["44mm Case"],
+        desc: "Multifunction sub-dials, scratch-resistant mineral crystal glass, tachymeter bezel, and 50M water resistance."
+      },
+      {
+        id: 14,
+        title: "Minimalist Sunray Steel Dress Watch",
+        brand: "Armani Exchange",
+        category: "accessories",
+        price: 13499,
+        originalPrice: 18999,
+        image: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=700&auto=format&fit=crop",
+        badge: "Stainless Steel",
+        sizes: ["42mm Case"],
+        desc: "Ultra-slim champagne dial with high-precision quartz movement and solid stainless steel link bracelet."
+      }
+    ];
+
+    // ================= STATE ENGINE =================
+    let currentCategory = 'all';
+    let currentBrand = 'all';
+    let cart = [];
+    let wishlist = [1, 5, 13];
+    let selectedSizes = {};
+    let modalActiveProductId = null;
+    let couponDiscountPercent = 0;
+    let lastOrderDetails = null;
+
+    // Default sizes for products
+    storeProducts.forEach(p => {
+      selectedSizes[p.id] = p.sizes[0];
+    });
+
+    // ================= PRODUCT CATALOG RENDERER =================
+    function renderProducts(items) {
+      const grid = document.getElementById('productsGrid');
+      const countEl = document.getElementById('productCountDisplay');
+      grid.innerHTML = '';
+      countEl.innerText = items.length;
+
+      if (items.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full py-20 text-center text-charcoal/70 bg-white rounded-3xl border border-softBorder">
+            <i class="fa-solid fa-box-open text-4xl mb-3 text-gold-500"></i>
+            <h4 class="font-serif text-2xl font-bold text-espresso">No Boutique Pieces Found</h4>
+            <p class="text-xs mt-1">Try switching to another category or clearing your search term.</p>
+            <button onclick="resetFilters()" class="mt-4 px-6 py-2.5 bg-espresso text-white text-xs uppercase font-bold tracking-widest rounded-full hover:bg-gold-600 transition">View All 14 Items</button>
+          </div>
+        `;
+        return;
+      }
+
+      items.forEach(product => {
+        const isWish = wishlist.includes(product.id);
+        const discount = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
+
+        const card = document.createElement('div');
+        card.className = "tilt-card group bg-white rounded-3xl border border-softBorder overflow-hidden shadow-sm hover:shadow-card-lift transition-all duration-300 flex flex-col justify-between";
+        card.setAttribute('data-id', product.id);
+
+        card.innerHTML = `
+          <div>
+            <!-- Image Showcase -->
+            <div class="relative overflow-hidden aspect-[4/5] bg-pearl cursor-pointer" onclick="openQuickView(${product.id})">
+              <img src="${product.image}" alt="${product.title}" 
+                   class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105">
+              
+              <!-- Luxury Badge -->
+              <span class="absolute top-3.5 left-3.5 bg-white/95 backdrop-blur-md text-espresso border border-softBorder text-[9px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full shadow-sm">
+                ${product.badge}
+              </span>
+
+              <!-- Wishlist Heart Button -->
+              <button onclick="event.stopPropagation(); toggleWishlist(${product.id})" class="absolute top-3.5 right-3.5 w-8 h-8 rounded-full bg-white/95 backdrop-blur-md border border-softBorder flex items-center justify-center text-xs transition ${isWish ? 'text-red-500 scale-110' : 'text-espresso hover:text-red-500'} shadow-sm">
+                <i class="${isWish ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
+              </button>
+
+              <!-- Quick View Floating Pill on Hover -->
+              <div class="absolute inset-x-4 bottom-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <button onclick="event.stopPropagation(); openQuickView(${product.id})" class="w-full py-2.5 bg-white/95 backdrop-blur-md text-espresso hover:bg-espresso hover:text-white rounded-xl text-xs font-bold uppercase tracking-widest shadow-md transition">
+                  <i class="fa-regular fa-eye mr-1.5"></i> Quick View & Specs
+                </button>
+              </div>
+            </div>
+
+            <!-- Card Content -->
+            <div class="p-5">
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-gold-600">${product.brand}</span>
+                <span class="text-[10px] text-charcoal/70 flex items-center gap-1 font-semibold"><i class="fa-solid fa-star text-gold-500 text-[9px]"></i> 4.9</span>
+              </div>
+
+              <h4 class="font-serif text-lg font-bold text-espresso line-clamp-1 group-hover:text-gold-600 transition cursor-pointer" onclick="openQuickView(${product.id})">
+                ${product.title}
+              </h4>
+
+              <!-- Price Row -->
+              <div class="flex items-baseline space-x-2 mt-2 mb-3 font-sans">
+                <span class="text-lg font-bold text-espresso">₹${product.price.toLocaleString('en-IN')}</span>
+                <span class="text-xs line-through text-charcoal/50">₹${product.originalPrice.toLocaleString('en-IN')}</span>
+                <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">${discount}% OFF</span>
+              </div>
+
+              <!-- Size Selector Chips -->
+              <div class="space-y-1.5">
+                <div class="text-[10px] font-bold text-charcoal/60 uppercase tracking-wider">Select Fit / Size:</div>
+                <div class="flex flex-wrap gap-1.5" id="sizeList-${product.id}">
+                  ${product.sizes.map(size => `
+                    <button onclick="selectProductSize(${product.id}, '${size}')" 
+                            class="size-pill-${product.id} text-[10px] px-2.5 py-1 rounded-md border ${selectedSizes[product.id] === size ? 'border-espresso bg-espresso text-white' : 'border-softBorder bg-alabaster text-espresso hover:border-gold-400'} font-semibold transition">
+                      ${size}
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Button -->
+          <div class="px-5 pb-5 pt-0">
+            <button onclick="addToCart(${product.id})" class="w-full py-3 bg-pearl hover:bg-espresso hover:text-white text-espresso border border-softBorder rounded-xl text-xs font-bold uppercase tracking-widest transition flex items-center justify-center gap-2 active:scale-95 shadow-sm">
+              <i class="fa-solid fa-bag-shopping text-xs text-gold-600"></i>
+              <span>Add to Bag</span>
+            </button>
+          </div>
+        `;
+
+        // 3D Card Hover Perspective Event
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+          const rotateX = (-y / rect.height) * 8;
+          const rotateY = (x / rect.width) * 8;
+          card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)`;
+        });
+
+        grid.appendChild(card);
+      });
+    }
+
+    // Size select helper
+    function selectProductSize(productId, size) {
+      selectedSizes[productId] = size;
+      const pills = document.querySelectorAll(`.size-pill-${productId}`);
+      pills.forEach(btn => {
+        if (btn.innerText.trim() === size) {
+          btn.className = `size-pill-${productId} text-[10px] px-2.5 py-1 rounded-md border border-espresso bg-espresso text-white font-semibold transition`;
+        } else {
+          btn.className = `size-pill-${productId} text-[10px] px-2.5 py-1 rounded-md border border-softBorder bg-alabaster text-espresso hover:border-gold-400 font-semibold transition`;
+        }
+      });
+    }
+
+    // ================= FILTERS & SEARCH =================
+    function filterCategory(cat) {
+      currentCategory = cat;
+      currentBrand = 'all';
+      document.getElementById('brandSelect').value = 'all';
+
+      // Update pill states
+      document.querySelectorAll('.cat-pill').forEach(pill => {
+        if (pill.getAttribute('data-cat') === cat) {
+          pill.className = "cat-pill active px-4 py-2 rounded-full text-xs font-bold tracking-wider transition bg-espresso text-white shadow-sm whitespace-nowrap";
+        } else {
+          pill.className = "cat-pill px-4 py-2 rounded-full text-xs font-bold tracking-wider transition bg-white text-espresso border border-softBorder hover:border-gold-400 whitespace-nowrap";
+        }
+      });
+
+      applyCombinedFilters();
+    }
+
+    function filterByBrand(brand) {
+      currentBrand = brand;
+      currentCategory = 'all';
+      document.getElementById('brandSelect').value = brand;
+      document.getElementById('collections').scrollIntoView({ behavior: 'smooth' });
+      applyCombinedFilters();
+    }
+
+    function filterByDropdownBrand(val) {
+      currentBrand = val;
+      applyCombinedFilters();
+    }
+
+    function resetFilters() {
+      currentCategory = 'all';
+      currentBrand = 'all';
+      document.getElementById('brandSelect').value = 'all';
+      if (document.getElementById('searchInput')) document.getElementById('searchInput').value = '';
+      if (document.getElementById('mobileSearchInput')) document.getElementById('mobileSearchInput').value = '';
+      filterCategory('all');
+    }
+
+    function applyCombinedFilters() {
+      let filtered = [...storeProducts];
+
+      // Category filter
+      if (currentCategory !== 'all') {
+        filtered = filtered.filter(p => p.category === currentCategory);
+      }
+
+      // Brand filter
+      if (currentBrand !== 'all') {
+        filtered = filtered.filter(p => p.brand.toLowerCase() === currentBrand.toLowerCase());
+      }
+
+      // Search bar filter
+      const term = (document.getElementById('searchInput')?.value || document.getElementById('mobileSearchInput')?.value || '').toLowerCase().trim();
+      if (term) {
+        filtered = filtered.filter(p => 
+          p.title.toLowerCase().includes(term) ||
+          p.brand.toLowerCase().includes(term) ||
+          p.desc.toLowerCase().includes(term)
+        );
+      }
+
+      renderProducts(filtered);
+    }
+
+    function sortProducts(criteria) {
+      let filtered = [...storeProducts];
+      if (currentCategory !== 'all') filtered = filtered.filter(p => p.category === currentCategory);
+      if (currentBrand !== 'all') filtered = filtered.filter(p => p.brand.toLowerCase() === currentBrand.toLowerCase());
+
+      if (criteria === 'low-high') {
+        filtered.sort((a, b) => a.price - b.price);
+      } else if (criteria === 'high-low') {
+        filtered.sort((a, b) => b.price - a.price);
+      }
+      renderProducts(filtered);
+    }
+
+    document.getElementById('searchInput')?.addEventListener('input', applyCombinedFilters);
+    document.getElementById('mobileSearchInput')?.addEventListener('input', applyCombinedFilters);
+
+    // ================= SLIDE-OUT CART & PROMO CODE =================
+    function addToCart(productId, explicitSize = null) {
+      const product = storeProducts.find(p => p.id === productId);
+      if (!product) return;
+
+      const size = explicitSize || selectedSizes[productId] || product.sizes[0];
+      const existing = cart.find(item => item.id === productId && item.size === size);
+
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({
+          id: product.id,
+          title: product.title,
+          brand: product.brand,
+          price: product.price,
+          image: product.image,
+          size: size,
+          quantity: 1
+        });
+      }
+
+      updateCartDrawerUI();
+      openCartDrawer();
+      showToast(`Added ${product.title.substring(0, 24)}... (${size})`);
+    }
+
+    function updateCartDrawerUI() {
+      const container = document.getElementById('cartItemsContainer');
+      const badge = document.getElementById('cartCountBadge');
+      const drawerBadge = document.getElementById('drawerItemCountBadge');
+      const subtotalEl = document.getElementById('cartSubtotal');
+      const grandTotalEl = document.getElementById('cartGrandTotal');
+      const checkoutDisplay = document.getElementById('checkoutAmountDisplay');
+
+      const totalItems = cart.reduce((acc, i) => acc + i.quantity, 0);
+      const subtotal = cart.reduce((acc, i) => acc + (i.price * i.quantity), 0);
+      const discount = Math.round(subtotal * (couponDiscountPercent / 100));
+      const grandTotal = Math.max(0, subtotal - discount);
+
+      badge.innerText = totalItems;
+      drawerBadge.innerText = totalItems;
+      subtotalEl.innerText = `₹${subtotal.toLocaleString('en-IN')}`;
+      grandTotalEl.innerText = `₹${grandTotal.toLocaleString('en-IN')}`;
+      if (checkoutDisplay) checkoutDisplay.innerText = `₹${grandTotal.toLocaleString('en-IN')}`;
+
+      // Free Packaging Progress Bar (Threshold: ₹5,000)
+      const progressBar = document.getElementById('shippingProgressBar');
+      const goalText = document.getElementById('shippingGoalText');
+      if (subtotal >= 5000) {
+        progressBar.style.width = '100%';
+        goalText.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600 mr-1.5"></i> Complimentary Signature Gift Box Unlocked!';
+      } else {
+        const percent = Math.min((subtotal / 5000) * 100, 100);
+        progressBar.style.width = `${percent}%`;
+        const diff = 5000 - subtotal;
+        goalText.innerHTML = `<i class="fa-solid fa-gift text-gold-500 mr-1.5"></i> Add ₹${diff.toLocaleString('en-IN')} more for Free VIP Box`;
+      }
+
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div class="h-full flex flex-col items-center justify-center text-center py-20 text-charcoal/60">
+            <div class="w-16 h-16 rounded-full bg-pearl flex items-center justify-center text-gold-500 text-2xl mb-3 border border-softBorder">
+              <i class="fa-solid fa-bag-shopping"></i>
+            </div>
+            <p class="font-serif text-xl font-bold text-espresso">Your Shopping Bag is Empty</p>
+            <p class="text-xs text-charcoal/60 mt-1 max-w-[240px]">Browse our curated designer collections and discover timeless pieces.</p>
+            <button onclick="closeCartDrawer()" class="mt-4 px-6 py-2.5 bg-espresso text-white rounded-full text-xs font-bold uppercase tracking-widest">Start Shopping</button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = cart.map((item, index) => `
+        <div class="flex items-center space-x-3.5 bg-alabaster p-3.5 rounded-2xl border border-softBorder">
+          <img src="${item.image}" alt="${item.title}" class="w-16 h-20 object-cover rounded-xl border border-softBorder">
+          
+          <div class="flex-1 min-w-0">
+            <span class="text-[9px] uppercase font-bold tracking-wider text-gold-600">${item.brand}</span>
+            <h5 class="text-xs font-bold text-espresso truncate">${item.title}</h5>
+            <div class="text-[11px] text-charcoal/70 mt-0.5">Size: <span class="font-bold text-espresso">${item.size}</span></div>
+            <div class="text-xs font-bold text-espresso mt-1 font-sans">₹${item.price.toLocaleString('en-IN')}</div>
+          </div>
+
+          <div class="flex flex-col items-end space-y-2">
+            <button onclick="removeCartItem(${index})" class="text-charcoal/50 hover:text-red-500 text-xs transition">
+              <i class="fa-regular fa-trash-can"></i>
+            </button>
+            <div class="flex items-center border border-softBorder rounded-lg bg-white overflow-hidden text-xs">
+              <button onclick="changeQty(${index}, -1)" class="px-2.5 py-0.5 hover:bg-pearl transition text-espresso font-bold">-</button>
+              <span class="px-2 font-bold text-espresso text-[11px]">${item.quantity}</span>
+              <button onclick="changeQty(${index}, 1)" class="px-2.5 py-0.5 hover:bg-pearl transition text-espresso font-bold">+</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function changeQty(index, delta) {
+      if (!cart[index]) return;
+      cart[index].quantity += delta;
+      if (cart[index].quantity <= 0) cart.splice(index, 1);
+      updateCartDrawerUI();
+    }
+
+    function removeCartItem(index) {
+      cart.splice(index, 1);
+      updateCartDrawerUI();
+      showToast("Article removed from bag");
+    }
+
+    function applyCoupon() {
+      const input = document.getElementById('couponInput');
+      const feedback = document.getElementById('couponFeedback');
+      const discountRow = document.getElementById('discountRow');
+      const discountAmountEl = document.getElementById('cartDiscountAmount');
+
+      if (input.value.trim().toUpperCase() === 'ROYAL2026') {
+        couponDiscountPercent = 10;
+        feedback.innerText = '✓ VIP 10% Privilege Code Applied!';
+        feedback.className = 'text-[11px] font-bold text-emerald-700 block';
+        discountRow.classList.remove('hidden');
+        showToast("ROYAL2026 Applied: 10% Savings Activated");
+      } else {
+        couponDiscountPercent = 0;
+        feedback.innerText = '✕ Invalid Promo Code. Try: ROYAL2026';
+        feedback.className = 'text-[11px] font-bold text-red-600 block';
+        discountRow.classList.add('hidden');
+      }
+      updateCartDrawerUI();
+    }
+
+    function openCartDrawer() {
+      document.getElementById('cartDrawerBackdrop').classList.remove('hidden');
+      document.getElementById('cartDrawer').classList.remove('translate-x-full');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeCartDrawer() {
+      document.getElementById('cartDrawerBackdrop').classList.add('hidden');
+      document.getElementById('cartDrawer').classList.add('translate-x-full');
+      document.body.style.overflow = 'auto';
+    }
+
+    document.getElementById('cartToggleBtn')?.addEventListener('click', openCartDrawer);
+    document.getElementById('closeCartBtn')?.addEventListener('click', closeCartDrawer);
+    document.getElementById('cartDrawerBackdrop')?.addEventListener('click', closeCartDrawer);
+
+    // ================= QUICK VIEW MODAL =================
+    function openQuickView(id) {
+      const product = storeProducts.find(p => p.id === id);
+      if (!product) return;
+      modalActiveProductId = id;
+
+      document.getElementById('modalProductImg').src = product.image;
+      document.getElementById('modalBadge').innerText = product.badge;
+      document.getElementById('modalBrandTag').innerText = product.brand;
+      document.getElementById('modalProductTitle').innerText = product.title;
+      document.getElementById('modalCurrentPrice').innerText = `₹${product.price.toLocaleString('en-IN')}`;
+      document.getElementById('modalOriginalPrice').innerText = `₹${product.originalPrice.toLocaleString('en-IN')}`;
+      
+      const discount = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
+      document.getElementById('modalDiscountTag').innerText = `${discount}% OFF`;
+      document.getElementById('modalDescription').innerText = product.desc;
+
+      const sizeContainer = document.getElementById('modalSizeChips');
+      sizeContainer.innerHTML = product.sizes.map(s => `
+        <button onclick="setModalSize('${s}')" class="modal-chip px-3.5 py-1.5 rounded-lg border text-xs font-semibold transition ${s === selectedSizes[id] ? 'border-espresso bg-espresso text-white' : 'border-softBorder bg-alabaster text-espresso hover:border-gold-400'}">
+          ${s}
+        </button>
+      `).join('');
+
+      document.getElementById('modalAddToCartBtn').onclick = () => {
+        addToCart(id, selectedSizes[id]);
+        closeQuickView();
+      };
+
+      document.getElementById('quickViewModalBackdrop').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function setModalSize(size) {
+      if (!modalActiveProductId) return;
+      selectedSizes[modalActiveProductId] = size;
+      selectProductSize(modalActiveProductId, size);
+      const chips = document.querySelectorAll('.modal-chip');
+      chips.forEach(c => {
+        if (c.innerText.trim() === size) {
+          c.className = 'modal-chip px-3.5 py-1.5 rounded-lg border border-espresso bg-espresso text-white text-xs font-semibold transition';
+        } else {
+          c.className = 'modal-chip px-3.5 py-1.5 rounded-lg border border-softBorder bg-alabaster text-espresso hover:border-gold-400 text-xs font-semibold transition';
+        }
+      });
+    }
+
+    function closeQuickView() {
+      document.getElementById('quickViewModalBackdrop').classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+
+    document.getElementById('quickViewModalBackdrop')?.addEventListener('click', (e) => {
+      if (e.target.id === 'quickViewModalBackdrop') closeQuickView();
+    });
+
+    // ================= WHATSAPP CONCIERGE ORDER =================
+    function openWhatsAppCheckout() {
+      if (cart.length === 0) {
+        showToast("Your shopping bag is empty!");
+        return;
+      }
+
+      let orderText = `*ATELIER ROYALE - LUXURY BOUTIQUE ORDER*\n`;
+      orderText += `------------------------------------\n`;
+      cart.forEach((item, i) => {
+        orderText += `${i + 1}. ${item.brand.toUpperCase()} - ${item.title}\n   Size: ${item.size} | Qty: ${item.quantity} | ₹${(item.price * item.quantity).toLocaleString('en-IN')}\n`;
+      });
+      const subtotal = cart.reduce((acc, i) => acc + (i.price * i.quantity), 0);
+      const discount = Math.round(subtotal * (couponDiscountPercent / 100));
+      const grandTotal = subtotal - discount;
+
+      orderText += `------------------------------------\n`;
+      if (couponDiscountPercent > 0) orderText += `VIP Promo (ROYAL2026): -₹${discount.toLocaleString('en-IN')}\n`;
+      orderText += `*Total Amount Payable: ₹${grandTotal.toLocaleString('en-IN')}*\n`;
+      orderText += `Doorstep VIP Handover: Yes\n\nPlease confirm availability and dispatch window.`;
+
+      const whatsappURL = `https://wa.me/918619089899?text=${encodeURIComponent(orderText)}`;
+      window.open(whatsappURL, '_blank');
+      showToast("Connecting directly to Boutique WhatsApp Desk...");
+    }
+
+    // ================= CHECKOUT & INVOICE FLOW =================
+    function openCheckoutModal() {
+      if (cart.length === 0) {
+        showToast("Please add items to your bag first!");
+        return;
+      }
+      closeCartDrawer();
+      document.getElementById('checkoutModalBackdrop').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeCheckoutModal() {
+      document.getElementById('checkoutModalBackdrop').classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+
+    function handleDemoOrder(e) {
+      e.preventDefault();
+      const patronName = document.getElementById('orderPatronName').value;
+      const patronPhone = document.getElementById('orderPatronPhone').value;
+      const patronAddress = document.getElementById('orderPatronAddress').value;
+
+      const subtotal = cart.reduce((acc, i) => acc + (i.price * i.quantity), 0);
+      const discount = Math.round(subtotal * (couponDiscountPercent / 100));
+      const grandTotal = subtotal - discount;
+
+      lastOrderDetails = {
+        invoiceNo: `INV-AR-${Math.floor(100000 + Math.random() * 900000)}`,
+        name: patronName,
+        phone: patronPhone,
+        address: patronAddress,
+        items: [...cart],
+        total: grandTotal
+      };
+
+      closeCheckoutModal();
+      openInvoiceModal();
+      cart = [];
+      updateCartDrawerUI();
+    }
+
+    function openInvoiceModal() {
+      if (!lastOrderDetails) return;
+      document.getElementById('invoiceNumber').innerText = lastOrderDetails.invoiceNo;
+      document.getElementById('invoicePatron').innerText = lastOrderDetails.name;
+      document.getElementById('invoicePhone').innerText = lastOrderDetails.phone;
+      document.getElementById('invoiceAddress').innerText = lastOrderDetails.address;
+      document.getElementById('invoiceTotal').innerText = `₹${lastOrderDetails.total.toLocaleString('en-IN')}`;
+
+      const itemsDiv = document.getElementById('invoiceItems');
+      itemsDiv.innerHTML = lastOrderDetails.items.map(i => `
+        <div class="py-2 flex justify-between items-center text-xs">
+          <div>
+            <p class="font-bold text-espresso">${i.title}</p>
+            <p class="text-[10px] text-charcoal/60">Brand: ${i.brand} | Size: ${i.size} | Qty: ${i.quantity}</p>
+          </div>
+          <span class="font-bold text-espresso">₹${(i.price * i.quantity).toLocaleString('en-IN')}</span>
+        </div>
+      `).join('');
+
+      document.getElementById('invoiceModalBackdrop').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeInvoiceModal() {
+      document.getElementById('invoiceModalBackdrop').classList.add('hidden');
+      document.body.style.overflow = 'auto';
+      showToast("Order Logged. Boutique Concierge has received your booking.");
+    }
+
+    function shareInvoiceWhatsApp() {
+      if (!lastOrderDetails) return;
+      let text = `*OFFICIAL INVOICE: ${lastOrderDetails.invoiceNo}*\n`;
+      text += `Patron: ${lastOrderDetails.name}\n`;
+      text += `Address: ${lastOrderDetails.address}\n`;
+      text += `Items Count: ${lastOrderDetails.items.length}\n`;
+      text += `Payable Amount: ₹${lastOrderDetails.total.toLocaleString('en-IN')}\n\nThank you for choosing Atelier Royale.`;
+      window.open(`https://wa.me/918619089899?text=${encodeURIComponent(text)}`, '_blank');
+    }
+
+    // ================= VIP STYLING TRIAL =================
+    function openStylingModal() {
+      document.getElementById('stylingModalBackdrop').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeStylingModal() {
+      document.getElementById('stylingModalBackdrop').classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+
+    function confirmStylingBooking() {
+      const name = document.getElementById('stylingName').value || 'VIP Client';
+      const slot = document.getElementById('stylingTime').value;
+      closeStylingModal();
+
+      const text = `*VIP FITTING SUITE RESERVATION*\nPatron: ${name}\nSlot: ${slot}\nStore: Atelier Royale Flagship Boutique`;
+      window.open(`https://wa.me/918619089899?text=${encodeURIComponent(text)}`, '_blank');
+      showToast("Trial suite reservation submitted!");
+    }
+
+    // ================= WISHLIST & MISC =================
+    function toggleWishlist(id) {
+      if (wishlist.includes(id)) {
+        wishlist = wishlist.filter(x => x !== id);
+        showToast("Removed from Wishlist");
+      } else {
+        wishlist.push(id);
+        showToast("Saved to your Private Luxury Wishlist");
+      }
+      document.getElementById('wishlistCount').innerText = wishlist.length;
+      applyCombinedFilters();
+    }
+
+    function toggleModalWishlist() {
+      if (modalActiveProductId) toggleWishlist(modalActiveProductId);
+    }
+
+    function showWishlistToast() {
+      showToast(`You have ${wishlist.length} designer items saved in your Wishlist.`);
+    }
+
+    function handleSubscribe() {
+      const email = document.getElementById('newsletterInput').value;
+      if (!email || !email.includes('@')) {
+        showToast("Please enter a valid email address");
+        return;
+      }
+      showToast("Welcome to Atelier Royale Circle. Private catalog sent!");
+      document.getElementById('newsletterInput').value = '';
+    }
+
+    // Toast Utility
+    function showToast(msg) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = "toast-anim bg-espresso text-white text-xs px-4 py-3 rounded-2xl shadow-2xl border border-gold-500/40 flex items-center space-x-3 max-w-sm pointer-events-auto";
+      toast.innerHTML = `
+        <span class="w-2 h-2 rounded-full bg-gold-400"></span>
+        <span class="font-medium">${msg}</span>
+      `;
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // Mobile Navbar Toggle
+    const mobileBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    function toggleMobileMenu() {
+      mobileMenu.classList.toggle('hidden');
+    }
+    mobileBtn?.addEventListener('click', toggleMobileMenu);
+
+    // Initializer
+    window.onload = function() {
+      renderProducts(storeProducts);
+      updateCartDrawerUI();
+    };
+  </script>
+</body>
+</html>

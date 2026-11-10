@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo for Clothing Brand E-Commerce Website</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg-body: #f8fafc;
+            --surface: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --brand-primary: #ff3f6c;
+            --brand-hover: #e02d58;
+            --accent-blue: #2563eb;
+            --shadow-card: 0 4px 18px rgba(15, 23, 42, 0.05);
+            --shadow-hover: 0 16px 32px rgba(15, 23, 42, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 30px 16px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--brand-primary);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+            margin-bottom: 14px;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+            letter-spacing: -0.02em;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: clamp(0.95rem, 1.4vw, 1.05rem);
+            max-width: 580px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        /* 5-Cards Layout Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+            gap: 22px;
+            margin-bottom: 40px;
+        }
+
+        /* Demo Card */
+        .demo-card {
+            background: var(--surface);
+            border: 1.5px solid var(--border);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+            transition: all 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .demo-card:hover {
+            transform: translateY(-5px);
+            border-color: #cbd5e1;
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-content {
+            padding: 24px;
+        }
+
+        .card-header-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: #f1f5f9;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s ease;
+        }
+
+        .demo-card:hover .card-icon {
+            background: var(--brand-primary);
+            color: #ffffff;
+        }
+
+        .file-pill {
+            font-family: monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            background: #eff6ff;
+            color: var(--accent-blue);
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid #bfdbfe;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .card-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 18px;
+        }
+
+        /* Direct link box */
+        .direct-link-box {
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            border-radius: 8px;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .direct-link-box a {
+            color: var(--accent-blue);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .direct-link-box a:hover {
+            text-decoration: underline;
+        }
+
+        /* Card Action Footer */
+        .card-actions {
+            padding: 16px 24px;
+            background: #fafbfd;
+            border-top: 1px solid var(--border);
+        }
+
+        .launch-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            background: var(--text-dark);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 11px 18px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .launch-btn:hover {
+            background: var(--brand-primary);
+            gap: 12px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Main Heading -->
+        <header>
+            <div class="badge">
+                <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i> Client Presentation Hub
+            </div>
+            <h1>Demo for clothing brand e-commerce website</h1>
+            <p>क्लाइंट को डेमो दिखाने के लिए नीचे दिए गए 5 डिज़ाइन्स में से किसी भी वर्ज़न को तुरंत ओपन करें।</p>
+        </header>
+
+        <!-- 5 Demo Cards with Active Links -->
+        <div class="cards-grid">
+
+            <!-- Card 1: trial1.html -->
+            <div class="demo-card">
+                <div class="card-content">
+                    <div class="card-header-bar">
+                        <div class="card-icon"><i data-lucide="layout"></i></div>
+                        <span class="file-pill">trial1.html</span>
+                    </div>
+                    <h3 class="card-title">Demo Version 1</h3>
+                    <p class="card-desc">मिनिमल और एलिगेंट लक्ज़री लेआउट—प्योर व्हाइट थीम, ओरिजिनल ब्रांड्स और क्विक साइज़ प्रिव्यू।</p>
+                    
+                    <div class="direct-link-box">
+                        <span style="font-size:0.75rem; color:#64748b;">Direct Link:</span>
+                        <a href="try1.html" target="_blank"><i data-lucide="external-link" style="width:13px;height:13px;"></i> trial1.html</a>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <a href="try1.html" class="launch-btn" target="_blank">
+                        Open trial1.html <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Card 2: trial2.html -->
+            <div class="demo-card">
+                <div class="card-content">
+                    <div class="card-header-bar">
+                        <div class="card-icon"><i data-lucide="shopping-bag"></i></div>
+                        <span class="file-pill">trial2.html</span>
+                    </div>
+                    <h3 class="card-title">Demo Version 2</h3>
+                    <p class="card-desc">Myntra-स्टाइल शॉपिंग एक्सपीरियंस—स्टोरी सर्कल्स, ब्रांड स्टेटस, 2-कॉलम मोबाइल ग्रिड और डिस्काउंट बैज।</p>
+                    
+                    <div class="direct-link-box">
+                        <span style="font-size:0.75rem; color:#64748b;">Direct Link:</span>
+                        <a href="try2.html" target="_blank"><i data-lucide="external-link" style="width:13px;height:13px;"></i> trial2.html</a>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <a href="try2.html" class="launch-btn" target="_blank">
+                        Open trial2.html <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Card 3: trial3.html -->
+            <div class="demo-card">
+                <div class="card-content">
+                    <div class="card-header-bar">
+                        <div class="card-icon"><i data-lucide="zap"></i></div>
+                        <span class="file-pill">trial3.html</span>
+                    </div>
+                    <h3 class="card-title">Demo Version 3</h3>
+                    <p class="card-desc">कोरियन और इटैलियन स्ट्रीटवियर लुक—स्मूथ माइक्रो-एनिमेशन, मॉडर्न टाइपोग्राफी और लाइव स्लाइडर।</p>
+                    
+                    <div class="direct-link-box">
+                        <span style="font-size:0.75rem; color:#64748b;">Direct Link:</span>
+                        <a href="try3.html" target="_blank"><i data-lucide="external-link" style="width:13px;height:13px;"></i> trial3.html</a>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <a href="try3.html" class="launch-btn" target="_blank">
+                        Open trial3.html <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Card 4: trial4.html -->
+            <div class="demo-card">
+                <div class="card-content">
+                    <div class="card-header-bar">
+                        <div class="card-icon"><i data-lucide="smartphone"></i></div>
+                        <span class="file-pill">trial4.html</span>
+                    </div>
+                    <h3 class="card-title">Demo Version 4</h3>
+                    <p class="card-desc">मोबाइल ऐप-फर्स्ट इंटरफ़ेस—बॉटम नेविगेशन डॉक, नीचे से खुलने वाली साइज़ शीट और 1-टैप ऑर्डर।</p>
+                    
+                    <div class="direct-link-box">
+                        <span style="font-size:0.75rem; color:#64748b;">Direct Link:</span>
+                        <a href="try4.html" target="_blank"><i data-lucide="external-link" style="width:13px;height:13px;"></i> trial4.html</a>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <a href="try4.html" class="launch-btn" target="_blank">
+                        Open trial4.html <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Card 5: trial5.html -->
+            <div class="demo-card">
+                <div class="card-content">
+                    <div class="card-header-bar">
+                        <div class="card-icon"><i data-lucide="crown"></i></div>
+                        <span class="file-pill">trial5.html</span>
+                    </div>
+                    <h3 class="card-title">Demo Version 5</h3>
+                    <p class="card-desc">कम्प्लीट लक्ज़री मल्टी-ब्रांड फ़्लैगशिप—वॉच, बेल्ट, शर्ट्स, कूपन कोड्स और डायरेक्ट व्हाट्सएप बिलिंग।</p>
+                    
+                    <div class="direct-link-box">
+                        <span style="font-size:0.75rem; color:#64748b;">Direct Link:</span>
+                        <a href="try5.html" target="_blank"><i data-lucide="external-link" style="width:13px;height:13px;"></i> trial5.html</a>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <a href="try5.html" class="launch-btn" target="_blank">
+                        Open trial5.html <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Card 5: trial5.html -->
+            <div class="demo-card">
+                <div class="card-content">
+                    <div class="card-header-bar">
+                        <div class="card-icon"><i data-lucide="crown"></i></div>
+                        <span class="file-pill">trial6</span>
+                    </div>
+                    <h3 class="card-title">Demo Version 6</h3>
+                    <p class="card-desc">      </p>
+                    
+                    <div class="direct-link-box">
+                        <span style="font-size:0.75rem; color:#64748b;">Direct Link:</span>
+                        <a href="try6.html" target="_blank"><i data-lucide="external-link" style="width:13px;height:13px;"></i> trial5.html</a>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <a href="try6.html" class="launch-btn" target="_blank">
+                        Open trial6 <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+                    </a>
+                </div>
+            </div>
+            
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>E-Commerce Clothing Brand &bull; Live Client Demo Showcase Hub</p>
+    </footer>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

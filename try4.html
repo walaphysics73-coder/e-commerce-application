@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Myntra Luxe | Premium Multi-Brand Fashion Store</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome 6 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            myntraPink: '#ff3f6c',
+            myntraPinkHover: '#e7335e',
+            myntraOrange: '#ff905a',
+            myntraGreen: '#03a685',
+            myntraDark: '#282c3f',
+            myntraSub: '#535766',
+            myntraMuted: '#94969f',
+            myntraBg: '#f5f5f6',
+            myntraBorder: '#eaeaec',
+            myntraLightPink: '#fff1f4'
+          },
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            display: ['"Plus Jakarta Sans"', 'sans-serif']
+          },
+          boxShadow: {
+            'myntra': '0 2px 16px 0 rgba(0,0,0,0.08)',
+            'card': '0 1px 3px rgba(0,0,0,0.06)',
+            'sheet': '0 -8px 30px rgba(0,0,0,0.14)',
+            'dock': '0 -2px 10px rgba(0,0,0,0.06)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #ffffff;
+      color: #282c3f;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      padding-bottom: 64px; /* Clearance for fixed mobile bottom dock */
+    }
+
+    @media (min-width: 1024px) {
+      body {
+        padding-bottom: 0px;
+      }
+    }
+
+    /* Hide scrollbars for native swiping experience */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Instagram / Myntra Story Ring Gradient */
+    .story-ring {
+      background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+      padding: 2.2px;
+    }
+
+    .story-ring.active {
+      background: #ff3f6c;
+      padding: 2.5px;
+    }
+
+    /* Wishlist Heart Bounce Animation */
+    @keyframes heartBeat {
+      0% { transform: scale(1); }
+      30% { transform: scale(1.35); }
+      60% { transform: scale(0.9); }
+      100% { transform: scale(1); }
+    }
+    .animate-heart {
+      animation: heartBeat 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    /* Smooth Slide-up Bottom Sheet */
+    .sheet-transition {
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+    }
+
+    /* Carousel banner indicators */
+    .banner-dot.active {
+      background-color: #ff3f6c;
+      width: 18px;
+    }
+  </style>
+</head>
+<body class="selection:bg-myntraPink selection:text-white">
+
+  <!-- ==================== 1. TOP ANNOUNCEMENT STRIP ==================== -->
+  <div class="bg-myntraDark text-white text-[11px] font-semibold py-1.5 px-4 flex justify-between items-center tracking-wide">
+    <div class="flex items-center space-x-2">
+      <span class="bg-myntraPink text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded tracking-wider">OFFER</span>
+      <span>Flat ₹400 OFF on your first purchase! Code: <span class="text-amber-300 font-bold">MYNTRA2026</span></span>
+    </div>
+    <div class="hidden sm:flex items-center space-x-4 text-[10px] text-gray-300">
+      <span><i class="fa-solid fa-truck-fast mr-1 text-myntraPink"></i> Express Doorstep Delivery</span>
+      <span>•</span>
+      <span><i class="fa-solid fa-shield-halved mr-1 text-myntraGreen"></i> 100% Original Brands</span>
+    </div>
+  </div>
+
+  <!-- ==================== 2. EXACT MYNTRA HEADER ==================== -->
+  <header class="sticky top-0 z-40 bg-white border-b border-myntraBorder shadow-sm transition-all duration-200">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6">
+      <div class="flex items-center justify-between h-14 sm:h-18 gap-2 sm:gap-6">
+        
+        <!-- Mobile Left: Hamburger + Brand Logo -->
+        <div class="flex items-center space-x-2 sm:space-x-3">
+          <button onclick="toggleMobileSideMenu()" class="lg:hidden text-myntraDark p-1.5 focus:outline-none" aria-label="Open Menu">
+            <i class="fa-solid fa-bars text-lg"></i>
+          </button>
+          
+          <!-- Myntra Iconic Logo + Store Name -->
+          <a href="#" onclick="resetAllFilters(event)" class="flex items-center gap-2 cursor-pointer select-none">
+            <!-- Custom SVG Myntra M Logo -->
+            <svg class="w-7 h-7 sm:w-9 sm:h-9" viewBox="0 0 100 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 70C12 70 20 22 28 22C36 22 44 48 44 48C44 48 52 22 60 22C68 22 76 48 76 48C76 48 84 22 92 22C99 22 100 70 100 70C100 70 92 48 85 48C78 48 72 70 72 70C72 70 65 48 58 48C51 48 45 70 45 70C45 70 38 48 31 48C24 48 12 70 12 70Z" fill="#FF3F6C"/>
+              <path d="M0 70C0 70 8 36 15 36C22 36 28 55 28 55C28 55 35 36 42 36C49 36 56 60 56 60C56 60 48 42 42 42C35 42 30 65 30 65C30 65 24 46 17 46C10 46 0 70 0 70Z" fill="#FF905A" opacity="0.95"/>
+            </svg>
+            <div>
+              <span class="font-display font-extrabold text-sm sm:text-lg tracking-wider text-myntraDark uppercase block leading-none">MYNTRA<span class="text-myntraPink">.</span>LUXE</span>
+              <span class="text-[8px] font-bold tracking-widest text-myntraMuted uppercase hidden sm:block">Official Multi-Brand Flagship</span>
+            </div>
+          </a>
+        </div>
+
+        <!-- Desktop Navigation Tabs -->
+        <nav class="hidden lg:flex items-center space-x-7 text-[12px] font-bold uppercase tracking-wider text-myntraDark">
+          <button onclick="filterCategory('shirts')" class="hover:text-myntraPink transition py-1 focus:outline-none">Shirts</button>
+          <button onclick="filterCategory('polos')" class="hover:text-myntraPink transition py-1 focus:outline-none">T-Shirts</button>
+          <button onclick="filterCategory('jeans')" class="hover:text-myntraPink transition py-1 focus:outline-none">Jeans</button>
+          <button onclick="filterCategory('lowers')" class="hover:text-myntraPink transition py-1 focus:outline-none">Lowers</button>
+          <button onclick="filterCategory('innerwear')" class="hover:text-myntraPink transition py-1 focus:outline-none">Innerwear</button>
+          <button onclick="filterCategory('watches')" class="hover:text-myntraPink transition py-1 focus:outline-none">Watches</button>
+          <button onclick="filterCategory('belts')" class="hover:text-myntraPink transition py-1 focus:outline-none">Belts</button>
+        </nav>
+
+        <!-- Search Bar with Myntra styling (Microphone, Camera icons) -->
+        <div class="flex-1 max-w-xs sm:max-w-md mx-2 relative">
+          <div class="relative flex items-center bg-myntraBg rounded-md border border-transparent focus-within:border-myntraBorder focus-within:bg-white transition-all">
+            <span class="pl-3 text-myntraMuted text-xs"><i class="fa-solid fa-magnifying-glass"></i></span>
+            <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Search for Tommy, Levi's, US Polo, shirts..." 
+                   class="w-full bg-transparent text-xs py-2 px-2.5 text-myntraDark placeholder-myntraMuted font-medium focus:outline-none">
+            <div class="flex items-center space-x-2 pr-3 text-myntraMuted text-xs hidden sm:flex">
+              <i class="fa-solid fa-camera cursor-pointer hover:text-myntraPink" title="Search by Photo"></i>
+              <i class="fa-solid fa-microphone cursor-pointer hover:text-myntraPink" title="Voice Search"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Icons: Wishlist & Bag -->
+        <div class="flex items-center space-x-1 sm:space-x-5">
+          <!-- Wishlist -->
+          <button onclick="openWishlistToast()" class="flex flex-col items-center justify-center p-1.5 sm:px-2 relative text-myntraDark hover:text-myntraPink transition focus:outline-none" aria-label="Wishlist">
+            <i class="fa-regular fa-heart text-base sm:text-lg"></i>
+            <span class="text-[9px] font-bold hidden sm:block uppercase mt-0.5">Wishlist</span>
+            <span id="headerWishlistBadge" class="absolute -top-0.5 right-0.5 sm:right-2.5 bg-myntraPink text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center shadow-xs">2</span>
+          </button>
+
+          <!-- Shopping Bag -->
+          <button onclick="openBagDrawer()" class="flex flex-col items-center justify-center p-1.5 sm:px-2 relative text-myntraDark hover:text-myntraPink transition focus:outline-none" aria-label="Bag">
+            <i class="fa-solid fa-bag-shopping text-base sm:text-lg"></i>
+            <span class="text-[9px] font-bold hidden sm:block uppercase mt-0.5">Bag</span>
+            <span id="headerBagBadge" class="absolute -top-0.5 right-0.5 sm:right-2.5 bg-myntraPink text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center shadow-xs">0</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== 3. MYNTRA / INSTAGRAM STORY CIRCLES (SWIPEABLE STATUS REELS) ==================== -->
+  <section class="bg-white border-b border-myntraBorder py-3 sm:py-4">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6">
+      <div class="flex items-center space-x-4 sm:space-x-6 overflow-x-auto no-scrollbar scroll-smooth" id="storyPillRow">
+        <!-- Rendered via JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 4. LIVE HERO PROMOTIONAL BANNER & COUNTDOWN ==================== -->
+  <section class="bg-myntraBg py-3">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6">
+      <div class="relative bg-gradient-to-r from-amber-500 via-rose-500 to-myntraPink rounded-xl overflow-hidden shadow-sm text-white p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        
+        <!-- Left: Sale Messaging -->
+        <div class="text-center sm:text-left z-10">
+          <div class="inline-flex items-center gap-1.5 bg-white/20 backdrop-blur-md px-2.5 py-0.5 rounded-full text-[10px] uppercase font-bold tracking-widest text-amber-200 mb-1.5">
+            <i class="fa-solid fa-bolt text-yellow-300"></i> Grand Showroom Festival
+          </div>
+          <h2 class="text-xl sm:text-3xl font-display font-extrabold uppercase tracking-wide leading-tight">
+            TOP BRANDS: 40% - 70% OFF
+          </h2>
+          <p class="text-xs sm:text-sm text-rose-100 font-medium mt-1">
+            Tommy Hilfiger • Levi's • U.S. Polo Assn. • Calvin Klein • Armani Exchange
+          </p>
+        </div>
+
+        <!-- Right: Real-time Countdown Timer Box -->
+        <div class="bg-black/30 backdrop-blur-md rounded-xl p-3 border border-white/20 flex flex-col items-center z-10 flex-shrink-0">
+          <span class="text-[9px] uppercase font-bold text-amber-200 tracking-widest mb-1.5">Offer Ends In</span>
+          <div class="flex items-center space-x-2 text-center font-display font-bold">
+            <div class="bg-white text-myntraDark px-2 py-1 rounded text-xs sm:text-sm min-w-[32px]">
+              <span id="timerHours">04</span>
+              <span class="block text-[7px] text-myntraMuted uppercase font-sans">Hrs</span>
+            </div>
+            <span class="text-xs text-white">:</span>
+            <div class="bg-white text-myntraDark px-2 py-1 rounded text-xs sm:text-sm min-w-[32px]">
+              <span id="timerMins">42</span>
+              <span class="block text-[7px] text-myntraMuted uppercase font-sans">Min</span>
+            </div>
+            <span class="text-xs text-white">:</span>
+            <div class="bg-white text-myntraDark px-2 py-1 rounded text-xs sm:text-sm min-w-[32px]">
+              <span id="timerSecs">19</span>
+              <span class="block text-[7px] text-myntraMuted uppercase font-sans">Sec</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Decorative Pattern Circles -->
+        <div class="absolute -right-12 -bottom-12 w-48 h-48 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 5. STICKY CATEGORY PILLS & SORT CONTROLS ==================== -->
+  <div class="sticky top-14 sm:top-18 z-30 bg-white border-b border-myntraBorder py-2.5 shadow-xs">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 flex items-center justify-between gap-3">
+      
+      <!-- Horizontal Category Scroll Pills -->
+      <div class="flex items-center space-x-2 overflow-x-auto no-scrollbar scroll-smooth" id="categoryFilterBar">
+        <button onclick="filterCategory('all')" data-cat="all" class="cat-pill active text-xs font-bold px-3.5 py-1.5 rounded-full border border-myntraPink bg-myntraPink text-white whitespace-nowrap transition">All Drops</button>
+        <button onclick="filterCategory('shirts')" data-cat="shirts" class="cat-pill text-xs font-semibold px-3 py-1.5 rounded-full border border-myntraBorder bg-white text-myntraDark hover:border-myntraPink whitespace-nowrap transition">Shirts</button>
+        <button onclick="filterCategory('polos')" data-cat="polos" class="cat-pill text-xs font-semibold px-3 py-1.5 rounded-full border border-myntraBorder bg-white text-myntraDark hover:border-myntraPink whitespace-nowrap transition">T-Shirts & Polos</button>
+        <button onclick="filterCategory('jeans')" data-cat="jeans" class="cat-pill text-xs font-semibold px-3 py-1.5 rounded-full border border-myntraBorder bg-white text-myntraDark hover:border-myntraPink whitespace-nowrap transition">Levi's Jeans</button>
+        <button onclick="filterCategory('lowers')" data-cat="lowers" class="cat-pill text-xs font-semibold px-3 py-1.5 rounded-full border border-myntraBorder bg-white text-myntraDark hover:border-myntraPink whitespace-nowrap transition">Lowers & Joggers</button>
+        <button onclick="filterCategory('innerwear')" data-cat="innerwear" class="cat-pill text-xs font-semibold px-3 py-1.5 rounded-full border border-myntraBorder bg-white text-myntraDark hover:border-myntraPink whitespace-nowrap transition">Underwear & Shorts</button>
+        <button onclick="filterCategory('belts')" data-cat="belts" class="cat-pill text-xs font-semibold px-3 py-1.5 rounded-full border border-myntraBorder bg-white text-myntraDark hover:border-myntraPink whitespace-nowrap transition">Leather Belts</button>
+        <button onclick="filterCategory('watches')" data-cat="watches" class="cat-pill text-xs font-semibold px-3 py-1.5 rounded-full border border-myntraBorder bg-white text-myntraDark hover:border-myntraPink whitespace-nowrap transition">Chronograph Watches</button>
+      </div>
+
+      <!-- Quick Sort Trigger -->
+      <div class="flex items-center gap-1.5 flex-shrink-0">
+        <label for="sortDropdown" class="text-[11px] font-bold text-myntraMuted hidden md:inline">Sort By:</label>
+        <select id="sortDropdown" onchange="handleSort(this.value)" class="text-xs font-bold text-myntraDark bg-myntraBg border border-myntraBorder rounded-full px-3 py-1.5 focus:outline-none focus:border-myntraPink cursor-pointer">
+          <option value="recommended">Recommended</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+          <option value="discount">Better Discount</option>
+          <option value="rating">Customer Rating</option>
+        </select>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==================== 6. PRODUCT COUNT & SHOWROOM METRICS ==================== -->
+  <main class="max-w-7xl mx-auto px-3 sm:px-6 py-4">
+    <div class="flex items-center justify-between text-xs text-myntraSub mb-3 px-1">
+      <div>
+        <span class="font-bold text-myntraDark" id="productCount">16</span> items found 
+        <span id="activeFilterTag" class="text-myntraPink font-bold ml-1"></span>
+      </div>
+      <div class="flex items-center gap-2 text-[11px]">
+        <span class="hidden sm:inline"><i class="fa-solid fa-arrows-rotate text-myntraGreen mr-1"></i> Easy 7-Day Exchange</span>
+        <span>•</span>
+        <span><i class="fa-solid fa-award text-amber-500 mr-1"></i> Verified Authentic</span>
+      </div>
+    </div>
+
+    <!-- ==================== EXACT MYNTRA 2-COLUMN (MOBILE) / 4-COLUMN (DESKTOP) GRID ==================== -->
+    <div id="productGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-5">
+      <!-- Injected via JavaScript -->
+    </div>
+  </main>
+
+  <!-- ==================== 7. MYNTRA SLIDE-UP BOTTOM SHEET (SIZE SELECTOR) ==================== -->
+  <div id="sheetBackdrop" onclick="closeSizeSheet()" class="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 hidden transition-opacity duration-300"></div>
+  <div id="sizeSheet" class="fixed bottom-0 left-0 right-0 max-w-lg mx-auto bg-white rounded-t-2xl z-50 transform translate-y-full sheet-transition shadow-sheet border-t border-myntraBorder p-4 pb-8 sm:p-5 sm:pb-8">
+    
+    <!-- Drag Handle -->
+    <div class="w-10 h-1 bg-gray-300 rounded-full mx-auto mb-3"></div>
+
+    <!-- Sheet Header Product Preview -->
+    <div class="flex items-start justify-between pb-3 border-b border-myntraBorder">
+      <div class="flex items-center space-x-3">
+        <img id="sheetImage" src="" alt="Selected Product" class="w-14 h-18 object-cover rounded border border-myntraBorder">
+        <div>
+          <span id="sheetBrand" class="text-[10px] font-extrabold uppercase tracking-wider text-myntraDark block"></span>
+          <h4 id="sheetTitle" class="text-xs font-medium text-myntraSub line-clamp-1"></h4>
+          <div class="flex items-baseline space-x-1.5 mt-1 font-sans">
+            <span id="sheetPrice" class="text-sm font-bold text-myntraDark"></span>
+            <span id="sheetMRP" class="text-xs line-through text-myntraMuted"></span>
+            <span id="sheetDiscount" class="text-xs font-bold text-myntraOrange"></span>
+          </div>
+        </div>
+      </div>
+      <button onclick="closeSizeSheet()" class="text-myntraSub hover:text-myntraDark text-lg p-1" aria-label="Close">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <!-- Size Selection Circles -->
+    <div class="py-4">
+      <div class="flex justify-between items-center mb-2.5">
+        <span class="text-xs font-bold uppercase tracking-wider text-myntraDark">Select Size</span>
+        <button class="text-xs font-bold text-myntraPink flex items-center gap-1"><i class="fa-solid fa-ruler-horizontal"></i> Size Chart</button>
+      </div>
+
+      <div id="sheetSizeOptions" class="flex flex-wrap gap-2.5">
+        <!-- Rendered via JS -->
+      </div>
+
+      <!-- Scarcity Tag -->
+      <div class="flex items-center gap-1.5 text-xs font-semibold text-rose-600 mt-3 bg-rose-50 p-2 rounded-lg">
+        <i class="fa-solid fa-fire text-myntraPink"></i>
+        <span>High Demand! Only a few units remaining in stock.</span>
+      </div>
+    </div>
+
+    <!-- Primary Add to Bag Button -->
+    <button id="sheetAddBtn" class="w-full py-3.5 bg-myntraPink hover:bg-myntraPinkHover text-white text-xs font-bold uppercase tracking-wider rounded-lg transition active:scale-[0.98] shadow-md flex items-center justify-center gap-2">
+      <i class="fa-solid fa-bag-shopping"></i>
+      <span>Done & Add To Bag</span>
+    </button>
+  </div>
+
+  <!-- ==================== 8. SLIDE-OVER MYNTRA SHOPPING BAG (CART) ==================== -->
+  <div id="bagBackdrop" onclick="closeBagDrawer()" class="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 hidden transition-opacity duration-300"></div>
+  <aside id="bagDrawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-white z-50 transform translate-x-full transition-transform duration-300 shadow-sheet flex flex-col">
+    
+    <!-- Bag Header -->
+    <div class="p-4 border-b border-myntraBorder flex items-center justify-between bg-white">
+      <div class="flex items-center space-x-2">
+        <span class="font-display font-bold text-base tracking-wide text-myntraDark uppercase">SHOPPING BAG</span>
+        <span id="bagCountPill" class="bg-myntraPink text-white text-[10px] font-bold px-2 py-0.5 rounded-full">0 ITEMS</span>
+      </div>
+      <button onclick="closeBagDrawer()" class="text-myntraSub hover:text-myntraDark text-lg p-1" aria-label="Close Bag">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <!-- Free Delivery Milestone Progress Tracker -->
+    <div class="bg-emerald-50 px-4 py-2 border-b border-emerald-100 text-xs">
+      <div class="flex justify-between items-center text-myntraGreen font-bold text-[11px] mb-1">
+        <span id="deliveryGoalMsg"><i class="fa-solid fa-truck-fast mr-1"></i> Add ₹499 more to unlock FREE Delivery</span>
+        <span class="text-[9px] uppercase font-extrabold bg-myntraGreen text-white px-1.5 py-0.2 rounded">MYNTRA LUXE</span>
+      </div>
+      <div class="w-full bg-emerald-200 h-1 rounded-full overflow-hidden">
+        <div id="deliveryProgressBar" class="bg-myntraGreen h-full w-1/3 transition-all duration-300"></div>
+      </div>
+    </div>
+
+    <!-- Scrollable Items List -->
+    <div id="bagItemsContainer" class="flex-1 overflow-y-auto p-4 space-y-3 bg-myntraBg">
+      <!-- Items generated dynamically -->
+    </div>
+
+    <!-- Bag Footer & Price Details -->
+    <div class="p-4 border-t border-myntraBorder bg-white space-y-3 shadow-lg">
+      
+      <!-- Coupons & Offers section -->
+      <div class="border border-myntraBorder rounded-lg p-2.5 flex items-center gap-2 bg-white">
+        <i class="fa-solid fa-tag text-myntraPink text-xs"></i>
+        <input type="text" id="couponCodeInput" placeholder="Enter coupon (MYNTRA2026)" class="flex-1 text-xs uppercase font-bold text-myntraDark focus:outline-none">
+        <button onclick="applyCoupon()" class="text-xs font-bold uppercase text-myntraPink hover:text-myntraPinkHover">Apply</button>
+      </div>
+      <div id="couponAppliedBadge" class="text-[11px] font-bold text-myntraGreen hidden">
+        <i class="fa-solid fa-circle-check mr-1"></i> Code MYNTRA2026 applied! You saved 15% extra.
+      </div>
+
+      <!-- Price Breakdown -->
+      <div class="space-y-1.5 text-xs text-myntraSub pt-1">
+        <div class="flex justify-between font-bold text-myntraDark text-[11px] uppercase tracking-wider">
+          <span>PRICE DETAILS (<span id="priceDetailCount">0</span> Items)</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Total MRP</span>
+          <span id="bagTotalMRP" class="font-semibold text-myntraDark">₹0</span>
+        </div>
+        <div class="flex justify-between text-myntraGreen">
+          <span>Discount on MRP</span>
+          <span id="bagDiscountMRP" class="font-semibold">-₹0</span>
+        </div>
+        <div id="couponRow" class="flex justify-between text-myntraGreen hidden">
+          <span>Coupon Discount (15%)</span>
+          <span id="bagCouponDiscount" class="font-semibold">-₹0</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Convenience Fee</span>
+          <span class="text-myntraGreen font-bold uppercase">FREE</span>
+        </div>
+        <div class="flex justify-between text-sm font-extrabold text-myntraDark pt-2 border-t border-myntraBorder">
+          <span>Total Amount</span>
+          <span id="bagFinalAmount" class="text-base text-myntraPink">₹0</span>
+        </div>
+      </div>
+
+      <!-- One-Click WhatsApp Order Placement -->
+      <button onclick="orderViaWhatsApp()" class="w-full py-3.5 bg-myntraGreen hover:bg-emerald-700 text-white rounded-lg text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition active:scale-95 shadow-md">
+        <i class="fa-brands fa-whatsapp text-base"></i>
+        <span>Place Order on WhatsApp</span>
+      </button>
+
+      <div class="text-[10px] text-center text-myntraMuted flex items-center justify-center gap-1.5">
+        <i class="fa-solid fa-lock text-[9px]"></i> Genuine Products • Safe & Verified Checkout
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ==================== 9. PERSISTENT MOBILE BOTTOM NAVIGATION DOCK ==================== -->
+  <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-myntraBorder shadow-dock">
+    <div class="grid grid-cols-5 h-14 items-center">
+      
+      <!-- Home Button -->
+      <button onclick="resetAllFilters(event)" class="flex flex-col items-center justify-center space-y-0.5 text-myntraPink focus:outline-none">
+        <i class="fa-solid fa-house text-base"></i>
+        <span class="text-[9px] font-extrabold uppercase tracking-tight">Home</span>
+      </button>
+
+      <!-- Categories -->
+      <button onclick="scrollIntoCategories()" class="flex flex-col items-center justify-center space-y-0.5 text-myntraSub hover:text-myntraDark focus:outline-none">
+        <i class="fa-solid fa-grid-2 text-base fa-table-cells-large"></i>
+        <span class="text-[9px] font-bold uppercase tracking-tight">Categories</span>
+      </button>
+
+      <!-- Trending / Studio -->
+      <button onclick="filterCategory('shirts')" class="flex flex-col items-center justify-center space-y-0.5 text-myntraSub hover:text-myntraDark focus:outline-none">
+        <i class="fa-solid fa-fire text-base text-amber-500"></i>
+        <span class="text-[9px] font-bold uppercase tracking-tight">Trending</span>
+      </button>
+
+      <!-- Wishlist with live counter -->
+      <button onclick="openWishlistToast()" class="flex flex-col items-center justify-center space-y-0.5 text-myntraSub hover:text-myntraDark relative focus:outline-none">
+        <i class="fa-regular fa-heart text-base"></i>
+        <span id="dockWishlistBadge" class="absolute top-1 right-5 bg-myntraPink text-white text-[8px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center">2</span>
+        <span class="text-[9px] font-bold uppercase tracking-tight">Wishlist</span>
+      </button>
+
+      <!-- Bag with live counter -->
+      <button onclick="openBagDrawer()" class="flex flex-col items-center justify-center space-y-0.5 text-myntraSub hover:text-myntraDark relative focus:outline-none">
+        <i class="fa-solid fa-bag-shopping text-base"></i>
+        <span id="dockBagBadge" class="absolute top-1 right-5 bg-myntraPink text-white text-[8px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center">0</span>
+        <span class="text-[9px] font-bold uppercase tracking-tight">Bag</span>
+      </button>
+
+    </div>
+  </nav>
+
+  <!-- ==================== 10. MOBILE SLIDE-IN SIDE MENU ==================== -->
+  <div id="sideMenuBackdrop" onclick="toggleMobileSideMenu()" class="fixed inset-0 bg-black/50 z-50 hidden"></div>
+  <div id="sideMenu" class="fixed top-0 left-0 bottom-0 w-72 bg-white z-50 transform -translate-x-full transition-transform duration-300 flex flex-col justify-between">
+    <div>
+      <div class="bg-myntraDark text-white p-5 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-full bg-myntraPink text-white font-bold flex items-center justify-center text-sm">ML</div>
+          <div>
+            <div class="font-bold text-sm">Welcome Guest</div>
+            <div class="text-[10px] text-gray-300">Myntra Luxe Member</div>
+          </div>
+        </div>
+        <button onclick="toggleMobileSideMenu()" class="text-gray-300 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <div class="p-4 space-y-3 text-xs font-semibold uppercase text-myntraDark">
+        <button onclick="filterBrand('Tommy Hilfiger'); toggleMobileSideMenu();" class="w-full text-left py-2 border-b border-myntraBorder flex justify-between items-center">
+          <span>Tommy Hilfiger Store</span><i class="fa-solid fa-angle-right text-gray-400"></i>
+        </button>
+        <button onclick="filterBrand('Levi\'s'); toggleMobileSideMenu();" class="w-full text-left py-2 border-b border-myntraBorder flex justify-between items-center">
+          <span>Levi's Original Denim</span><i class="fa-solid fa-angle-right text-gray-400"></i>
+        </button>
+        <button onclick="filterBrand('U.S. Polo Assn.'); toggleMobileSideMenu();" class="w-full text-left py-2 border-b border-myntraBorder flex justify-between items-center">
+          <span>U.S. Polo Assn. Casuals</span><i class="fa-solid fa-angle-right text-gray-400"></i>
+        </button>
+        <button onclick="filterBrand('Calvin Klein'); toggleMobileSideMenu();" class="w-full text-left py-2 border-b border-myntraBorder flex justify-between items-center">
+          <span>Calvin Klein Innerwear</span><i class="fa-solid fa-angle-right text-gray-400"></i>
+        </button>
+        <button onclick="filterBrand('Armani Exchange'); toggleMobileSideMenu();" class="w-full text-left py-2 border-b border-myntraBorder flex justify-between items-center">
+          <span>Armani Watches & Belts</span><i class="fa-solid fa-angle-right text-gray-400"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="p-4 border-t border-myntraBorder bg-myntraBg text-xs text-myntraSub">
+      <div class="font-bold text-myntraDark mb-1">Customer Support</div>
+      <p>Boutique Helpline: +91 861 908 9899</p>
+      <p class="text-[10px] text-myntraMuted mt-1">10 AM - 9 PM • Mon to Sun</p>
+    </div>
+  </div>
+
+  <!-- FLOATING MINI TOAST -->
+  <div id="appToast" class="fixed top-16 right-4 z-50 transform -translate-y-8 opacity-0 pointer-events-none transition-all duration-300 bg-myntraDark text-white text-xs px-4 py-2.5 rounded-lg shadow-xl flex items-center space-x-2">
+    <i class="fa-solid fa-circle-check text-myntraGreen text-sm"></i>
+    <span id="appToastText" class="font-medium"></span>
+  </div>
+
+  <!-- ==================== COMPLETE JAVASCRIPT ENGINE ==================== -->
+  <script>
+    // ================= 16 VERIFIED MENSWEAR LUXURY INVENTORY =================
+    const products = [
+      // SHIRTS
+      {
+        id: 1,
+        brand: "TOMMY HILFIGER",
+        title: "Men Slim Fit Button-Down Oxford Pure Cotton Casual Shirt",
+        category: "shirts",
+        price: 3499,
+        mrp: 6999,
+        rating: 4.5,
+        ratingCount: "2.4k",
+        image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?q=80&w=700&auto=format&fit=crop",
+        tag: "BESTSELLER",
+        sizes: ["39", "40", "42", "44"]
+      },
+      {
+        id: 2,
+        brand: "U.S. POLO ASSN.",
+        title: "Men Tailored Fit Pure Linen Breathable Solid Shirt",
+        category: "shirts",
+        price: 2399,
+        mrp: 3999,
+        rating: 4.4,
+        ratingCount: "1.8k",
+        image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?q=80&w=700&auto=format&fit=crop",
+        tag: "100% LINEN",
+        sizes: ["38", "40", "42", "44"]
+      },
+      {
+        id: 3,
+        brand: "LEVI'S",
+        title: "Men Authentic Western Dual-Pocket Heavy Denim Overshirt",
+        category: "shirts",
+        price: 2999,
+        mrp: 4999,
+        rating: 4.6,
+        ratingCount: "950",
+        image: "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?q=80&w=700&auto=format&fit=crop",
+        tag: "TRENDING",
+        sizes: ["M", "L", "XL"]
+      },
+
+      // POLOS & T-SHIRTS
+      {
+        id: 4,
+        brand: "U.S. POLO ASSN.",
+        title: "Men Solid Pure Cotton Pique Polo T-shirt with Contrast Collar",
+        category: "polos",
+        price: 1799,
+        mrp: 2999,
+        rating: 4.7,
+        ratingCount: "3.2k",
+        image: "https://images.unsplash.com/photo-1581655353564-df123a1eb820?q=80&w=700&auto=format&fit=crop",
+        tag: "POPULAR",
+        sizes: ["S", "M", "L", "XL", "XXL"]
+      },
+      {
+        id: 5,
+        brand: "TOMMY HILFIGER",
+        title: "Men Supima Cotton Ribbed Crew-Neck Premium Solid T-shirt",
+        category: "polos",
+        price: 2199,
+        mrp: 3499,
+        rating: 4.5,
+        ratingCount: "820",
+        image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=700&auto=format&fit=crop",
+        tag: "SUPIMA",
+        sizes: ["S", "M", "L", "XL"]
+      },
+      {
+        id: 6,
+        brand: "CALVIN KLEIN",
+        title: "Men Liquid Touch Monogram Logo Printed Cotton T-shirt",
+        category: "polos",
+        price: 2499,
+        mrp: 3999,
+        rating: 4.8,
+        ratingCount: "1.1k",
+        image: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=700&auto=format&fit=crop",
+        tag: "LUXURY TOUCH",
+        sizes: ["M", "L", "XL"]
+      },
+
+      // JEANS
+      {
+        id: 7,
+        brand: "LEVI'S",
+        title: "511™ Men Dark Indigo Slim Fit Heavy Stretch Clean Jeans",
+        category: "jeans",
+        price: 3699,
+        mrp: 5999,
+        rating: 4.7,
+        ratingCount: "4.5k",
+        image: "https://images.unsplash.com/photo-1542272604-780c96856592?q=80&w=700&auto=format&fit=crop",
+        tag: "TOP RATED",
+        sizes: ["30", "32", "34", "36", "38"]
+      },
+      {
+        id: 8,
+        brand: "LEVI'S",
+        title: "501® Original Heritage Fit Mid-Rise Straight Leg Jeans",
+        category: "jeans",
+        price: 3999,
+        mrp: 6499,
+        rating: 4.8,
+        ratingCount: "5.1k",
+        image: "https://images.unsplash.com/photo-1604176354204-9268737828e4?q=80&w=700&auto=format&fit=crop",
+        tag: "ICONIC 501",
+        sizes: ["30", "32", "34", "36"]
+      },
+      {
+        id: 9,
+        brand: "TOMMY HILFIGER",
+        title: "Men Denton Slim Fit Mid-Rise Stretch Casual Chino Trousers",
+        category: "jeans",
+        price: 3799,
+        mrp: 5999,
+        rating: 4.4,
+        ratingCount: "740",
+        image: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?q=80&w=700&auto=format&fit=crop",
+        tag: "CHINO SLIM",
+        sizes: ["32", "34", "36", "38"]
+      },
+
+      // LOWERS & JOGGERS
+      {
+        id: 10,
+        brand: "U.S. POLO ASSN.",
+        title: "Men Heavy French Terry Cotton Athletic Cuffed Track Lowers",
+        category: "lowers",
+        price: 1899,
+        mrp: 2999,
+        rating: 4.6,
+        ratingCount: "1.9k",
+        image: "https://images.unsplash.com/photo-1506629082955-511b1aa562c8?q=80&w=700&auto=format&fit=crop",
+        tag: "COMFORT FIT",
+        sizes: ["M", "L", "XL", "XXL"]
+      },
+      {
+        id: 11,
+        brand: "TOMMY HILFIGER",
+        title: "Men Organic Cotton Loungewear Track Pants with Drawstring",
+        category: "lowers",
+        price: 2799,
+        mrp: 4499,
+        rating: 4.5,
+        ratingCount: "430",
+        image: "https://images.unsplash.com/photo-1552902865-b72c031ac5ea?q=80&w=700&auto=format&fit=crop",
+        tag: "LOUNGE",
+        sizes: ["M", "L", "XL"]
+      },
+
+      // INNERWEAR & SHORTS
+      {
+        id: 12,
+        brand: "CALVIN KLEIN",
+        title: "Men Modern Cotton Stretch Trunks Underwear (Pack of 3)",
+        category: "innerwear",
+        price: 2499,
+        mrp: 3999,
+        rating: 4.9,
+        ratingCount: "6.8k",
+        image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=700&auto=format&fit=crop",
+        tag: "PACK OF 3",
+        sizes: ["S", "M", "L", "XL"]
+      },
+      {
+        id: 13,
+        brand: "U.S. POLO ASSN.",
+        title: "Men Pure Cotton Woven Lounge Bermuda Shorts with Pockets",
+        category: "innerwear",
+        price: 1499,
+        mrp: 2299,
+        rating: 4.5,
+        ratingCount: "920",
+        image: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?q=80&w=700&auto=format&fit=crop",
+        tag: "SUMMER DROP",
+        sizes: ["M", "L", "XL"]
+      },
+
+      // BELTS
+      {
+        id: 14,
+        brand: "ARMANI EXCHANGE",
+        title: "Men Reversible Full-Grain Italian Leather Formal Belt",
+        category: "belts",
+        price: 3299,
+        mrp: 4999,
+        rating: 4.7,
+        ratingCount: "510",
+        image: "https://images.unsplash.com/photo-1624222247344-550fb60583dc?q=80&w=700&auto=format&fit=crop",
+        tag: "REVERSIBLE",
+        sizes: ["32", "34", "36", "38", "40"]
+      },
+      {
+        id: 15,
+        brand: "TOMMY HILFIGER",
+        title: "Men Classic Brass Pin Buckle Heavy Genuine Leather Belt",
+        category: "belts",
+        price: 2499,
+        mrp: 3999,
+        rating: 4.6,
+        ratingCount: "820",
+        image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=700&auto=format&fit=crop",
+        tag: "GENUINE LEATHER",
+        sizes: ["32", "34", "36", "38"]
+      },
+
+      // WATCHES
+      {
+        id: 16,
+        brand: "TOMMY HILFIGER",
+        title: "Men Grand Horizon 44mm Blue Dial Multi-Function Chronograph Watch",
+        category: "watches",
+        price: 9499,
+        mrp: 14999,
+        rating: 4.9,
+        ratingCount: "1.4k",
+        image: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?q=80&w=700&auto=format&fit=crop",
+        tag: "CHRONO 44MM",
+        sizes: ["Free Size"]
+      }
+    ];
+
+    // Status capsules (Stories)
+    const storyList = [
+      { name: "All Brands", img: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=200&auto=format&fit=crop", filter: "all" },
+      { name: "Tommy", img: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?q=80&w=200&auto=format&fit=crop", brand: "TOMMY HILFIGER" },
+      { name: "Levi's", img: "https://images.unsplash.com/photo-1542272604-780c96856592?q=80&w=200&auto=format&fit=crop", brand: "LEVI'S" },
+      { name: "US Polo", img: "https://images.unsplash.com/photo-1581655353564-df123a1eb820?q=80&w=200&auto=format&fit=crop", brand: "U.S. POLO ASSN." },
+      { name: "CK", img: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=200&auto=format&fit=crop", brand: "CALVIN KLEIN" },
+      { name: "Armani", img: "https://images.unsplash.com/photo-1624222247344-550fb60583dc?q=80&w=200&auto=format&fit=crop", brand: "ARMANI EXCHANGE" },
+      { name: "Shirts", img: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?q=80&w=200&auto=format&fit=crop", cat: "shirts" },
+      { name: "Watches", img: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?q=80&w=200&auto=format&fit=crop", cat: "watches" },
+      { name: "Belts", img: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=200&auto=format&fit=crop", cat: "belts" },
+      { name: "Lowers", img: "https://images.unsplash.com/photo-1506629082955-511b1aa562c8?q=80&w=200&auto=format&fit=crop", cat: "lowers" }
+    ];
+
+    // Application state
+    let activeCategory = 'all';
+    let activeBrandFilter = null;
+    let bag = [];
+    let wishlist = [1, 7];
+    let sheetProduct = null;
+    let selectedSheetSize = '';
+    let couponDiscountRate = 0; // 0.15 when applied
+
+    // ================= RENDER STORY CAPSULES =================
+    function renderStoryPills() {
+      const container = document.getElementById('storyPillRow');
+      container.innerHTML = storyList.map((story, idx) => {
+        const isActive = (story.filter === 'all' && activeCategory === 'all' && !activeBrandFilter) ||
+                         (story.cat && activeCategory === story.cat) ||
+                         (story.brand && activeBrandFilter === story.brand);
+        return `
+          <button onclick="handleStoryClick(${idx})" class="flex flex-col items-center flex-shrink-0 focus:outline-none group">
+            <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full ${isActive ? 'story-ring active' : 'story-ring'} p-0.5 transition duration-200 group-hover:scale-105">
+              <img src="${story.img}" alt="${story.name}" class="w-full h-full rounded-full object-cover border-2 border-white">
+            </div>
+            <span class="text-[10px] sm:text-[11px] font-bold text-myntraDark mt-1.5 whitespace-nowrap leading-tight ${isActive ? 'text-myntraPink' : ''}">
+              ${story.name}
+            </span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function handleStoryClick(index) {
+      const story = storyList[index];
+      if (story.filter === 'all') {
+        activeCategory = 'all';
+        activeBrandFilter = null;
+      } else if (story.brand) {
+        activeBrandFilter = story.brand;
+        activeCategory = 'all';
+      } else if (story.cat) {
+        activeCategory = story.cat;
+        activeBrandFilter = null;
+      }
+      syncCategoryTabs();
+      renderStoryPills();
+      renderCatalog();
+    }
+
+    // ================= RENDER PRODUCTS (MYNTRA 2-COLUMN GRID) =================
+    function renderCatalog() {
+      let filtered = [...products];
+
+      // Category filter
+      if (activeCategory !== 'all') {
+        filtered = filtered.filter(p => p.category === activeCategory);
+      }
+
+      // Brand filter
+      if (activeBrandFilter) {
+        filtered = filtered.filter(p => p.brand === activeBrandFilter);
+      }
+
+      // Search bar
+      const searchVal = document.getElementById('searchInput').value.toLowerCase().trim();
+      if (searchVal) {
+        filtered = filtered.filter(p => 
+          p.brand.toLowerCase().includes(searchVal) ||
+          p.title.toLowerCase().includes(searchVal) ||
+          p.category.toLowerCase().includes(searchVal)
+        );
+      }
+
+      // Sort
+      const sortVal = document.getElementById('sortDropdown').value;
+      if (sortVal === 'price-low') {
+        filtered.sort((a, b) => a.price - b.price);
+      } else if (sortVal === 'price-high') {
+        filtered.sort((a, b) => b.price - a.price);
+      } else if (sortVal === 'discount') {
+        filtered.sort((a, b) => ((b.mrp - b.price) / b.mrp) - ((a.mrp - a.price) / a.mrp));
+      } else if (sortVal === 'rating') {
+        filtered.sort((a, b) => b.rating - a.rating);
+      }
+
+      // Update Header count
+      document.getElementById('productCount').innerText = filtered.length;
+      document.getElementById('activeFilterTag').innerText = activeBrandFilter ? `• ${activeBrandFilter}` : (activeCategory !== 'all' ? `• ${activeCategory.toUpperCase()}` : '');
+
+      const grid = document.getElementById('productGrid');
+      grid.innerHTML = '';
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full py-16 text-center text-myntraMuted bg-myntraBg rounded-xl p-8">
+            <i class="fa-solid fa-magnifying-glass text-4xl mb-3 text-myntraPink"></i>
+            <h3 class="text-sm font-bold text-myntraDark">No exact matches found</h3>
+            <p class="text-xs mt-1">Try adjusting your brand or category filter.</p>
+            <button onclick="resetAllFilters(event)" class="mt-4 px-5 py-2 bg-myntraPink text-white font-bold text-xs uppercase rounded-md shadow">Show All Products</button>
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach(p => {
+        const isWish = wishlist.includes(p.id);
+        const discountPercent = Math.round(((p.mrp - p.price) / p.mrp) * 100);
+
+        const card = document.createElement('div');
+        card.className = "bg-white border border-myntraBorder rounded-lg overflow-hidden flex flex-col justify-between hover:shadow-card transition duration-200 group";
+
+        card.innerHTML = `
+          <div>
+            <!-- Image Frame (Aspect Ratio 3:4) -->
+            <div class="relative overflow-hidden aspect-[3/4] bg-myntraBg">
+              <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300">
+              
+              <!-- Left Floating Rating Pill (Myntra Standard) -->
+              <div class="absolute bottom-2 left-2 bg-white/95 backdrop-blur-xs px-2 py-0.5 rounded text-[10px] font-extrabold text-myntraDark flex items-center gap-1 shadow-xs border border-gray-100">
+                <span>${p.rating}</span>
+                <i class="fa-solid fa-star text-[9px] text-amber-500"></i>
+                <span class="text-myntraMuted font-medium text-[9px]">| ${p.ratingCount}</span>
+              </div>
+
+              <!-- Top Left Tag (e.g. BESTSELLER) -->
+              <span class="absolute top-2 left-2 bg-white/90 text-[8px] font-extrabold px-1.5 py-0.5 rounded text-myntraDark tracking-wider uppercase border border-myntraBorder">
+                ${p.tag}
+              </span>
+
+              <!-- Top Right Floating Wishlist Heart -->
+              <button onclick="toggleWishlist(${p.id}, event)" class="absolute top-2 right-2 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/90 shadow-sm flex items-center justify-center text-xs transition active:scale-125 ${isWish ? 'text-myntraPink' : 'text-myntraDark hover:text-myntraPink'}">
+                <i class="${isWish ? 'fa-solid text-myntraPink animate-heart' : 'fa-regular'} fa-heart"></i>
+              </button>
+            </div>
+
+            <!-- Card Content Details -->
+            <div class="p-2.5 sm:p-3">
+              <h3 class="font-extrabold text-xs sm:text-[13px] text-myntraDark uppercase tracking-wide truncate">
+                ${p.brand}
+              </h3>
+              <p class="text-[11px] sm:text-xs text-myntraSub truncate mt-0.5 font-normal">
+                ${p.title}
+              </p>
+
+              <!-- Price Structure -->
+              <div class="flex items-baseline space-x-1.5 mt-1.5 font-sans">
+                <span class="text-xs sm:text-sm font-bold text-myntraDark">Rs. ${p.price.toLocaleString('en-IN')}</span>
+                <span class="text-[10px] line-through text-myntraMuted">Rs. ${p.mrp.toLocaleString('en-IN')}</span>
+                <span class="text-[10px] sm:text-[11px] font-bold text-myntraOrange">(${discountPercent}% OFF)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Action: Quick Size Select -->
+          <div class="p-2.5 sm:p-3 pt-0">
+            <button onclick="openSizeSheet(${p.id})" class="w-full py-2 bg-myntraBg hover:bg-myntraPink hover:text-white text-myntraDark border border-myntraBorder rounded text-[11px] font-bold uppercase tracking-wider transition active:scale-95 flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-plus text-[10px]"></i>
+              <span>Select Size</span>
+            </button>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+    }
+
+    // ================= CATEGORY TABS & FILTERING =================
+    function filterCategory(cat) {
+      activeCategory = cat;
+      activeBrandFilter = null;
+      syncCategoryTabs();
+      renderStoryPills();
+      renderCatalog();
+    }
+
+    function filterBrand(brand) {
+      activeBrandFilter = brand;
+      activeCategory = 'all';
+      syncCategoryTabs();
+      renderStoryPills();
+      renderCatalog();
+    }
+
+    function syncCategoryTabs() {
+      document.querySelectorAll('.cat-pill').forEach(btn => {
+        if (btn.getAttribute('data-cat') === activeCategory && !activeBrandFilter) {
+          btn.className = "cat-pill active text-xs font-bold px-3.5 py-1.5 rounded-full border border-myntraPink bg-myntraPink text-white whitespace-nowrap transition";
+        } else {
+          btn.className = "cat-pill text-xs font-semibold px-3 py-1.5 rounded-full border border-myntraBorder bg-white text-myntraDark hover:border-myntraPink whitespace-nowrap transition";
+        }
+      });
+    }
+
+    function handleSort() {
+      renderCatalog();
+    }
+
+    function handleSearch() {
+      renderCatalog();
+    }
+
+    function resetAllFilters(e) {
+      if (e) e.preventDefault();
+      activeCategory = 'all';
+      activeBrandFilter = null;
+      document.getElementById('searchInput').value = '';
+      syncCategoryTabs();
+      renderStoryPills();
+      renderCatalog();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function scrollIntoCategories() {
+      document.getElementById('categoryFilterBar').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // ================= SIZE SELECTOR SLIDE-UP SHEET =================
+    function openSizeSheet(productId) {
+      const p = products.find(item => item.id === productId);
+      if (!p) return;
+
+      sheetProduct = p;
+      selectedSheetSize = p.sizes[0];
+
+      document.getElementById('sheetImage').src = p.image;
+      document.getElementById('sheetBrand').innerText = p.brand;
+      document.getElementById('sheetTitle').innerText = p.title;
+      document.getElementById('sheetPrice').innerText = `Rs. ${p.price.toLocaleString('en-IN')}`;
+      document.getElementById('sheetMRP').innerText = `Rs. ${p.mrp.toLocaleString('en-IN')}`;
+      
+      const discount = Math.round(((p.mrp - p.price) / p.mrp) * 100);
+      document.getElementById('sheetDiscount').innerText = `(${discount}% OFF)`;
+
+      const container = document.getElementById('sheetSizeOptions');
+      container.innerHTML = p.sizes.map(size => `
+        <button onclick="setSheetSize('${size}')" class="size-circle-btn w-11 h-11 rounded-full border text-xs font-bold transition flex items-center justify-center ${size === selectedSheetSize ? 'border-myntraPink bg-myntraPink text-white' : 'border-myntraBorder text-myntraDark hover:border-myntraDark'}">
+          ${size}
+        </button>
+      `).join('');
+
+      document.getElementById('sheetAddBtn').onclick = () => {
+        addToBag(sheetProduct.id, selectedSheetSize);
+        closeSizeSheet();
+      };
+
+      // Slide up
+      document.getElementById('sheetBackdrop').classList.remove('hidden');
+      document.getElementById('sizeSheet').classList.remove('translate-y-full');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function setSheetSize(size) {
+      selectedSheetSize = size;
+      document.querySelectorAll('.size-circle-btn').forEach(btn => {
+        if (btn.innerText.trim() === size) {
+          btn.className = 'size-circle-btn w-11 h-11 rounded-full border border-myntraPink bg-myntraPink text-white text-xs font-bold transition flex items-center justify-center';
+        } else {
+          btn.className = 'size-circle-btn w-11 h-11 rounded-full border border-myntraBorder text-myntraDark hover:border-myntraDark text-xs font-bold transition flex items-center justify-center';
+        }
+      });
+    }
+
+    function closeSizeSheet() {
+      document.getElementById('sheetBackdrop').classList.add('hidden');
+      document.getElementById('sizeSheet').classList.add('translate-y-full');
+      document.body.style.overflow = 'auto';
+    }
+
+    // ================= SHOPPING BAG (CART) LOGIC =================
+    function addToBag(productId, size) {
+      const p = products.find(item => item.id === productId);
+      if (!p) return;
+
+      const existing = bag.find(item => item.id === productId && item.size === size);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        bag.push({
+          id: p.id,
+          brand: p.brand,
+          title: p.title,
+          price: p.price,
+          mrp: p.mrp,
+          image: p.image,
+          size: size,
+          qty: 1
+        });
+      }
+
+      updateBagUI();
+      openBagDrawer();
+      showToast(`Added ${p.brand} (${size}) to Bag!`);
+    }
+
+    function updateBagUI() {
+      const totalQty = bag.reduce((sum, item) => sum + item.qty, 0);
+      const totalMRP = bag.reduce((sum, item) => sum + (item.mrp * item.qty), 0);
+      const subtotalPrice = bag.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      const discountMRP = totalMRP - subtotalPrice;
+      const couponSavings = Math.round(subtotalPrice * couponDiscountRate);
+      const finalAmount = Math.max(0, subtotalPrice - couponSavings);
+
+      // Counters across mobile & desktop
+      document.getElementById('headerBagBadge').innerText = totalQty;
+      document.getElementById('dockBagBadge').innerText = totalQty;
+      document.getElementById('bagCountPill').innerText = `${totalQty} ITEMS`;
+      document.getElementById('priceDetailCount').innerText = totalQty;
+
+      document.getElementById('bagTotalMRP').innerText = `₹${totalMRP.toLocaleString('en-IN')}`;
+      document.getElementById('bagDiscountMRP').innerText = `-₹${discountMRP.toLocaleString('en-IN')}`;
+      document.getElementById('bagFinalAmount').innerText = `₹${finalAmount.toLocaleString('en-IN')}`;
+
+      // Coupon row
+      const couponRow = document.getElementById('couponRow');
+      if (couponDiscountRate > 0) {
+        couponRow.classList.remove('hidden');
+        document.getElementById('bagCouponDiscount').innerText = `-₹${couponSavings.toLocaleString('en-IN')}`;
+      } else {
+        couponRow.classList.add('hidden');
+      }
+
+      // Free shipping progress bar (Threshold: ₹2,999)
+      const progressBar = document.getElementById('deliveryProgressBar');
+      const goalMsg = document.getElementById('deliveryGoalMsg');
+      if (subtotalPrice >= 2999) {
+        progressBar.style.width = '100%';
+        goalMsg.innerHTML = '<i class="fa-solid fa-circle-check mr-1"></i> Yay! You have unlocked FREE Express Delivery!';
+      } else {
+        const perc = Math.min((subtotalPrice / 2999) * 100, 100);
+        progressBar.style.width = `${perc}%`;
+        const diff = 2999 - subtotalPrice;
+        goalMsg.innerHTML = `<i class="fa-solid fa-truck-fast mr-1"></i> Add ₹${diff.toLocaleString('en-IN')} more to unlock FREE Delivery`;
+      }
+
+      // Render Item List
+      const list = document.getElementById('bagItemsContainer');
+      if (bag.length === 0) {
+        list.innerHTML = `
+          <div class="h-full flex flex-col items-center justify-center text-center py-20 text-myntraMuted">
+            <i class="fa-solid fa-bag-shopping text-5xl mb-3 text-myntraBorder"></i>
+            <h4 class="font-bold text-sm text-myntraDark">Hey, it feels so light!</h4>
+            <p class="text-xs text-myntraSub mt-1">There is nothing in your bag. Let's add some items.</p>
+            <button onclick="closeBagDrawer()" class="mt-4 px-6 py-2 bg-myntraPink text-white font-bold text-xs uppercase rounded">Shop Now</button>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = bag.map((item, index) => `
+        <div class="bg-white p-3 rounded-lg border border-myntraBorder flex items-center space-x-3 shadow-xs">
+          <img src="${item.image}" alt="${item.title}" class="w-16 h-20 object-cover rounded border border-myntraBorder flex-shrink-0">
+          
+          <div class="flex-1 min-w-0">
+            <h5 class="text-[11px] font-extrabold uppercase text-myntraDark tracking-wide">${item.brand}</h5>
+            <p class="text-xs text-myntraSub truncate">${item.title}</p>
+            <div class="text-[11px] text-myntraDark mt-1">
+              Size: <span class="font-bold">${item.size}</span>
+            </div>
+            <div class="flex items-baseline space-x-1.5 mt-1">
+              <span class="text-xs font-bold text-myntraDark">₹${item.price.toLocaleString('en-IN')}</span>
+              <span class="text-[10px] line-through text-myntraMuted">₹${item.mrp.toLocaleString('en-IN')}</span>
+            </div>
+          </div>
+
+          <div class="flex flex-col items-end justify-between space-y-3">
+            <button onclick="removeBagItem(${index})" class="text-myntraSub hover:text-rose-600 text-xs p-1" title="Remove">
+              <i class="fa-regular fa-trash-can"></i>
+            </button>
+            <div class="flex items-center border border-myntraBorder rounded bg-myntraBg overflow-hidden">
+              <button onclick="changeQty(${index}, -1)" class="px-2 py-0.5 font-bold hover:bg-gray-200 text-myntraDark text-xs">-</button>
+              <span class="px-2 font-bold text-xs text-myntraDark">${item.qty}</span>
+              <button onclick="changeQty(${index}, 1)" class="px-2 py-0.5 font-bold hover:bg-gray-200 text-myntraDark text-xs">+</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function changeQty(index, delta) {
+      if (!bag[index]) return;
+      bag[index].qty += delta;
+      if (bag[index].qty <= 0) bag.splice(index, 1);
+      updateBagUI();
+    }
+
+    function removeBagItem(index) {
+      bag.splice(index, 1);
+      updateBagUI();
+      showToast("Item removed from bag");
+    }
+
+    function applyCoupon() {
+      const code = document.getElementById('couponCodeInput').value.trim().toUpperCase();
+      const badge = document.getElementById('couponAppliedBadge');
+
+      if (code === 'MYNTRA2026') {
+        couponDiscountRate = 0.15;
+        badge.classList.remove('hidden');
+        showToast("Coupon MYNTRA2026 Applied (15% OFF)!");
+      } else {
+        couponDiscountRate = 0;
+        badge.classList.add('hidden');
+        showToast("Invalid code! Try: MYNTRA2026");
+      }
+      updateBagUI();
+    }
+
+    function openBagDrawer() {
+      document.getElementById('bagBackdrop').classList.remove('hidden');
+      document.getElementById('bagDrawer').classList.remove('translate-x-full');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeBagDrawer() {
+      document.getElementById('bagBackdrop').classList.add('hidden');
+      document.getElementById('bagDrawer').classList.add('translate-x-full');
+      document.body.style.overflow = 'auto';
+    }
+
+    // ================= WHATSAPP ORDER FORMATTER =================
+    function orderViaWhatsApp() {
+      if (bag.length === 0) {
+        showToast("Your shopping bag is empty!");
+        return;
+      }
+
+      let message = `*NEW ORDER | MYNTRA LUXE SHOWROOM*\n`;
+      message += `-------------------------------------------\n`;
+      bag.forEach((item, idx) => {
+        message += `${idx + 1}. *${item.brand}* - ${item.title}\n`;
+        message += `   Size: ${item.size} | Qty: ${item.qty} | Price: ₹${(item.price * item.qty).toLocaleString('en-IN')}\n`;
+      });
+
+      const totalMRP = bag.reduce((sum, item) => sum + (item.mrp * item.qty), 0);
+      const subtotalPrice = bag.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      const couponSavings = Math.round(subtotalPrice * couponDiscountRate);
+      const finalAmount = subtotalPrice - couponSavings;
+
+      message += `-------------------------------------------\n`;
+      message += `Total MRP: ₹${totalMRP.toLocaleString('en-IN')}\n`;
+      if (couponDiscountRate > 0) message += `Coupon Applied (MYNTRA2026): -₹${couponSavings.toLocaleString('en-IN')}\n`;
+      message += `*Final Payable Amount: ₹${finalAmount.toLocaleString('en-IN')}*\n`;
+      message += `Delivery: Free Express Handover\n\nPlease confirm availability and dispatch!`;
+
+      const whatsappUrl = `https://wa.me/918619089899?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, '_blank');
+      showToast("Redirecting to WhatsApp Concierge...");
+    }
+
+    // ================= WISHLIST TOGGLE =================
+    function toggleWishlist(id, e) {
+      if (e) e.stopPropagation();
+      if (wishlist.includes(id)) {
+        wishlist = wishlist.filter(x => x !== id);
+        showToast("Removed from Wishlist");
+      } else {
+        wishlist.push(id);
+        showToast("Added to your Wishlist!");
+      }
+      document.getElementById('headerWishlistBadge').innerText = wishlist.length;
+      document.getElementById('dockWishlistBadge').innerText = wishlist.length;
+      renderCatalog();
+    }
+
+    function openWishlistToast() {
+      showToast(`You have ${wishlist.length} curated luxury items in your Wishlist.`);
+    }
+
+    // ================= MOBILE SIDE MENU =================
+    function toggleMobileSideMenu() {
+      const menu = document.getElementById('sideMenu');
+      const backdrop = document.getElementById('sideMenuBackdrop');
+      if (menu.classList.contains('-translate-x-full')) {
+        menu.classList.remove('-translate-x-full');
+        backdrop.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      } else {
+        menu.classList.add('-translate-x-full');
+        backdrop.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+      }
+    }
+
+    // ================= BANNER COUNTDOWN TIMER =================
+    function startCountdown() {
+      let hours = 4, minutes = 38, seconds = 12;
+      setInterval(() => {
+        if (seconds > 0) {
+          seconds--;
+        } else {
+          seconds = 59;
+          if (minutes > 0) {
+            minutes--;
+          } else {
+            minutes = 59;
+            if (hours > 0) hours--;
+          }
+        }
+        document.getElementById('timerHours').innerText = String(hours).padStart(2, '0');
+        document.getElementById('timerMins').innerText = String(minutes).padStart(2, '0');
+        document.getElementById('timerSecs').innerText = String(seconds).padStart(2, '0');
+      }, 1000);
+    }
+
+    // ================= TOAST NOTIFICATION =================
+    let toastTimer;
+    function showToast(text) {
+      const toast = document.getElementById('appToast');
+      document.getElementById('appToastText').innerText = text;
+
+      clearTimeout(toastTimer);
+      toast.classList.remove('opacity-0', '-translate-y-8');
+      toast.classList.add('opacity-100', 'translate-y-0');
+
+      toastTimer = setTimeout(() => {
+        toast.classList.add('opacity-0', '-translate-y-8');
+        toast.classList.remove('opacity-100', 'translate-y-0');
+      }, 2400);
+    }
+
+    // ================= WINDOW ONLOAD INITIALIZATION =================
+    window.onload = function() {
+      renderStoryPills();
+      renderCatalog();
+      updateBagUI();
+      startCountdown();
+    };
+  </script>
+</body>
+</html>

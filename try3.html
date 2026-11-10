@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>KURA & CO. | Luxury Menswear & Horology</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Typography: Plus Jakarta Sans & Space Grotesk (High-End Japanese & Korean Fashion Vibe) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome 6 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            chalk: '#FFFFFF',
+            paper: '#F8F9FA',
+            hairline: '#EEEEEE',
+            borderSubtle: '#E4E4E7',
+            carbon: '#111111',
+            charcoal: '#333333',
+            muted: '#71717A',
+            accent: '#0F172A',
+            redBrand: '#D90429',
+            emeraldLuxe: '#059669'
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', '-apple-system', 'sans-serif'],
+            display: ['"Space Grotesk"', 'sans-serif']
+          },
+          boxShadow: {
+            'sheet': '0 -10px 40px rgba(0, 0, 0, 0.08)',
+            'floating': '0 12px 30px rgba(0, 0, 0, 0.06)',
+            'dock': '0 -4px 20px rgba(0, 0, 0, 0.04)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #FFFFFF;
+      color: #111111;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+      padding-bottom: 74px; /* Space for Mobile Bottom Dock */
+    }
+
+    @media (min-width: 1024px) {
+      body {
+        padding-bottom: 0px;
+      }
+    }
+
+    /* Clean Japanese Running Micro-Ticker */
+    @keyframes smoothTicker {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+    .animate-ticker {
+      display: flex;
+      width: 200%;
+      animation: smoothTicker 30s linear infinite;
+    }
+    .animate-ticker:hover {
+      animation-play-state: paused;
+    }
+
+    /* Hide standard scrollbars for native app horizontal swiping */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Ultra-smooth slide-up sheet */
+    .sheet-transition {
+      transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.28s ease;
+    }
+
+    /* Wishlist Heart Pop Animation */
+    @keyframes heartPop {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.35); }
+      100% { transform: scale(1); }
+    }
+    .animate-heart-pop {
+      animation: heartPop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    /* Subtle image zoom on interaction */
+    .product-img {
+      transition: transform 0.5s cubic-bezier(0.2, 0, 0.2, 1);
+    }
+    .product-card:hover .product-img {
+      transform: scale(1.04);
+    }
+  </style>
+</head>
+<body class="selection:bg-carbon selection:text-chalk">
+
+  <!-- ==================== 1. JAPANESE MICRO ANNOUNCEMENT TICKER ==================== -->
+  <div class="bg-carbon text-chalk py-1.5 overflow-hidden select-none border-b border-hairline">
+    <div class="animate-ticker whitespace-nowrap text-[10px] sm:text-[11px] font-medium tracking-[0.2em] uppercase flex items-center">
+      <span class="mx-6 inline-flex items-center gap-2"><i class="fa-solid fa-bolt text-[9px] text-amber-400"></i> Express Same-Day Dispatch Across India</span>
+      <span class="mx-6 text-muted/60">•</span>
+      <span class="mx-6 inline-flex items-center gap-2"><i class="fa-solid fa-check text-[9px]"></i> 100% Certified Authentic Brands: Tommy, Levi's, USPA, CK</span>
+      <span class="mx-6 text-muted/60">•</span>
+      <span class="mx-6 inline-flex items-center gap-2"><i class="fa-solid fa-box text-[9px]"></i> Complimentary White-Glove Handover on Orders > ₹3,999</span>
+      <span class="mx-6 text-muted/60">•</span>
+      <span class="mx-6 inline-flex items-center gap-2"><i class="fa-brands fa-whatsapp text-[10px] text-emerald-400"></i> Boutique Concierge: +91 861 908 9899</span>
+      <span class="mx-6 text-muted/60">•</span>
+      <!-- Loop Items -->
+      <span class="mx-6 inline-flex items-center gap-2"><i class="fa-solid fa-bolt text-[9px] text-amber-400"></i> Express Same-Day Dispatch Across India</span>
+      <span class="mx-6 text-muted/60">•</span>
+      <span class="mx-6 inline-flex items-center gap-2"><i class="fa-solid fa-check text-[9px]"></i> 100% Certified Authentic Brands: Tommy, Levi's, USPA, CK</span>
+    </div>
+  </div>
+
+  <!-- ==================== 2. MINIMALIST HIGH-FASHION HEADER ==================== -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-hairline transition-all duration-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="flex items-center justify-between h-16 sm:h-20">
+        
+        <!-- Left: Brand Wordmark (Korean Minimalist Style) -->
+        <div class="flex items-center gap-3 cursor-pointer" onclick="resetFiltersAndScroll()">
+          <span class="w-8 h-8 rounded-lg bg-carbon text-white flex items-center justify-center font-display font-bold text-sm tracking-tighter">K</span>
+          <div>
+            <h1 class="font-display font-bold text-lg sm:text-2xl tracking-[0.15em] uppercase text-carbon leading-none">KURA & CO.</h1>
+            <p class="text-[8px] sm:text-[9px] tracking-[0.25em] text-muted uppercase font-semibold mt-0.5">Menswear & Horology</p>
+          </div>
+        </div>
+
+        <!-- Center: Desktop Minimalist Nav -->
+        <nav class="hidden md:flex items-center space-x-8 text-xs font-semibold tracking-[0.16em] uppercase text-charcoal">
+          <button onclick="filterCategory('all')" class="hover:text-carbon transition relative py-1 focus:outline-none">All Drops</button>
+          <button onclick="filterCategory('shirts')" class="hover:text-carbon transition relative py-1 focus:outline-none">Shirts</button>
+          <button onclick="filterCategory('polos')" class="hover:text-carbon transition relative py-1 focus:outline-none">Polos & Tees</button>
+          <button onclick="filterCategory('denim')" class="hover:text-carbon transition relative py-1 focus:outline-none">Denim & Bottoms</button>
+          <button onclick="filterCategory('accessories')" class="hover:text-carbon transition relative py-1 focus:outline-none">Belts & Horology</button>
+        </nav>
+
+        <!-- Right: Utility Actions (Search, Wishlist, Bag) -->
+        <div class="flex items-center space-x-2 sm:space-x-4">
+          <!-- Search Toggle Trigger -->
+          <button onclick="toggleSearchOverlay()" class="w-9 h-9 rounded-full hover:bg-paper flex items-center justify-center text-carbon transition" aria-label="Search">
+            <i class="fa-solid fa-magnifying-glass text-sm"></i>
+          </button>
+
+          <!-- Wishlist Badge -->
+          <button onclick="scrollToWishlistAlert()" class="w-9 h-9 rounded-full hover:bg-paper flex items-center justify-center text-carbon relative transition" aria-label="Wishlist">
+            <i class="fa-regular fa-heart text-base"></i>
+            <span id="headerWishlistBadge" class="absolute 1 top-1 -right-0.5 bg-carbon text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold">2</span>
+          </button>
+
+          <!-- Shopping Bag Button -->
+          <button onclick="openBagDrawer()" class="flex items-center gap-2 bg-carbon hover:bg-black text-white px-3.5 sm:px-4 py-2 rounded-full text-xs font-semibold tracking-wider transition active:scale-95 shadow-sm">
+            <i class="fa-solid fa-bag-shopping text-xs"></i>
+            <span class="hidden sm:inline uppercase text-[11px]">Bag</span>
+            <span id="headerBagBadge" class="bg-white text-carbon text-[10px] font-extrabold px-1.5 py-0.2 rounded-full">0</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Collapsible Search Bar Overlay -->
+    <div id="searchOverlay" class="hidden border-t border-hairline bg-paper px-4 py-3 transition-all duration-200">
+      <div class="max-w-3xl mx-auto relative flex items-center">
+        <i class="fa-solid fa-magnifying-glass absolute left-3.5 text-xs text-muted"></i>
+        <input type="text" id="omniSearchInput" placeholder="Search Tommy Hilfiger, Levi's 511, Polo shirts, Leather belts..." 
+               class="w-full bg-white border border-borderSubtle text-xs rounded-xl pl-9 pr-10 py-2.5 focus:outline-none focus:border-carbon transition">
+        <button onclick="clearSearch()" class="absolute right-3 text-muted hover:text-carbon text-xs">
+          <i class="fa-solid fa-circle-xmark"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== 3. KOREAN LUXURY STORY CAPSULES (SWIPEABLE BRAND PILLS) ==================== -->
+  <section class="border-b border-hairline bg-white py-3 sm:py-4">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex items-center space-x-2.5 overflow-x-auto no-scrollbar scroll-smooth" id="brandPillList">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 4. MYNTRA-GRADE CATEGORY TABS & SORT CONTROLS ==================== -->
+  <div class="sticky top-16 sm:top-20 z-30 bg-white/95 backdrop-blur-md border-b border-hairline">
+    <div class="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between gap-3">
+      
+      <!-- Category Micro Pills -->
+      <div class="flex items-center space-x-2 overflow-x-auto no-scrollbar" id="categoryScrollTabs">
+        <button onclick="filterCategory('all')" data-cat="all" class="cat-pill active text-xs font-semibold px-3.5 py-1.5 rounded-full bg-carbon text-white whitespace-nowrap transition">All</button>
+        <button onclick="filterCategory('shirts')" data-cat="shirts" class="cat-pill text-xs font-semibold px-3.5 py-1.5 rounded-full bg-paper text-charcoal hover:bg-hairline whitespace-nowrap transition">Shirts</button>
+        <button onclick="filterCategory('polos')" data-cat="polos" class="cat-pill text-xs font-semibold px-3.5 py-1.5 rounded-full bg-paper text-charcoal hover:bg-hairline whitespace-nowrap transition">T-Shirts & Polos</button>
+        <button onclick="filterCategory('denim')" data-cat="denim" class="cat-pill text-xs font-semibold px-3.5 py-1.5 rounded-full bg-paper text-charcoal hover:bg-hairline whitespace-nowrap transition">Denim & Pants</button>
+        <button onclick="filterCategory('innerwear')" data-cat="innerwear" class="cat-pill text-xs font-semibold px-3.5 py-1.5 rounded-full bg-paper text-charcoal hover:bg-hairline whitespace-nowrap transition">Innerwear & Shorts</button>
+        <button onclick="filterCategory('accessories')" data-cat="accessories" class="cat-pill text-xs font-semibold px-3.5 py-1.5 rounded-full bg-paper text-charcoal hover:bg-hairline whitespace-nowrap transition">Belts & Watches</button>
+      </div>
+
+      <!-- Compact Sort Trigger -->
+      <div class="flex items-center gap-1.5 flex-shrink-0">
+        <label for="catalogSortSelect" class="sr-only">Sort curated collection</label>
+        <select id="catalogSortSelect" onchange="handleSortChange(this.value)" class="bg-paper border border-hairline text-[11px] font-semibold text-charcoal rounded-full px-3 py-1.5 focus:outline-none focus:border-carbon">
+          <option value="popularity">Popularity</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="discount">Biggest Discount</option>
+        </select>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==================== 5. CATALOG METRICS & QUICK SUMMARY ==================== -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+    <div class="flex items-center justify-between text-xs text-muted mb-4 px-1">
+      <div>
+        Showing <span id="itemCountDisplay" class="font-bold text-carbon">16</span> items
+        <span id="activeFilterLabel" class="ml-1 text-[11px] font-medium text-charcoal"></span>
+      </div>
+      <div class="text-[11px] font-medium hidden sm:flex items-center gap-2">
+        <i class="fa-solid fa-arrows-rotate text-emerald-600"></i> Free 7-Day Doorstep Fit Exchange
+      </div>
+    </div>
+
+    <!-- ==================== 6. MYNTRA-STYLE 2-COLUMN MOBILE GRID ==================== -->
+    <div id="productGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
+      <!-- Injected via JavaScript -->
+    </div>
+  </main>
+
+  <!-- ==================== 7. MOBILE BOTTOM SLIDE-UP SHEET (SIZE & VARIANT SELECTOR) ==================== -->
+  <div id="sizeSheetBackdrop" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden transition-opacity duration-300"></div>
+  <div id="sizeSheet" class="fixed bottom-0 left-0 right-0 max-w-lg mx-auto bg-white rounded-t-3xl z-50 transform translate-y-full sheet-transition shadow-sheet border-t border-hairline p-5 pb-8 sm:p-6 sm:pb-8">
+    
+    <!-- Drag indicator bar -->
+    <div class="w-10 h-1 bg-hairline rounded-full mx-auto mb-4"></div>
+
+    <div class="flex items-start justify-between pb-4 border-b border-hairline">
+      <div class="flex items-center space-x-3">
+        <img id="sheetProductImg" src="" alt="Selected Product" class="w-14 h-18 object-cover rounded-xl border border-hairline">
+        <div>
+          <span id="sheetBrandTag" class="text-[9px] uppercase font-bold tracking-widest text-muted"></span>
+          <h4 id="sheetProductTitle" class="text-xs sm:text-sm font-bold text-carbon line-clamp-1"></h4>
+          <div class="flex items-baseline space-x-2 mt-1 font-sans">
+            <span id="sheetPrice" class="text-sm font-bold text-carbon"></span>
+            <span id="sheetOriginalPrice" class="text-[11px] line-through text-muted"></span>
+            <span id="sheetDiscount" class="text-[10px] font-bold text-emeraldLuxe bg-emerald-50 px-1.5 py-0.2 rounded"></span>
+          </div>
+        </div>
+      </div>
+      <button onclick="closeSizeSheet()" class="text-muted hover:text-carbon text-lg p-1">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <!-- Size selector chip row -->
+    <div class="py-4">
+      <div class="flex justify-between items-center mb-2.5">
+        <span class="text-xs font-bold uppercase tracking-wider text-carbon">Select Fit / Size</span>
+        <span class="text-[10px] font-semibold text-emeraldLuxe"><i class="fa-solid fa-ruler-horizontal mr-1"></i> Standard Indian Fit</span>
+      </div>
+      <div id="sheetSizeChips" class="flex flex-wrap gap-2">
+        <!-- Rendered dynamically -->
+      </div>
+      <p id="urgencyTag" class="text-[10px] text-redBrand font-semibold mt-2.5 flex items-center gap-1.5">
+        <i class="fa-solid fa-fire text-redBrand"></i> High demand: Only 2 units left in this size!
+      </p>
+    </div>
+
+    <!-- Confirm Add to Bag CTA -->
+    <button id="sheetConfirmBtn" class="w-full py-3.5 bg-carbon hover:bg-black text-white text-xs font-bold uppercase tracking-widest rounded-xl transition duration-200 active:scale-[0.98] shadow-md flex items-center justify-center gap-2">
+      <i class="fa-solid fa-bag-shopping"></i>
+      <span>Confirm & Add to Bag</span>
+    </button>
+  </div>
+
+  <!-- ==================== 8. SLIDE-OVER BAG DRAWER (WITH WHATSAPP DISPATCH) ==================== -->
+  <div id="bagDrawerBackdrop" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden transition-opacity duration-300"></div>
+  <aside id="bagDrawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-white z-50 transform translate-x-full transition-transform duration-300 shadow-sheet flex flex-col">
+    
+    <!-- Bag Header -->
+    <div class="p-4 sm:p-5 border-b border-hairline flex items-center justify-between bg-paper">
+      <div class="flex items-center space-x-2.5">
+        <i class="fa-solid fa-bag-shopping text-sm text-carbon"></i>
+        <h3 class="font-display font-bold text-base tracking-wide text-carbon">SHOPPING BAG</h3>
+        <span id="bagItemCounter" class="bg-carbon text-white text-[10px] font-bold px-2 py-0.5 rounded-full">0</span>
+      </div>
+      <button onclick="closeBagDrawer()" class="text-muted hover:text-carbon text-lg p-1.5">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <!-- Free Delivery Milestone Progress Indicator -->
+    <div class="px-5 py-2.5 bg-paper/60 border-b border-hairline text-xs">
+      <div class="flex justify-between items-center text-carbon font-semibold text-[11px] mb-1.5">
+        <span id="bagDeliveryGoalText"><i class="fa-solid fa-truck-fast text-emeraldLuxe mr-1"></i> Add ₹2,000 more for Free Express Shipping</span>
+        <span class="text-[9px] uppercase font-bold text-muted">MYNTRA LUXE</span>
+      </div>
+      <div class="w-full bg-hairline h-1 rounded-full overflow-hidden">
+        <div id="bagProgressBar" class="bg-carbon h-full w-1/3 transition-all duration-300"></div>
+      </div>
+    </div>
+
+    <!-- Bag Scrollable Items -->
+    <div id="bagItemsList" class="flex-1 overflow-y-auto p-4 sm:p-5 space-y-3.5">
+      <!-- Injected via JS -->
+    </div>
+
+    <!-- Bag Footer & WhatsApp One-Click Checkout -->
+    <div class="p-5 border-t border-hairline bg-paper space-y-3.5">
+      
+      <!-- Promo code field -->
+      <div class="flex items-center gap-2">
+        <input type="text" id="bagCouponInput" placeholder="Promo code (try: LUXE20)" class="flex-1 bg-white border border-borderSubtle rounded-xl px-3 py-2 text-xs uppercase font-semibold focus:outline-none focus:border-carbon">
+        <button onclick="applyBagCoupon()" class="px-4 py-2 bg-carbon text-white text-xs font-bold uppercase rounded-xl hover:bg-black transition">Apply</button>
+      </div>
+      <div id="couponMessage" class="text-[11px] font-semibold hidden"></div>
+
+      <!-- Pricing Summary Breakdown -->
+      <div class="space-y-1.5 text-xs text-charcoal">
+        <div class="flex justify-between">
+          <span class="text-muted">Bag Total (MRP)</span>
+          <span id="bagSubtotal" class="font-semibold text-carbon">₹0</span>
+        </div>
+        <div id="bagDiscountRow" class="flex justify-between text-emeraldLuxe hidden font-semibold">
+          <span>Privilege Discount (20%)</span>
+          <span id="bagDiscountAmount">-₹0</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-muted">Convenience & Delivery</span>
+          <span class="text-emeraldLuxe font-bold">FREE</span>
+        </div>
+        <div class="flex justify-between text-sm font-bold text-carbon pt-2 border-t border-hairline">
+          <span>Payable Amount</span>
+          <span id="bagGrandTotal" class="text-base text-carbon font-sans">₹0</span>
+        </div>
+      </div>
+
+      <!-- Primary Checkout CTA (WhatsApp Format) -->
+      <button onclick="checkoutViaWhatsApp()" class="w-full py-3.5 bg-emeraldLuxe hover:bg-emerald-700 text-white rounded-xl text-xs font-bold tracking-widest uppercase flex items-center justify-center gap-2.5 transition active:scale-95 shadow-md">
+        <i class="fa-brands fa-whatsapp text-base"></i>
+        <span>Order Directly on WhatsApp</span>
+      </button>
+
+      <p class="text-[10px] text-center text-muted">
+        <i class="fa-solid fa-shield text-[9px] mr-1"></i> Cash on Delivery & UPI accepted at doorstep handover.
+      </p>
+    </div>
+
+  </aside>
+
+  <!-- ==================== 9. NATIVE MOBILE APP FIXED BOTTOM DOCK ==================== -->
+  <div class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-hairline shadow-dock">
+    <div class="grid grid-cols-4 h-16 items-center">
+      
+      <!-- Home / Discover -->
+      <button onclick="resetFiltersAndScroll()" class="flex flex-col items-center justify-center space-y-1 text-carbon focus:outline-none">
+        <i class="fa-solid fa-compass text-base"></i>
+        <span class="text-[9px] font-bold uppercase tracking-wider">Explore</span>
+      </button>
+
+      <!-- Category Filter Trigger -->
+      <button onclick="scrollCategoryToView()" class="flex flex-col items-center justify-center space-y-1 text-muted hover:text-carbon focus:outline-none">
+        <i class="fa-solid fa-list-ul text-base"></i>
+        <span class="text-[9px] font-bold uppercase tracking-wider">Brands</span>
+      </button>
+
+      <!-- Wishlist with Counter -->
+      <button onclick="scrollToWishlistAlert()" class="flex flex-col items-center justify-center space-y-1 text-muted hover:text-carbon relative focus:outline-none">
+        <i class="fa-regular fa-heart text-base"></i>
+        <span id="dockWishlistBadge" class="absolute top-2 right-6 bg-carbon text-white text-[8px] w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold">2</span>
+        <span class="text-[9px] font-bold uppercase tracking-wider">Saved</span>
+      </button>
+
+      <!-- Bag with Counter -->
+      <button onclick="openBagDrawer()" class="flex flex-col items-center justify-center space-y-1 text-muted hover:text-carbon relative focus:outline-none">
+        <i class="fa-solid fa-bag-shopping text-base"></i>
+        <span id="dockBagBadge" class="absolute top-2 right-6 bg-redBrand text-white text-[8px] w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold">0</span>
+        <span class="text-[9px] font-bold uppercase tracking-wider">Bag</span>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- FLOATING MINI TOAST -->
+  <div id="toastNotification" class="fixed top-20 right-4 z-50 transform -translate-y-10 opacity-0 pointer-events-none transition-all duration-300 bg-carbon text-white text-xs px-4 py-2.5 rounded-xl shadow-xl flex items-center space-x-2">
+    <i class="fa-solid fa-check text-emerald-400 text-xs"></i>
+    <span id="toastMessage" class="font-medium"></span>
+  </div>
+
+  <!-- ==================== JAVASCRIPT LOGIC ENGINE ==================== -->
+  <script>
+    // ================= 16 VERIFIED MENSWEAR LUXURY INVENTORY =================
+    const products = [
+      // SHIRTS
+      {
+        id: 1,
+        title: "Iconic Slim Fit Oxford Button-Down Shirt",
+        brand: "Tommy Hilfiger",
+        category: "shirts",
+        price: 3499,
+        originalPrice: 5999,
+        rating: 4.8,
+        ratingCount: 420,
+        image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?q=80&w=700&auto=format&fit=crop",
+        badge: "BESTSELLER",
+        sizes: ["39 (M)", "40 (L)", "42 (XL)", "44 (XXL)"]
+      },
+      {
+        id: 2,
+        title: "Tailored Custom Fit Pure Linen Shirt",
+        brand: "U.S. Polo Assn.",
+        category: "shirts",
+        price: 2499,
+        originalPrice: 3999,
+        rating: 4.7,
+        ratingCount: 310,
+        image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?q=80&w=700&auto=format&fit=crop",
+        badge: "100% LINEN",
+        sizes: ["38 (S)", "40 (M)", "42 (L)", "44 (XL)"]
+      },
+      {
+        id: 3,
+        title: "Authentic Western Rigid Denim Overshirt",
+        brand: "Levi's",
+        category: "shirts",
+        price: 3199,
+        originalPrice: 4999,
+        rating: 4.9,
+        ratingCount: 512,
+        image: "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?q=80&w=700&auto=format&fit=crop",
+        badge: "NEW DROP",
+        sizes: ["M", "L", "XL"]
+      },
+
+      // POLOS & T-SHIRTS
+      {
+        id: 4,
+        title: "Signature Pique Honeycomb Polo",
+        brand: "U.S. Polo Assn.",
+        category: "polos",
+        price: 1899,
+        originalPrice: 2999,
+        rating: 4.9,
+        ratingCount: 890,
+        image: "https://images.unsplash.com/photo-1581655353564-df123a1eb820?q=80&w=700&auto=format&fit=crop",
+        badge: "POPULAR",
+        sizes: ["S", "M", "L", "XL", "XXL"]
+      },
+      {
+        id: 5,
+        title: "Supima Cotton Heavyweight Minimal Tee",
+        brand: "Tommy Hilfiger",
+        category: "polos",
+        price: 2199,
+        originalPrice: 3499,
+        rating: 4.8,
+        ratingCount: 230,
+        image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=700&auto=format&fit=crop",
+        badge: "SUPIMA",
+        sizes: ["S", "M", "L", "XL"]
+      },
+      {
+        id: 6,
+        title: "Liquid Touch Monogram Crew Neck Tee",
+        brand: "Calvin Klein",
+        category: "polos",
+        price: 2399,
+        originalPrice: 3799,
+        rating: 4.7,
+        ratingCount: 184,
+        image: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=700&auto=format&fit=crop",
+        badge: "SILK TOUCH",
+        sizes: ["M", "L", "XL"]
+      },
+
+      // DENIM & PANTS
+      {
+        id: 7,
+        title: "511™ Slim Fit Indigo Selvedge Denim",
+        brand: "Levi's",
+        category: "denim",
+        price: 3999,
+        originalPrice: 6299,
+        rating: 4.9,
+        ratingCount: 1420,
+        image: "https://images.unsplash.com/photo-1542272604-780c96856592?q=80&w=700&auto=format&fit=crop",
+        badge: "SELVEDGE",
+        sizes: ["30", "32", "34", "36", "38"]
+      },
+      {
+        id: 8,
+        title: "501® Original Heritage Straight Denim",
+        brand: "Levi's",
+        category: "denim",
+        price: 3599,
+        originalPrice: 5499,
+        rating: 4.9,
+        ratingCount: 980,
+        image: "https://images.unsplash.com/photo-1604176354204-9268737828e4?q=80&w=700&auto=format&fit=crop",
+        badge: "1873 CLASSIC",
+        sizes: ["30", "32", "34", "36"]
+      },
+      {
+        id: 9,
+        title: "Denton Slim Fit Stretch Chino Trousers",
+        brand: "Tommy Hilfiger",
+        category: "denim",
+        price: 3899,
+        originalPrice: 5999,
+        rating: 4.6,
+        ratingCount: 310,
+        image: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?q=80&w=700&auto=format&fit=crop",
+        badge: "SLIM CHINO",
+        sizes: ["32", "34", "36", "38"]
+      },
+      {
+        id: 10,
+        title: "French Terry Athletic Tapered Joggers",
+        brand: "U.S. Polo Assn.",
+        category: "denim",
+        price: 1899,
+        originalPrice: 2899,
+        rating: 4.8,
+        ratingCount: 640,
+        image: "https://images.unsplash.com/photo-1506629082955-511b1aa562c8?q=80&w=700&auto=format&fit=crop",
+        badge: "FLEECE",
+        sizes: ["M", "L", "XL", "XXL"]
+      },
+
+      // INNERWEAR & SHORTS
+      {
+        id: 11,
+        title: "Modern Cotton Classic Trunks (Pack of 3)",
+        brand: "Calvin Klein",
+        category: "innerwear",
+        price: 2499,
+        originalPrice: 3999,
+        rating: 4.9,
+        ratingCount: 1820,
+        image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=700&auto=format&fit=crop",
+        badge: "PACK OF 3",
+        sizes: ["S", "M", "L", "XL"]
+      },
+      {
+        id: 12,
+        title: "Active Core Drawstring Lounge Shorts",
+        brand: "Armani Exchange",
+        category: "innerwear",
+        price: 2199,
+        originalPrice: 3499,
+        rating: 4.7,
+        ratingCount: 145,
+        image: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?q=80&w=700&auto=format&fit=crop",
+        badge: "RESORT",
+        sizes: ["M", "L", "XL"]
+      },
+
+      // ACCESSORIES (BELTS & WATCHES)
+      {
+        id: 13,
+        title: "Reversible Italian Hand-Crafted Leather Belt",
+        brand: "Armani Exchange",
+        category: "accessories",
+        price: 3299,
+        originalPrice: 4999,
+        rating: 4.8,
+        ratingCount: 220,
+        image: "https://images.unsplash.com/photo-1624222247344-550fb60583dc?q=80&w=700&auto=format&fit=crop",
+        badge: "REVERSIBLE",
+        sizes: ["32", "34", "36", "38", "40"]
+      },
+      {
+        id: 14,
+        title: "Bridle Full-Grain Leather Jean Belt",
+        brand: "Levi's",
+        category: "accessories",
+        price: 1999,
+        originalPrice: 2999,
+        rating: 4.9,
+        ratingCount: 670,
+        image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=700&auto=format&fit=crop",
+        badge: "PURE LEATHER",
+        sizes: ["32", "34", "36", "38"]
+      },
+      {
+        id: 15,
+        title: "Grand Horizon Chronograph 44mm Watch",
+        brand: "Tommy Hilfiger",
+        category: "accessories",
+        price: 9499,
+        originalPrice: 14999,
+        rating: 4.9,
+        ratingCount: 380,
+        image: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?q=80&w=700&auto=format&fit=crop",
+        badge: "CHRONO",
+        sizes: ["44mm Dial"]
+      },
+      {
+        id: 16,
+        title: "Minimalist Sunray Steel Mesh Timepiece",
+        brand: "Armani Exchange",
+        category: "accessories",
+        price: 10499,
+        originalPrice: 16499,
+        rating: 4.8,
+        ratingCount: 190,
+        image: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=700&auto=format&fit=crop",
+        badge: "PRECISION",
+        sizes: ["42mm Dial"]
+      }
+    ];
+
+    // Brands list for top story capsules
+    const brandCapsules = [
+      { name: "All Brands", logo: "ALL" },
+      { name: "Tommy Hilfiger", logo: "TOMMY" },
+      { name: "Levi's", logo: "LEVI'S" },
+      { name: "U.S. Polo Assn.", logo: "USPA" },
+      { name: "Calvin Klein", logo: "CK" },
+      { name: "Armani Exchange", logo: "A|X" }
+    ];
+
+    // ================= STATE =================
+    let activeCategory = 'all';
+    let activeBrand = 'All Brands';
+    let bag = [];
+    let wishlist = [1, 7];
+    let sheetProduct = null;
+    let sheetSelectedSize = '';
+    let couponDiscount = 0;
+
+    // ================= RENDER BRAND PILL CAPSULES =================
+    function renderBrandPills() {
+      const container = document.getElementById('brandPillList');
+      container.innerHTML = brandCapsules.map(b => {
+        const isActive = activeBrand === b.name;
+        return `
+          <button onclick="selectBrandFilter('${b.name}')" 
+                  class="flex-shrink-0 flex items-center space-x-2 px-3.5 py-1.5 rounded-full border text-xs font-semibold uppercase tracking-wider transition ${isActive ? 'bg-carbon text-white border-carbon shadow-sm' : 'bg-paper text-charcoal border-hairline hover:border-carbon'}">
+            <span class="w-2 h-2 rounded-full ${isActive ? 'bg-emerald-400' : 'bg-borderSubtle'}"></span>
+            <span>${b.logo}</span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function selectBrandFilter(brand) {
+      activeBrand = brand;
+      renderBrandPills();
+      filterAndRenderCatalog();
+    }
+
+    // ================= RENDER PRODUCTS (MYNTRA-STYLE 2-COL GRID) =================
+    function filterAndRenderCatalog() {
+      let filtered = [...products];
+
+      // Category filter
+      if (activeCategory !== 'all') {
+        filtered = filtered.filter(p => p.category === activeCategory);
+      }
+
+      // Brand filter
+      if (activeBrand !== 'All Brands') {
+        filtered = filtered.filter(p => p.brand.toLowerCase() === activeBrand.toLowerCase());
+      }
+
+      // Search keyword filter
+      const searchVal = document.getElementById('omniSearchInput').value.toLowerCase().trim();
+      if (searchVal) {
+        filtered = filtered.filter(p => 
+          p.title.toLowerCase().includes(searchVal) || 
+          p.brand.toLowerCase().includes(searchVal)
+        );
+      }
+
+      // Sorting
+      const sortType = document.getElementById('catalogSortSelect').value;
+      if (sortType === 'price-asc') {
+        filtered.sort((a, b) => a.price - b.price);
+      } else if (sortType === 'price-desc') {
+        filtered.sort((a, b) => b.price - a.price);
+      } else if (sortType === 'discount') {
+        filtered.sort((a, b) => {
+          const discA = (a.originalPrice - a.price) / a.originalPrice;
+          const discB = (b.originalPrice - b.price) / b.originalPrice;
+          return discB - discA;
+        });
+      } else {
+        // Popularity: default
+        filtered.sort((a, b) => b.ratingCount - a.ratingCount);
+      }
+
+      document.getElementById('itemCountDisplay').innerText = filtered.length;
+      document.getElementById('activeFilterLabel').innerText = activeBrand !== 'All Brands' ? `in ${activeBrand}` : '';
+
+      const grid = document.getElementById('productGrid');
+      grid.innerHTML = '';
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full py-20 text-center text-muted bg-paper rounded-2xl border border-hairline p-6">
+            <i class="fa-solid fa-magnifying-glass text-3xl mb-3 text-carbon"></i>
+            <p class="font-bold text-carbon text-sm">No items found matching your filter</p>
+            <p class="text-xs mt-1">Try resetting the brand or category filters.</p>
+            <button onclick="resetFiltersAndScroll()" class="mt-4 px-5 py-2 bg-carbon text-white rounded-full text-xs font-semibold uppercase">Reset Filters</button>
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach(p => {
+        const isWish = wishlist.includes(p.id);
+        const discountPercent = Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100);
+
+        const card = document.createElement('div');
+        card.className = "product-card group bg-white border border-hairline rounded-2xl overflow-hidden flex flex-col justify-between hover:border-carbon transition-colors duration-200";
+
+        card.innerHTML = `
+          <div>
+            <!-- Image Frame (3:4 High Fashion Ratio) -->
+            <div class="relative overflow-hidden aspect-[3/4] bg-paper">
+              <img src="${p.image}" alt="${p.title}" class="product-img w-full h-full object-cover object-top">
+              
+              <!-- Tag badge -->
+              <span class="absolute top-2.5 left-2.5 bg-white/90 backdrop-blur-md text-[8px] sm:text-[9px] font-extrabold tracking-wider px-2 py-0.5 rounded text-carbon border border-hairline">
+                ${p.badge}
+              </span>
+
+              <!-- Wishlist Floating Icon -->
+              <button onclick="toggleWishlist(${p.id}, event)" class="absolute top-2.5 right-2.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/90 backdrop-blur-md border border-hairline flex items-center justify-center text-xs transition active:scale-125 ${isWish ? 'text-redBrand' : 'text-charcoal hover:text-redBrand'}">
+                <i class="${isWish ? 'fa-solid text-redBrand animate-heart-pop' : 'fa-regular'} fa-heart"></i>
+              </button>
+
+              <!-- Rating Chip -->
+              <div class="absolute bottom-2 left-2 bg-white/90 backdrop-blur-md px-1.5 py-0.5 rounded text-[9px] font-bold text-carbon flex items-center gap-1 border border-hairline">
+                <span>${p.rating}</span>
+                <i class="fa-solid fa-star text-[8px] text-amber-500"></i>
+                <span class="text-muted text-[8px]">(${p.ratingCount})</span>
+              </div>
+            </div>
+
+            <!-- Details Section -->
+            <div class="p-3 sm:p-3.5">
+              <span class="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-muted block mb-0.5">${p.brand}</span>
+              <h4 class="text-xs sm:text-[13px] font-semibold text-carbon line-clamp-1 leading-snug group-hover:text-black">
+                ${p.title}
+              </h4>
+
+              <!-- Price format: current price, MRP strike, discount % -->
+              <div class="flex items-baseline space-x-1.5 mt-1.5 font-sans">
+                <span class="text-xs sm:text-sm font-bold text-carbon">₹${p.price.toLocaleString('en-IN')}</span>
+                <span class="text-[10px] line-through text-muted">₹${p.originalPrice.toLocaleString('en-IN')}</span>
+                <span class="text-[10px] font-bold text-emeraldLuxe">${discountPercent}% OFF</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Add / Size Trigger Button (Myntra-like) -->
+          <div class="p-3 sm:p-3.5 pt-0">
+            <button onclick="triggerQuickAdd(${p.id})" class="w-full py-2 bg-paper hover:bg-carbon hover:text-white text-carbon border border-hairline rounded-xl text-[11px] font-bold uppercase tracking-wider transition active:scale-95 flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-plus text-[9px]"></i>
+              <span>Select Size</span>
+            </button>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+    }
+
+    // ================= CATEGORY FILTER HANDLING =================
+    function filterCategory(cat) {
+      activeCategory = cat;
+      document.querySelectorAll('.cat-pill').forEach(pill => {
+        if (pill.getAttribute('data-cat') === cat) {
+          pill.className = "cat-pill active text-xs font-semibold px-3.5 py-1.5 rounded-full bg-carbon text-white whitespace-nowrap transition";
+        } else {
+          pill.className = "cat-pill text-xs font-semibold px-3.5 py-1.5 rounded-full bg-paper text-charcoal hover:bg-hairline whitespace-nowrap transition";
+        }
+      });
+      filterAndRenderCatalog();
+    }
+
+    function handleSortChange() {
+      filterAndRenderCatalog();
+    }
+
+    function resetFiltersAndScroll() {
+      activeCategory = 'all';
+      activeBrand = 'All Brands';
+      document.getElementById('omniSearchInput').value = '';
+      renderBrandPills();
+      filterCategory('all');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function scrollCategoryToView() {
+      document.getElementById('brandPillList').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // ================= MOBILE SLIDE-UP SHEET (SIZE SELECTION) =================
+    function triggerQuickAdd(productId) {
+      const p = products.find(x => x.id === productId);
+      if (!p) return;
+
+      sheetProduct = p;
+      sheetSelectedSize = p.sizes[0];
+
+      document.getElementById('sheetProductImg').src = p.image;
+      document.getElementById('sheetBrandTag').innerText = p.brand;
+      document.getElementById('sheetProductTitle').innerText = p.title;
+      document.getElementById('sheetPrice').innerText = `₹${p.price.toLocaleString('en-IN')}`;
+      document.getElementById('sheetOriginalPrice').innerText = `₹${p.originalPrice.toLocaleString('en-IN')}`;
+      
+      const discount = Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100);
+      document.getElementById('sheetDiscount').innerText = `${discount}% OFF`;
+
+      const sizeBox = document.getElementById('sheetSizeChips');
+      sizeBox.innerHTML = p.sizes.map(s => `
+        <button onclick="setSheetSize('${s}')" class="sheet-chip text-xs px-3.5 py-2 rounded-xl border font-bold transition ${s === sheetSelectedSize ? 'border-carbon bg-carbon text-white' : 'border-hairline bg-paper text-charcoal hover:border-carbon'}">
+          ${s}
+        </button>
+      `).join('');
+
+      document.getElementById('sheetConfirmBtn').onclick = () => {
+        addItemToBag(sheetProduct.id, sheetSelectedSize);
+        closeSizeSheet();
+      };
+
+      // Open sheet
+      document.getElementById('sizeSheetBackdrop').classList.remove('hidden');
+      document.getElementById('sizeSheet').classList.remove('translate-y-full');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function setSheetSize(size) {
+      sheetSelectedSize = size;
+      document.querySelectorAll('.sheet-chip').forEach(btn => {
+        if (btn.innerText.trim() === size) {
+          btn.className = 'sheet-chip text-xs px-3.5 py-2 rounded-xl border border-carbon bg-carbon text-white font-bold transition';
+        } else {
+          btn.className = 'sheet-chip text-xs px-3.5 py-2 rounded-xl border border-hairline bg-paper text-charcoal hover:border-carbon font-bold transition';
+        }
+      });
+    }
+
+    function closeSizeSheet() {
+      document.getElementById('sizeSheetBackdrop').classList.add('hidden');
+      document.getElementById('sizeSheet').classList.add('translate-y-full');
+      document.body.style.overflow = 'auto';
+    }
+
+    document.getElementById('sizeSheetBackdrop')?.addEventListener('click', closeSizeSheet);
+
+    // ================= SHOPPING BAG DRAWER =================
+    function addItemToBag(productId, size) {
+      const p = products.find(x => x.id === productId);
+      if (!p) return;
+
+      const existing = bag.find(item => item.id === productId && item.size === size);
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        bag.push({
+          id: p.id,
+          title: p.title,
+          brand: p.brand,
+          price: p.price,
+          image: p.image,
+          size: size,
+          quantity: 1
+        });
+      }
+
+      updateBagUI();
+      openBagDrawer();
+      triggerToast(`Added ${p.brand} (${size}) to Bag`);
+    }
+
+    function updateBagUI() {
+      const count = bag.reduce((acc, i) => acc + i.quantity, 0);
+      const subtotal = bag.reduce((acc, i) => acc + (i.price * i.quantity), 0);
+      const discount = Math.round(subtotal * (couponDiscount / 100));
+      const grandTotal = Math.max(0, subtotal - discount);
+
+      // Update counters across UI (Desktop + Mobile Dock)
+      document.getElementById('headerBagBadge').innerText = count;
+      document.getElementById('dockBagBadge').innerText = count;
+      document.getElementById('bagItemCounter').innerText = count;
+
+      document.getElementById('bagSubtotal').innerText = `₹${subtotal.toLocaleString('en-IN')}`;
+      document.getElementById('bagGrandTotal').innerText = `₹${grandTotal.toLocaleString('en-IN')}`;
+
+      // Free shipping threshold (₹3,999)
+      const progressBar = document.getElementById('bagProgressBar');
+      const goalText = document.getElementById('bagDeliveryGoalText');
+      if (subtotal >= 3999) {
+        progressBar.style.width = '100%';
+        goalText.innerHTML = '<i class="fa-solid fa-circle-check text-emeraldLuxe mr-1"></i> Complimentary Express Delivery Unlocked!';
+      } else {
+        const perc = Math.min((subtotal / 3999) * 100, 100);
+        progressBar.style.width = `${perc}%`;
+        const diff = 3999 - subtotal;
+        goalText.innerHTML = `<i class="fa-solid fa-truck-fast text-emeraldLuxe mr-1"></i> Add ₹${diff.toLocaleString('en-IN')} more for Free Express Delivery`;
+      }
+
+      const listContainer = document.getElementById('bagItemsList');
+      if (bag.length === 0) {
+        listContainer.innerHTML = `
+          <div class="h-full flex flex-col items-center justify-center text-center py-20 text-muted">
+            <i class="fa-solid fa-bag-shopping text-4xl mb-3 text-borderSubtle"></i>
+            <p class="font-bold text-carbon text-sm">Your shopping bag is empty</p>
+            <p class="text-xs text-muted mt-1 max-w-[200px]">Explore authentic shirts, denims, and horology.</p>
+            <button onclick="closeBagDrawer()" class="mt-4 px-5 py-2 bg-carbon text-white rounded-full text-xs font-bold uppercase">Start Browsing</button>
+          </div>
+        `;
+        return;
+      }
+
+      listContainer.innerHTML = bag.map((item, index) => `
+        <div class="flex items-center space-x-3 bg-white p-3 rounded-2xl border border-hairline">
+          <img src="${item.image}" alt="${item.title}" class="w-14 h-18 object-cover rounded-xl border border-hairline flex-shrink-0">
+          
+          <div class="flex-1 min-w-0">
+            <span class="text-[9px] uppercase font-bold text-muted">${item.brand}</span>
+            <h5 class="text-xs font-semibold text-carbon truncate">${item.title}</h5>
+            <div class="text-[11px] text-muted mt-0.5">Size: <span class="font-bold text-carbon">${item.size}</span></div>
+            <div class="text-xs font-bold text-carbon mt-1">₹${item.price.toLocaleString('en-IN')}</div>
+          </div>
+
+          <div class="flex flex-col items-end space-y-2.5">
+            <button onclick="removeBagItem(${index})" class="text-muted hover:text-redBrand text-xs p-1">
+              <i class="fa-regular fa-trash-can"></i>
+            </button>
+            <div class="flex items-center border border-hairline rounded-lg bg-paper overflow-hidden text-xs">
+              <button onclick="adjustBagQty(${index}, -1)" class="px-2 py-0.5 font-bold hover:bg-hairline text-carbon">-</button>
+              <span class="px-2 font-bold text-carbon text-[11px]">${item.quantity}</span>
+              <button onclick="adjustBagQty(${index}, 1)" class="px-2 py-0.5 font-bold hover:bg-hairline text-carbon">+</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function adjustBagQty(index, delta) {
+      if (!bag[index]) return;
+      bag[index].quantity += delta;
+      if (bag[index].quantity <= 0) bag.splice(index, 1);
+      updateBagUI();
+    }
+
+    function removeBagItem(index) {
+      bag.splice(index, 1);
+      updateBagUI();
+      triggerToast("Item removed from bag");
+    }
+
+    function applyBagCoupon() {
+      const code = document.getElementById('bagCouponInput').value.trim().toUpperCase();
+      const msg = document.getElementById('couponMessage');
+      const discountRow = document.getElementById('bagDiscountRow');
+      const discountAmountEl = document.getElementById('bagDiscountAmount');
+
+      if (code === 'LUXE20') {
+        couponDiscount = 20;
+        msg.innerText = '✓ LUXE20 Applied: 20% Privilege Discount!';
+        msg.className = 'text-[11px] font-bold text-emeraldLuxe block';
+        discountRow.classList.remove('hidden');
+        discountAmountEl.innerText = `-₹${Math.round(bag.reduce((acc, i) => acc + (i.price * i.quantity), 0) * 0.2).toLocaleString('en-IN')}`;
+        triggerToast("20% Coupon Code Applied");
+      } else {
+        couponDiscount = 0;
+        msg.innerText = '✕ Invalid code. Try: LUXE20';
+        msg.className = 'text-[11px] font-bold text-redBrand block';
+        discountRow.classList.add('hidden');
+      }
+      updateBagUI();
+    }
+
+    function openBagDrawer() {
+      document.getElementById('bagDrawerBackdrop').classList.remove('hidden');
+      document.getElementById('bagDrawer').classList.remove('translate-x-full');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeBagDrawer() {
+      document.getElementById('bagDrawerBackdrop').classList.add('hidden');
+      document.getElementById('bagDrawer').classList.add('translate-x-full');
+      document.body.style.overflow = 'auto';
+    }
+
+    document.getElementById('bagDrawerBackdrop')?.addEventListener('click', closeBagDrawer);
+
+    // ================= WHATSAPP ORDER INTEGRATION =================
+    function checkoutViaWhatsApp() {
+      if (bag.length === 0) {
+        triggerToast("Your bag is empty!");
+        return;
+      }
+
+      let msg = `*NEW BOUTIQUE ORDER | KURA & CO.*\n`;
+      msg += `------------------------------------\n`;
+      bag.forEach((item, idx) => {
+        msg += `${idx + 1}. ${item.brand.toUpperCase()} - ${item.title}\n   Size: ${item.size} | Qty: ${item.quantity} | ₹${(item.price * item.quantity).toLocaleString('en-IN')}\n`;
+      });
+
+      const subtotal = bag.reduce((acc, i) => acc + (i.price * i.quantity), 0);
+      const discount = Math.round(subtotal * (couponDiscount / 100));
+      const grandTotal = subtotal - discount;
+
+      msg += `------------------------------------\n`;
+      if (couponDiscount > 0) msg += `Coupon Applied (LUXE20): -₹${discount.toLocaleString('en-IN')}\n`;
+      msg += `*Total Order Value: ₹${grandTotal.toLocaleString('en-IN')}*\n`;
+      msg += `Express Delivery: Complimentary\n\nPlease confirm availability and dispatch timeline.`;
+
+      const whatsappURL = `https://wa.me/918619089899?text=${encodeURIComponent(msg)}`;
+      window.open(whatsappURL, '_blank');
+      triggerToast("Opening WhatsApp Concierge...");
+    }
+
+    // ================= WISHLIST & SEARCH TOGGLES =================
+    function toggleWishlist(id, e) {
+      if (e) e.stopPropagation();
+      if (wishlist.includes(id)) {
+        wishlist = wishlist.filter(x => x !== id);
+        triggerToast("Removed from Wishlist");
+      } else {
+        wishlist.push(id);
+        triggerToast("Added to Saved Wishlist");
+      }
+      document.getElementById('headerWishlistBadge').innerText = wishlist.length;
+      document.getElementById('dockWishlistBadge').innerText = wishlist.length;
+      filterAndRenderCatalog();
+    }
+
+    function scrollToWishlistAlert() {
+      triggerToast(`You have ${wishlist.length} luxury items saved in your Wishlist.`);
+    }
+
+    function toggleSearchOverlay() {
+      const overlay = document.getElementById('searchOverlay');
+      overlay.classList.toggle('hidden');
+      if (!overlay.classList.contains('hidden')) {
+        document.getElementById('omniSearchInput').focus();
+      }
+    }
+
+    function clearSearch() {
+      document.getElementById('omniSearchInput').value = '';
+      filterAndRenderCatalog();
+      toggleSearchOverlay();
+    }
+
+    document.getElementById('omniSearchInput')?.addEventListener('input', () => {
+      filterAndRenderCatalog();
+    });
+
+    // ================= MINI TOAST NOTIFICATION =================
+    let toastTimeout;
+    function triggerToast(text) {
+      const toast = document.getElementById('toastNotification');
+      const msg = document.getElementById('toastMessage');
+      msg.innerText = text;
+
+      clearTimeout(toastTimeout);
+      toast.classList.remove('opacity-0', '-translate-y-10');
+      toast.classList.add('opacity-100', 'translate-y-0');
+
+      toastTimeout = setTimeout(() => {
+        toast.classList.add('opacity-0', '-translate-y-10');
+        toast.classList.remove('opacity-100', 'translate-y-0');
+      }, 2500);
+    }
+
+    // Initialize application
+    window.onload = function() {
+      renderBrandPills();
+      filterAndRenderCatalog();
+      updateBagUI();
+    };
+  </script>
+</body>
+</html>
